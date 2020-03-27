@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/material.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
+app-steps {
+    width: 300px;
+    height: 100%;
+    float: right;
+    position: fixed;
+    top: 72px;
+    right: 0;
+    background: #FAFAFA;
+    padding: 40px 20px 20px 30px;
+    h5 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    div.row {
+        font-size: 14px;
+        color: #AAAAAA;
+        &.active {
+            color: #02B302;
+        }
+    }
+}
+
+app-headers {
+    mdb-navbar {
+        .navbar {
+            position: fixed;
+            z-index: 99;
+            width: 100%;
+        }
+    }
+}

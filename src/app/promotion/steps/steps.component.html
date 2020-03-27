@@ -1,0 +1,37 @@
+<div class="steps-promotion">
+    <h5>Propriedades da promoção</h5>
+    <div class="row" [ngClass]="(infoStep)? 'active' : ''">
+        <div class="col-8">
+            <strong>Informações gerais</strong>
+        </div>
+        <div class="col-4">
+            <i class="fas fa-check-circle"></i>
+        </div>
+    </div>
+    <div class="row" [ngClass]="(definitionStep)? 'active' : ''">
+        <div class="col-8">
+            <strong>Definições</strong>
+        </div>
+        <div class="col-4">
+            <i class="fas fa-check-circle"></i>
+        </div>
+    </div>
+    <div class="row" [ngClass]="(periodStep)? 'active' : ''">
+        <div class="col-8">
+            <strong>Duração</strong>
+        </div>
+        <div class="col-4">
+            <i class="fas fa-check-circle"></i>
+        </div>
+    </div>
+
+    <h5 class="mt-5">Propriedades dos produtos</h5>
+    <div class="row" [ngClass]="(productsStep)? 'active' : ''">
+        <div class="col-8">
+            <strong>Catálogo de produtos</strong>
+        </div>
+        <div class="col-4">
+            <i class="fas fa-check-circle"></i>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<app-steps [infoStep]="true" [definitionStep]="true" [periodStep]="true" [productsStep]="productForm.valid">
+</app-steps>
+
+<div class="row breadcrumbfast">
+    <div class="col-12">
+        <h6>Página Inicial > Promoção > Vitrine > Cadastro > Produtos</h6>
+    </div>
+</div>
+
+<div class="container animated fadeIn">
+    <form (ngSubmit)="onSubmit()" class="animated fadeIn" enctype="multipart/form-data">
+
+        <!-- PRODUCT -->
+        <div class="row justify-content-md-center" [formGroup]="productForm">
+            <div class="col-6">
+                <!-- Material form contact -->
+                <mdb-card>
+                    <!--Card content-->
+                    <mdb-card-body class="px-md-5 pt-md-5">
+
+                        <div class="form-row">
+                            <div class="col-9">
+                                <h4>Catálogo de produtos</h4>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-7">
+                                <div class="md-form md-outline">
+                                    <input type="file" (change)="setFile($event)" formControlName="file" [ngClass]="{ 'is-invalid': submitted && pF.file.errors }" class="form-control" mdbInput />
+                                    <div *ngIf="submitted && pF.file.errors" class="invalid-feedback">
+                                        <div *ngIf="pF.file.errors.required">Arquivo é obrigatório</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </mdb-card-body>
+
+                </mdb-card>
+                <!-- Material form contact -->
+            </div>
+        </div>
+        <!-- /PRODUCT -->
+
+
+        <div class="row">
+            <div class="col-5 offset-4 text-right">
+                <button type="button" outline="true" (click)="onBack()" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Voltar</button>
+                <button type="submit" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Salvar</button>
+            </div>
+        </div>
+    </form>
+    <!-- Form -->
+</div>

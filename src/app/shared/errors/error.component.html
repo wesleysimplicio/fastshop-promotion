@@ -1,0 +1,13 @@
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 class="error-code" [class.text-black]="!critical" [class.text-red]="critical">
+                <i class="fa fa-warning" [class.text-black]="!critical" [class.text-red]="critical"></i> {{errorCode}}
+            </h1>
+            <h2 class="error-title" [class.text-black]="!critical" [class.text-red]="critical">{{title}}</h2>
+        </div>
+        <div class="col-sm-12 text-center">
+            <h6 class="error-messager">{{message}}</h6>
+        </div>
+    </div>
+</section>

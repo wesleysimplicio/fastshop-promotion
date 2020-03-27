@@ -1,0 +1,14 @@
+.error-code {
+    text-align: center !important;
+    font-size: 50px !important;
+}
+
+.error-title {
+    text-align: center !important;
+}
+
+.error-messager {
+    text-align: center !important;
+    margin-top: 50px !important;
+    color: #666
+}
