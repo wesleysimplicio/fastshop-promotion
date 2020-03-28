@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
+        "start": "node server.js",
         "postinstall": "ng build --prod",
         "build": "ng build",
         "test": "ng test --no-watch --code-coverage --browsers=ChromeHeadless",
