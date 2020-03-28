@@ -68,7 +68,7 @@
 
                         <div class="dropdown-menu dropdown-primary fa-sm">
                             <a routerLink="/promotion/open/edit/{{row.id}}" class="dropdown-item" href="#">Editar</a>
-                            <a routerLink="/promotion/open/products/{{row.id}}" class="dropdown-item" href="#">Visualizar produtos</a>
+                            <!-- <a routerLink="/promotion/open/products/{{row.id}}" class="dropdown-item" href="#">Visualizar produtos</a> -->
                             <a (click)="updateStatusPromotion(row.id,row.status)" class="dropdown-item disableColor" *ngIf="row.status == 'ENABLE'">Inativar</a>
                             <a (click)="updateStatusPromotion(row.id,row.status)" class="dropdown-item enableColor" *ngIf="row.status != 'ENABLE'">Ativar</a>
                         </div>

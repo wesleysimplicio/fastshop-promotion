@@ -26,34 +26,6 @@ export class FormCouponsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.routeId = this.route.snapshot.params.id;
-    if (this.routeId) {
-      // Carrega os dados para pagina
-    }
-    this.buildForm();
-  }
-
-  togglePeriod() {
-    (!this.showPeriod) ? this.showPeriod = true : this.showPeriod = false;
-  }
-
-
-  buildForm() {
-    this.infoGeralForm = this.formBuilder.group({
-      id: [this.promotion.id, Validators.required],
-      name: [this.promotion.name, Validators.required],
-      hierarchy: [this.promotion.hierarchy, Validators.required],
-      status: [this.promotion.status, Validators.required],
-      description: [this.promotion.description, Validators.required],
-      tag: [this.promotion.tag, Validators.required]
-    });
-  }
-
-  onSubmit() {
-    if (!this.periodForm.valid) {
-      window.alert('Formulário inválido');
-      return;
-    }
 
   }
 
