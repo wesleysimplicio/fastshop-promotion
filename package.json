@@ -1,10 +1,10 @@
 {
-    "name": "fast-shop-promotion",
+    "name": "FastShopPromotion",
     "version": "1.0.0",
     "scripts": {
         "ng": "ng",
-        "start": "node server.js",
-        "heroku-postbuild": "ng build --prod",
+        "start": "ng serve",
+        "postinstall": "ng build --prod",
         "build": "ng build",
         "test": "ng test --no-watch --code-coverage --browsers=ChromeHeadless",
         "test:watch": "ng test --code-coverage --browsers=ChromeHeadless",

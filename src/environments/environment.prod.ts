@@ -3,5 +3,5 @@ export const environment = {
 };
 
 export class Environment {
-  public apiUrl = '';
+  public apiUrl = 'https://promotion-fast.herokuapp.com/promotion-management/api/';
 }

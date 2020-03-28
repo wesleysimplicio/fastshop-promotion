@@ -2,10 +2,10 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-app.use(express.static(`${__dirname}/dist/fast-shop-promotion`));
+app.use(express.static(`${__dirname}/dist/FastShopPromotion`));
 
 app.get('/*', (req, res) => {
-    res.sendFile(path.join(`${__dirname}/dist/fast-shop-promotion/index.html`));
+    res.sendFile(path.join(`${__dirname}/dist/FastShopPromotion/index.html`));
 });
 
 app.listen(process.env.PORT || 8080);
