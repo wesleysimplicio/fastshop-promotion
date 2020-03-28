@@ -32,7 +32,7 @@ import { FormOpenProductsComponent } from './promotion/open/form-open-products/f
 import { LoginComponent } from './login/login.component';
 import { OpenProductsComponent } from './promotion/open/open-products/open-products.component';
 
-export let options: Partial<IConfig>; // | (() => Partial<IConfig>);
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: 'left',
   allowNegative: false,
