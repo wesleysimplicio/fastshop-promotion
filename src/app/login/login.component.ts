@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +10,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    public service: AuthService
+  ) { }
 
   ngOnInit() {
+
+    if (sessionStorage.getItem(`oidc.user:${environment.urlFastChannel}/:${environment.clientFastChannel}`)) {
+      this.service.completeAuthentication().then();
+      this.router.navigate(['promotion']);
+    } else {
+      this.service.login();
+    }
+
   }
+
+  // goToTagPrice() {
+  //   const token: any = JSON.parse(sessionStorage.getItem(`oidc.user:${environment.urlFastChannel}/:${environment.urlFastChannel}`));
+
+  //   console.log(token.profile.preferred_username.substr(0, token.profile.preferred_username.indexOf('@')));
+
+  //   this.router.navigate(['promotion']);
+  // }
+
+  // goToPSV() {
+  //   this.router.navigate(['precos-venda']);
+  // }
 
 }

@@ -1,28 +1,38 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CouponsComponent } from './promotion/coupons/coupons.component';
-import { ErrorComponent } from './shared/errors/error.component';
+import { CouponsComponent } from './promotion/components/coupons/coupons.component';
+import { ErrorComponent } from './shared/components/errors/error.component';
 import { HomeComponent } from './home/home.component';
-import { FormCouponsComponent } from './promotion/coupons/form-coupons/form-coupons.component';
-import { FormOpenComponent } from './promotion/open/form-open/form-open.component';
-import { OpenComponent } from './promotion/open/open.component';
-import { FormOpenProductsComponent } from './promotion/open/form-open-products/form-open-products.component';
+import { FormCouponsComponent } from './promotion/components/coupons/form-coupons/form-coupons.component';
+import { FormOpenComponent } from './promotion/components/open/form-open/form-open.component';
+import { OpenComponent } from './promotion/components/open/open.component';
+import { FormOpenProductsComponent } from './promotion/components/open/form-open-products/form-open-products.component';
 import { LoginComponent } from './login/login.component';
-import { OpenProductsComponent } from './promotion/open/open-products/open-products.component';
+import { OpenProductsComponent } from './promotion/components/open/open-products/open-products.component';
+import { AuthGuardService } from './shared/services/auth-guard.service';
 
 
 const routes: Routes = [
-  { path: 'promotion/coupons', component: CouponsComponent },
-  { path: 'promotion/coupons/add', component: FormCouponsComponent },
-  { path: 'promotion/coupons/edit/:id', component: FormCouponsComponent },
-  { path: 'promotion/coupons/view/:id', component: FormCouponsComponent },
-  { path: 'promotion/open', component: OpenComponent },
-  { path: 'promotion/open/add', component: FormOpenComponent },
-  { path: 'promotion/open/add/products/:id', component: FormOpenProductsComponent },
-  { path: 'promotion/open/edit/:id', component: FormOpenComponent },
-  { path: 'promotion/open/products/:id', component: OpenProductsComponent },
+  {
+    path: '',
+    redirectTo: '/login',
+    pathMatch: 'full'
+  },
   { path: 'login', component: LoginComponent },
-  { path: '', component: HomeComponent },
+  {
+    path: 'auth-callback',
+    loadChildren: () => import('./auth-callback/auth-callback.module').then(a => a.AuthCallbackModule)
+  },
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'promotion',
+    loadChildren: () => import('./promotion/promotion.module').then(m => m.PromotionModule),
+    canActivate: [AuthGuardService]
+  },
   { path: '**', redirectTo: 'error/notfound' },
   { path: 'error/:type', component: ErrorComponent },
 ];

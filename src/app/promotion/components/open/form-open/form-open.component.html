@@ -1,4 +1,4 @@
-<app-steps [infoStep]="infoGeralForm.valid" [definitionStep]="definitionForm.valid" [periodStep]="periodForm.valid">
+<app-steps [infoStep]="infoGeralForm.valid" [definitionStep]="definitionForm.valid" [periodStep]="periodForm.valid" [productsStep]="isProductsStep">
 </app-steps>
 
 <div class="row breadcrumbfast">
@@ -115,7 +115,7 @@
 
 
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" id="discountType2" value="VALUE" formControlName="discountType" name="discountType">
+                                        <input type="radio" class="form-check-input" id="discountType2" value="FIXED_PRICE" formControlName="discountType" name="discountType">
                                         <label class="form-check-label" for="discountType2">Desconto fixo</label>
                                     </div>
 
@@ -123,13 +123,13 @@
                             </div>
                         </div>
 
-                        <div class="form-row">
+                        <div class="form-row" *ngIf="dF.discountType.value == 'PERCENTAGE'">
                             <div class="col-7">
                                 <div class="md-form md-outline">
-                                    <input *ngIf="dF.discountType.value == 'VALUE'" id="discountValue" formControlName="discountValue" currencyMask placeholder="1.000,00" type="text" class="form-control" mdbCharCounter mdbInput [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }"
-                                    />
+                                    <!-- <input *ngIf="dF.discountType.value == 'FIXED_PRICE'" id="discountValue" formControlName="discountValue" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" placeholder="1.000,00" type="text" class="form-control" mdbCharCounter mdbInput
+                                        [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }" /> -->
 
-                                    <input *ngIf="dF.discountType.value == 'PERCENTAGE'" id="discountValue" formControlName="discountValue" type="text" pattern="\d{1,99}" maxlength="2" placeholder="1-99%" class="form-control" mdbInput [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }"
+                                    <input currencyMask [options]="{ suffix: ' %', precision: 0}" id="discountValue" formControlName="discountValue" type="text" maxlength="4" placeholder="1-99%" class="form-control" mdbInput [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }"
                                     />
                                     <div *ngIf="submitted && dF.discountValue.errors" class="invalid-feedback">
                                         <div *ngIf="dF.discountValue.errors.required">Valor é obrigatório</div>

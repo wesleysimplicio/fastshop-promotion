@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: true,
+  apiUrl: 'https://promotion-fast.herokuapp.com/promotion-management/api/',
+  callBackFastChannel: 'http://localhost:4200/login',
+  callLogout: 'http://localhost:4200/login',
+  urlFastChannel: 'https://dev-auth.kaive.com.br',
+  clientFastChannel: 'portal-multiplecar'
 };
 
 /*
@@ -14,7 +19,3 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
-
-export class Environment {
-  public apiUrl = 'https://promotion-fast.herokuapp.com/promotion-management/api/';
-}

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
-import { PromotionService } from 'src/app/services/promotion.service';
+import { PromotionService } from 'src/app/promotion/services/promotion.service';
 
 @Component({
   selector: 'app-form-open-products',

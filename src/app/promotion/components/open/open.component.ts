@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
-import { PromotionService } from 'src/app/services/promotion.service';
+import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { ToastrService } from 'ngx-toastr';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { StatusEnum } from '../enum/status.enum';

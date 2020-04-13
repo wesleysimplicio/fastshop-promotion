@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { PromotionService } from 'src/app/services/promotion.service';
+import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
+import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
+import { Product } from '../../model/product.model';
+import { Promotion } from '../../model/promotion.model';
 
 @Component({
   selector: 'app-open-products',
@@ -13,17 +16,19 @@ export class OpenProductsComponent implements OnInit {
 
   nameCoupon: string;
   routeId: any;
-  rows = [];
+  rows = new Array<Product>();
   selected = [];
-
+  productsForm: FormGroup;
   ColumnMode = ColumnMode;
   SelectionType = SelectionType;
+  promotion: Promotion;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private toastrService: ToastrService,
-    private promotionService: PromotionService
+    private promotionService: PromotionService,
+    private formBuilder: FormBuilder,
   ) { }
 
   ngOnInit() {
@@ -33,13 +38,30 @@ export class OpenProductsComponent implements OnInit {
       this.router.navigate(['promotion/open']);
       return;
     }
-
     this.getPromotion();
+    this.getPromotionProducts();
+    this.buildForm();
   }
 
   getPromotion() {
+    this.promotionService.getPromotion(this.routeId).subscribe(
+      (res) => {
+        this.promotion = res.body;
+      },
+      (err: any) => {
+        err.error.messages.forEach(element => {
+          this.toastrService.error(element.description);
+        });
+      }
+    );
+  }
+
+  getPromotionProducts() {
     this.promotionService.getPromotionProducts(this.routeId).subscribe(
       (res) => {
+        res.body.forEach(element => {
+          element.fixedPrice = element.fixedPrice.toFixed(2);
+        });
         this.rows = res.body;
       },
       (err: any) => {
@@ -48,6 +70,32 @@ export class OpenProductsComponent implements OnInit {
         });
       }
     );
+  }
+
+  updateValue(sku, event) {
+    console.log('update', sku, event.replace('R$', ''));
+
+    this.promotionService.updatePromotionPriceProduct(this.routeId, event.replace('R$', ''), sku).subscribe(
+      (res) => {
+        this.toastrService.success('Preço alterado com sucesso');
+        this.getPromotion();
+      },
+      (err: any) => {
+        err.error.messages.forEach(element => {
+          this.toastrService.error(element.description);
+        });
+      }
+    );
+  }
+
+  buildForm() {
+    this.productsForm = this.formBuilder.group({
+      products: this.formBuilder.array([
+        new FormGroup({
+          product: new FormControl(''),
+        }),
+      ])
+    });
   }
 
   onSelect({ selected }) {

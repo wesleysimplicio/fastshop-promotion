@@ -6,8 +6,8 @@
 
 
 <div class="row animated fadeIn">
-    <div class="col-3">
-        <h1>Produtos do cupom {{nameCoupon}} </h1>
+    <div class="col-6" *ngIf="promotion">
+        <h1>Produtos do cupom {{nameCoupon}} {{promotion.name}}</h1>
     </div>
 </div>
 
@@ -17,9 +17,8 @@
             [displayCheck]="displayCheck" (activate)="onActivate($event)" (select)="onSelect($event)">
             <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
             </ngx-datatable-column>
-            <ngx-datatable-column name="Produto" prop="prd"></ngx-datatable-column>
-            <ngx-datatable-column name="Sku"></ngx-datatable-column>
-            <ngx-datatable-column name="Status" [width]="30">
+            <ngx-datatable-column name="Sku" [width]="40"></ngx-datatable-column>
+            <ngx-datatable-column name="Status" [width]="20">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     <div *ngIf="row.status == 'ENABLE'" class="enableColor">
                         <i class="fas fa-circle fa-xs mr-1"></i> Ativo
@@ -29,7 +28,25 @@
                     </div>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Criado" prop="createdDate">
+            <ngx-datatable-column name="Produto" prop="prd"></ngx-datatable-column>
+
+
+            <ngx-datatable-column name="Promocional" prop="fixedPrice">
+                <!-- <div [formGroup]="productsForm">
+                    <div formArrayName="products"> 
+                        [formGroupName]="rowIndex"
+                    formControlName="product" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"-->
+                <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
+                    <div *ngIf="row.fixedPrice">
+                        <input name="product" (change)="updateValue(row.sku,$event.target.value,rowIndex)" id="fixedPrice-{{rowIndex}}" type="number" [value]="row.fixedPrice" class="form-control" mdbInput />
+                    </div>
+                </ng-template>
+                <!-- </div>
+</div> -->
+            </ngx-datatable-column>
+
+
+            <ngx-datatable-column name="Criado" [width]="20" prop="createdDate">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     {{row.createdDate | date:'dd/MM/yyyy HH:mm'}}
                 </ng-template>

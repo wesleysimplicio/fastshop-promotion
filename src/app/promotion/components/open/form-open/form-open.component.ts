@@ -6,8 +6,10 @@ import { Promotion } from '../../model/promotion.model';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { StatusEnum } from '../../enum/status.enum';
+import { DiscountTypeEnum } from '../../enum/discount-type.enum';
+
 import { UtilValidation } from 'src/app/shared/util/util.validation';
-import { PromotionService } from 'src/app/services/promotion.service';
+import { PromotionService } from 'src/app/promotion/services/promotion.service';
 
 @Component({
   selector: 'app-form-open',
@@ -26,6 +28,7 @@ export class FormOpenComponent implements OnInit {
   activeInfoGeral: boolean;
   onlySave: boolean;
   showEndAt = true;
+  isProductsStep = false;
 
   constructor(
     private router: Router,
@@ -46,6 +49,9 @@ export class FormOpenComponent implements OnInit {
           this.promotion = res.body;
           if (this.promotion) {
             this.buildForm();
+            this.validDiscountType(this.promotion.discountType);
+            this.definitionForm.get('discountValue').setValue(this.promotion.discountValue);
+            this.isProductsStep = true;
           }
           // DATE FORMATS
           this.periodForm.get('startAt').setValue(
@@ -138,10 +144,21 @@ export class FormOpenComponent implements OnInit {
     });
 
     this.definitionForm.get('discountType').valueChanges.subscribe(e => {
-      this.definitionForm.get('discountValue').setValue('');
-      this.definitionForm.markAsDirty();
+      this.validDiscountType(e);
     });
 
+  }
+
+  validDiscountType(e) {
+    if (e === DiscountTypeEnum.Fixed_Price) {
+      this.definitionForm.get('discountValue').clearValidators();
+    } else {
+      this.definitionForm.get('discountValue').setValidators(Validators.required);
+    }
+
+    this.definitionForm.get('discountValue').setValue('');
+    this.periodForm.updateValueAndValidity();
+    this.definitionForm.markAsDirty();
   }
 
   onSubmit() {
@@ -170,6 +187,8 @@ export class FormOpenComponent implements OnInit {
     this.promotion.discountType = this.definitionForm.get('discountType').value;
     this.promotion.discountValue = this.definitionForm.get('discountValue').value;
     this.promotion.updatedBy = 'edileno@fastshop.com.br'; // TODO: REMOVER
+    this.promotion.campaign = 'REMOVER no FORM'; // TODO: REMOVER
+
 
     console.log(this.promotion);
 

@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "ng": "ng",
+        "start:dev": "ng serve",
         "start": "node server.js",
         "postinstall": "ng build --prod",
         "build": "ng build",
@@ -33,10 +34,11 @@
         "ngx-currency-mask": "^4.3.2",
         "ngx-mask": "^8.1.7",
         "ngx-toastr": "^10.0.4",
+        "oidc-client": "^1.9.1",
         "path": "^0.12.7",
         "rxjs": "~6.4.0",
         "tslib": "^1.10.0",
-        "zone.js": "~0.9.1"
+        "zone.js": "^0.9.1"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.803.21",
