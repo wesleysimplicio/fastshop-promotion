@@ -10,6 +10,11 @@ import { DiscountTypeEnum } from '../../enum/discount-type.enum';
 
 import { UtilValidation } from 'src/app/shared/util/util.validation';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
+import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
+import { PriceService } from 'src/app/shared/services/price.service';
+import { PaymentType } from 'src/app/shared/model/price/payment-type.model';
+import { VirtualStore } from 'src/app/shared/model/price/virtual-store.model';
+import { Street } from 'src/app/shared/model/price/street.model';
 
 @Component({
   selector: 'app-form-open',
@@ -29,6 +34,11 @@ export class FormOpenComponent implements OnInit {
   onlySave: boolean;
   showEndAt = true;
   isProductsStep = false;
+  breadcrumbs = new Array<IBreadcrumb>();
+  paymentTypes = new Array<PaymentType>();
+  virtualStores = new Array<VirtualStore>();
+  streets = new Array<Street>();
+  selecteds = [];
 
   constructor(
     private router: Router,
@@ -36,8 +46,23 @@ export class FormOpenComponent implements OnInit {
     private route: ActivatedRoute,
     private toastrService: ToastrService,
     private utilValidation: UtilValidation,
-    private promotionService: PromotionService
+    private promotionService: PromotionService,
+    private priceService: PriceService,
   ) {
+    this.breadcrumbs.push(
+      {
+        url: '/promotion',
+        label: 'Promoção'
+      },
+      {
+        url: '/promotion/open',
+        label: 'Vitrine'
+      },
+      {
+        url: '',
+        label: 'Cadastro'
+      },
+    );
     this.promotion = new Promotion();
   }
 
@@ -80,6 +105,61 @@ export class FormOpenComponent implements OnInit {
     } else {
       this.buildForm();
     }
+
+    this.getVirtualStorePrice();
+    this.getStreetPrice();
+    this.getPaymentTypePrice();
+  }
+
+  selection(data){
+    this.selecteds = data;
+    console.log(data);
+    
+  }
+
+  getVirtualStorePrice() {
+    this.priceService.getVirtualStore().subscribe(
+      (res) => {
+        this.virtualStores = res.body;
+      },
+      (err: any) => {
+        this.buildForm();
+        err.error.messages.forEach(element => {
+          this.toastrService.error(element.description);
+        });
+        return;
+      }
+    );
+  }
+
+  getStreetPrice() {
+    this.priceService.getStreet().subscribe(
+      (res) => {
+        this.streets = res.body;
+      },
+      (err: any) => {
+        this.buildForm();
+        err.error.messages.forEach(element => {
+          this.toastrService.error(element.description);
+        });
+        return;
+      }
+    );
+  }
+
+  getPaymentTypePrice() {
+    this.priceService.getPaymentType().subscribe(
+      (res) => {
+        this.paymentTypes = res.body;
+      },
+      (err: any) => {
+        this.buildForm();
+        err.error.messages.forEach(element => {
+          this.toastrService.error(element.description);
+        });
+        return;
+      }
+    );
   }
 
   toggleInfoGeral() {
@@ -170,10 +250,11 @@ export class FormOpenComponent implements OnInit {
       return;
     }
 
-    if (this.showPeriod && this.showEndAt &&
+    if (this.showPeriod &&
       !this.utilValidation.dateStartEndValidation(
         this.periodForm.get(`startAt`).value,
-        this.periodForm.get(`endAt`).value)
+        this.periodForm.get(`endAt`).value,
+        this.showEndAt)
     ) {
       return;
     }

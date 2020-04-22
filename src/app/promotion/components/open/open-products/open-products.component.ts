@@ -6,6 +6,7 @@ import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { Product } from '../../model/product.model';
 import { Promotion } from '../../model/promotion.model';
+import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
 
 @Component({
   selector: 'app-open-products',
@@ -22,6 +23,7 @@ export class OpenProductsComponent implements OnInit {
   ColumnMode = ColumnMode;
   SelectionType = SelectionType;
   promotion: Promotion;
+  breadcrumbs = new Array<IBreadcrumb>();
 
   constructor(
     private router: Router,
@@ -29,10 +31,30 @@ export class OpenProductsComponent implements OnInit {
     private toastrService: ToastrService,
     private promotionService: PromotionService,
     private formBuilder: FormBuilder,
-  ) { }
+  ) {
+    this.routeId = this.route.snapshot.params.id;
+
+    this.breadcrumbs.push(
+      {
+        url: '/promotion',
+        label: 'Promoção'
+      },
+      {
+        url: '/promotion/open',
+        label: 'Vitrine'
+      },
+      {
+        url: '/promotion/open/edit/' + this.routeId,
+        label: 'Cadastro'
+      },
+      {
+        url: '',
+        label: 'Produtos'
+      },
+    );
+  }
 
   ngOnInit() {
-    this.routeId = this.route.snapshot.params.id;
     if (!this.routeId) {
       this.toastrService.warning('Ação inválida');
       this.router.navigate(['promotion/open']);

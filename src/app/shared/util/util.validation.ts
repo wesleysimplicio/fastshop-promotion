@@ -26,23 +26,25 @@ export class UtilValidation {
         });
     }
 
-    dateStartEndValidation(startAt, endAt) {
-
-        if (!moment(startAt, 'DDMMYYYYHHmm').isValid() || !moment(endAt, 'DDMMYYYYHHmm').isValid()) {
-            this.toastrService.warning('Ops, as datas estão inválidas');
-            return false;
-        }
+    dateStartEndValidation(startAt, endAt, showEndAt) {
 
         if (startAt && moment(startAt, 'DDMMYYYYHHmm').toDate() < moment().toDate()) {
             this.toastrService.warning('Data de Início não pode ser menor que data atual');
             return false;
         }
 
-        if (endAt && moment(startAt, 'DDMMYYYYHHmm').toDate() >= moment(endAt, 'DDMMYYYYHHmm').toDate()) {
-            this.toastrService.warning('Data de Início não pode ser maior ou igual que data Término');
-            return false;
-        }
+        if (showEndAt) {
 
+            if (!moment(startAt, 'DDMMYYYYHHmm').isValid() || !moment(endAt, 'DDMMYYYYHHmm').isValid()) {
+                this.toastrService.warning('Ops, as datas estão inválidas');
+                return false;
+            }
+
+            if (endAt && moment(startAt, 'DDMMYYYYHHmm').toDate() >= moment(endAt, 'DDMMYYYYHHmm').toDate()) {
+                this.toastrService.warning('Data de Início não pode ser maior ou igual que data Término');
+                return false;
+            }
+        }
         return true;
     }
 

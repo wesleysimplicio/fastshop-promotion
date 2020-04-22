@@ -16,6 +16,10 @@ import { CouponsComponent } from './components/coupons/coupons.component';
 import { FormOpenProductsComponent } from './components/open/form-open-products/form-open-products.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { CurrencyMaskModule } from 'ngx-currency-mask';
+import { BreadcrumbComponent } from '../shared/components/breadcrumb/breadcrumb.component';
+import { PriceService } from '../shared/services/price.service';
+import { ShowAuthedDirective } from '../shared/directives/show-authed.directive';
+import { ModalComponent } from '../shared/components/modal/modal.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
@@ -27,6 +31,9 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     OpenProductsComponent,
     CouponsComponent,
     FormOpenProductsComponent,
+    BreadcrumbComponent,
+    ShowAuthedDirective,
+    ModalComponent
   ],
   imports: [
     PromotionRoutingModule,
@@ -52,7 +59,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     })
   ],
   providers: [
-    PromotionService
+    PromotionService,
+    PriceService,
   ]
 })
 export class PromotionModule { }

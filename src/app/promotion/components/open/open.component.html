@@ -1,8 +1,4 @@
-<div class="row breadcrumbfast">
-    <div class="col-12">
-        <h6>Página Inicial > Promoção > Vitrine</h6>
-    </div>
-</div>
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
 
 <div class="row animated fadeIn">
     <div class="col-3">
@@ -56,7 +52,7 @@
             <ngx-datatable-column name="Término" prop="startAt">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     <span *ngIf="row.endAt">{{row.endAt | date:'dd/MM/yyyy HH:mm'}}</span>
-                    <span *ngIf="!row.endAt"> Sem término</span>
+                    <span *ngIf="!row.endAt">Indeterminado</span>
                 </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column name="Ações" [width]="60">

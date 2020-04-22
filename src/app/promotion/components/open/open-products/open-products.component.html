@@ -1,9 +1,4 @@
-<div class="row breadcrumbfast">
-    <div class="col-12">
-        <h6>Página Inicial > Promoção > Vitrine -> Produtos</h6>
-    </div>
-</div>
-
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
 
 <div class="row animated fadeIn">
     <div class="col-6" *ngIf="promotion">
@@ -38,7 +33,7 @@
                     formControlName="product" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"-->
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                     <div *ngIf="row.fixedPrice">
-                        <input name="product" (change)="updateValue(row.sku,$event.target.value,rowIndex)" id="fixedPrice-{{rowIndex}}" type="number" [value]="row.fixedPrice" class="form-control" mdbInput />
+                        <input name="product" (change)="updateValue(row.sku,$event.target.value)" id="fixedPrice-{{rowIndex}}" type="number" [value]="row.fixedPrice" class="form-control" mdbInput />
                     </div>
                 </ng-template>
                 <!-- </div>

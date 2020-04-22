@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
+import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
 
 @Component({
   selector: 'app-form-open-products',
@@ -15,6 +16,7 @@ export class FormOpenProductsComponent implements OnInit {
   productForm: FormGroup;
   submitted = false;
   routeId: any;
+  breadcrumbs = new Array<IBreadcrumb>();
 
   constructor(
     private router: Router,
@@ -24,11 +26,28 @@ export class FormOpenProductsComponent implements OnInit {
     private toastrService: ToastrService,
     private promotionService: PromotionService
   ) {
-
+    this.routeId = this.route.snapshot.params.id;
+    this.breadcrumbs.push(
+      {
+        url: '/promotion',
+        label: 'Promoção'
+      },
+      {
+        url: '/promotion/open',
+        label: 'Vitrine'
+      },
+      {
+        url: '/promotion/open/edit/' + this.routeId,
+        label: 'Cadastro'
+      },
+      {
+        url: '',
+        label: 'Produtos'
+      },
+    );
   }
 
   ngOnInit() {
-    this.routeId = this.route.snapshot.params.id;
     if (!this.routeId) {
       this.toastrService.warning('Ação inválida');
       this.router.navigate(['promotion/']);
@@ -50,7 +69,8 @@ export class FormOpenProductsComponent implements OnInit {
 
     this.promotionService.addPromotionProduct(this.routeId, this.productForm.get('file').value).subscribe(
       (res) => {
-        this.router.navigate(['promotion/open']);
+        // Redireciona para produtos da promocao
+        this.router.navigate(['promotion/open/products/' + this.routeId]);
         this.toastrService.success('Arquivo enviado com sucesso');
       },
       (err: any) => {

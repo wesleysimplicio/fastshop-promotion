@@ -2,6 +2,11 @@ import { StatusEnum } from '../enum/status.enum';
 import { DiscountTypeEnum } from '../enum/discount-type.enum';
 import { Product } from './product.model';
 
+export interface IdName {
+    id: string;
+    name: string;
+}
+
 export class Promotion {
 
     campaign: string;
@@ -22,10 +27,11 @@ export class Promotion {
     status: StatusEnum;
     updatedBy: string;
     updatedDate: Date;
-    branchGroups: Array<string>;
-    salesTableGroups: Array<string>;
-    streets: Array<string>;
-    virtualStores: Array<string>;
+    branchGroups: Array<IdName>;
+    salesTableGroups: Array<IdName>;
+    streets: Array<IdName>;
+    virtualStores: Array<IdName>;
+    paymentType: Array<IdName>;
 
     constructor() {
         this.campaign = '';
@@ -47,10 +53,11 @@ export class Promotion {
         this.status = StatusEnum.Desactive;
         this.updatedBy = '';
         this.updatedDate = null;
-        this.branchGroups = new Array<string>();
-        this.salesTableGroups = new Array<string>();
-        this.streets = new Array<string>();
-        this.virtualStores = new Array<string>();
+        this.branchGroups = new Array<IdName>();
+        this.salesTableGroups = new Array<IdName>();
+        this.streets = new Array<IdName>();
+        this.virtualStores = new Array<IdName>();
+        this.paymentType = new Array<IdName>();
     }
 
 }

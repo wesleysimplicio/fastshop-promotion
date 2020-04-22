@@ -1,0 +1,16 @@
+<div class="row breadcrumbfast">
+    <div class="col-12">
+        <h6 *ngIf="breadcrumbs">
+            <a routerLink="/">Página Inicial</a>
+            <span *ngFor="let breadcrumb of breadcrumbs">
+                > 
+                <span *ngIf="breadcrumb.url">
+                    <a routerLink="{{breadcrumb.url}}">{{breadcrumb.label}}</a>
+                </span>
+            <span *ngIf="!breadcrumb.url">
+                   {{breadcrumb.label}}
+                </span>
+            </span>
+        </h6>
+    </div>
+</div>

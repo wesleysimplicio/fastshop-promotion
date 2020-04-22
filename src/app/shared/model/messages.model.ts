@@ -1,4 +1,7 @@
-import { Message } from './message.model';
+export interface Message {
+    businessCode: number;
+    description: string;
+}
 
 export class Messages {
 

@@ -4,6 +4,7 @@ import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { ToastrService } from 'ngx-toastr';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { StatusEnum } from '../enum/status.enum';
+import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
 
 @Component({
   selector: 'app-open',
@@ -17,11 +18,22 @@ export class OpenComponent implements OnInit {
 
   ColumnMode = ColumnMode;
   SelectionType = SelectionType;
+  breadcrumbs = new Array<IBreadcrumb>();
 
   constructor(
     private promotionService: PromotionService,
     private toastrService: ToastrService
   ) {
+    this.breadcrumbs.push(
+      {
+        url: '',
+        label: 'Promoção'
+      },
+      {
+        url: '/promotion/open',
+        label: 'Vitrine'
+      },
+    );
   }
 
   ngOnInit() {

@@ -81,6 +81,14 @@ nav ul li a {
     color: #02B302!important;
 }
 
+.datatable-footer {
+    height: 100px !important;
+}
+
+.datatable-footer-inner {
+    height: 100px !important;
+}
+
 
 /* STYLE PROMOTION */
 
@@ -123,7 +131,7 @@ nav ul li a {
 }
 
 .ngx-datatable.scroll-vertical {
-    height: 70vh;
+    height: 50vh;
 }
 
 .selected-column {
@@ -12005,7 +12013,8 @@ a.close.disabled {
 }
 
 .modal-footer {
-    display: flex;
+    display: initial;
+    /* flex; */
     align-items: center;
     justify-content: flex-end;
     padding: 1rem;

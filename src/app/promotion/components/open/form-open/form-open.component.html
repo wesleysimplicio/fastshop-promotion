@@ -1,11 +1,7 @@
 <app-steps [infoStep]="infoGeralForm.valid" [definitionStep]="definitionForm.valid" [periodStep]="periodForm.valid" [productsStep]="isProductsStep">
 </app-steps>
 
-<div class="row breadcrumbfast">
-    <div class="col-12">
-        <h6>Página Inicial > Promoção > Vitrine > Cadastro</h6>
-    </div>
-</div>
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
 
 <div class="container animated fadeIn">
     <form class="animated fadeIn" *ngIf="promotion != null">
@@ -108,28 +104,33 @@
                                 <div class="md-form">
                                     <h5>Tipo de desconto</h5>
 
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline mt-1">
                                         <input type="radio" class="form-check-input" id="discountType" value="PERCENTAGE" formControlName="discountType" name="discountType">
                                         <label class="form-check-label" for="discountType">Porcentagem</label>
                                     </div>
 
+                                    <div class="form-check form-check-inline mt-1">
+                                        <input type="radio" class="form-check-input" id="discountType3" value="FIXED_DISCOUNT" formControlName="discountType" name="discountType">
+                                        <label class="form-check-label" for="discountType3">Desconto fixo</label>
+                                    </div>
 
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline mt-1">
                                         <input type="radio" class="form-check-input" id="discountType2" value="FIXED_PRICE" formControlName="discountType" name="discountType">
-                                        <label class="form-check-label" for="discountType2">Desconto fixo</label>
+                                        <label class="form-check-label" for="discountType2">Preço fixo</label>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-row" *ngIf="dF.discountType.value == 'PERCENTAGE'">
+                        <div class="form-row">
                             <div class="col-7">
-                                <div class="md-form md-outline">
-                                    <!-- <input *ngIf="dF.discountType.value == 'FIXED_PRICE'" id="discountValue" formControlName="discountValue" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" placeholder="1.000,00" type="text" class="form-control" mdbCharCounter mdbInput
-                                        [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }" /> -->
-
-                                    <input currencyMask [options]="{ suffix: ' %', precision: 0}" id="discountValue" formControlName="discountValue" type="text" maxlength="4" placeholder="1-99%" class="form-control" mdbInput [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }"
+                                <div class="md-form md-outline" *ngIf="dF.discountType.value == 'FIXED_DISCOUNT'">
+                                    <input id="discountValue" formControlName="discountValue" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" placeholder="1.000,00" type="text" class="form-control" mdbCharCounter mdbInput [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }"
+                                    />
+                                </div>
+                                <div class="md-form md-outline" *ngIf="dF.discountType.value == 'PERCENTAGE'">
+                                    <input currencyMask [options]="{ suffix: ' %', precision: 1}" id="discountValue" formControlName="discountValue" type="text" maxlength="6" placeholder="1-99%" class="form-control" mdbInput [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }"
                                     />
                                     <div *ngIf="submitted && dF.discountValue.errors" class="invalid-feedback">
                                         <div *ngIf="dF.discountValue.errors.required">Valor é obrigatório</div>
@@ -233,3 +234,5 @@
     </form>
     <!-- Form -->
 </div>
+
+<app-modal title="Lojas Virtuais" [rows]="virtualStores" [temp]="virtualStores" (selecteds)="selection($event)"></app-modal>

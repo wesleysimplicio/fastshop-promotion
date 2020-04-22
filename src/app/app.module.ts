@@ -25,6 +25,8 @@ import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from 'ngx-currency-mask/src/
 import { LoginComponent } from './login/login.component';
 import { PromotionModule } from './promotion/promotion.module';
 import { JwtIntercerptorService } from './shared/services/jwt-intercerptor.service';
+import { BreadcrumbComponent } from './shared/components/breadcrumb/breadcrumb.component';
+import { ModalComponent } from './shared/components/modal/modal.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -49,6 +51,7 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   imports: [
     PromotionModule,
     AppRoutingModule,
+    CommonModule,
     HttpClientModule,
     MDBBootstrapModule.forRoot(),
     ToastrModule.forRoot({
