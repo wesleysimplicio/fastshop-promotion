@@ -1,0 +1,67 @@
+<app-steps [routeId]="routeId" [infoStep]="true" [definitionStep]="true" [periodStep]="true" [paymentStep]="true" [stockStep]="true"></app-steps>
+
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+
+<div class="container animated fadeIn">
+    <form (ngSubmit)="onSubmit()" class="animated fadeIn">
+
+        <!-- PRODUCT -->
+        <div class="row justify-content-md-center" [formGroup]="paymentForm">
+            <div class="col-6">
+                <!-- Material form contact -->
+                <mdb-card>
+                    <!--Card content-->
+                    <mdb-card-body class="px-md-5 pt-md-5">
+
+                        <div class="form-row">
+                            <div class="col-9">
+                                <h4>Limitar tipo de pagamento?</h4>
+                                <h6 class="font-weight-light">Selecione os tipos de pagamento permitidos.</h6>
+                            </div>
+                            <div class="col-2">
+                                <div class="switch">
+                                    <label>
+                                            <input type="checkbox" (click)="togglePayment()" [checked]="showPayment" >
+                                            <span class="lever"></span> 
+                                            </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="showPayment" [ngClass]="(!showPayment)? '' :'animated fadeIn'">
+                            <div class="col-12">
+                                <div class="row mt-3">
+                                    <label>Tipo de pagamentos</label>
+                                    <select *ngIf="paymentTypes.length > 0" class="browser-default custom-select" formControlName="paymentType" mdbInput [ngClass]="{ 'is-invalid': submitted && pF.paymentType.errors }">
+                                        <option value="">Selecione</option>
+                                            <option *ngFor="let pt of paymentTypes" [value]="pt.id">
+                                                {{pt.name}}
+                                            </option>
+                                          </select>
+                                    <div *ngIf="submitted && pF.paymentType.errors" class="invalid-feedback mt-2">
+                                        <div *ngIf="pF.paymentType.errors.required">Tipo de pagamento é obrigatório</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </mdb-card-body>
+                </mdb-card>
+                <!-- Material form contact -->
+            </div>
+        </div>
+        <!-- /PRODUCT -->
+
+
+        <div class="row">
+            <div class="col-6 offset-3 text-right">
+                <button type="button" (click)="onBack()" outline="true" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Voltar</button>
+
+                <button *ngIf="showPayment" (click)="onlySave=true;onSubmit();" type="submit" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Salvar</button>
+                <button type="submit" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Ir para próximo passo</button>
+            </div>
+        </div>
+    </form>
+    <!-- Form -->
+</div>

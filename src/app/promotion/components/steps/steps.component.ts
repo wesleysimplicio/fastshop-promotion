@@ -12,6 +12,9 @@ export class StepsComponent implements OnInit {
   @Input() definitionStep = false;
   @Input() periodStep = false;
   @Input() productsStep = false;
+  @Input() stockStep = false;
+  @Input() paymentStep = false;
+  @Input() routeId = '';
 
   constructor() { }
 

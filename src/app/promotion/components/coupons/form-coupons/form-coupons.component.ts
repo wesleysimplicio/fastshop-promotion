@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { } from 'angular-bootstrap-md';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Promotion } from '../../model/promotion.model';
+import { Promotion } from '../../../model/promotion.model';
 
 @Component({
   selector: 'app-form-coupons',

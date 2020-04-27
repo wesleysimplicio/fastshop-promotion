@@ -1,4 +1,4 @@
-<app-steps [infoStep]="infoGeralForm.valid" [definitionStep]="definitionForm.valid" [periodStep]="periodForm.valid" [productsStep]="isProductsStep">
+<app-steps [routeId]="routeId" [infoStep]="infoGeralForm.valid" [definitionStep]="definitionForm.valid" [periodStep]="periodForm.valid" [productsStep]="isEditStep" [stockStep]="isEditStep" [paymentStep]="isEditStep">
 </app-steps>
 
 <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
@@ -234,5 +234,3 @@
     </form>
     <!-- Form -->
 </div>
-
-<app-modal title="Lojas Virtuais" [rows]="virtualStores" [temp]="virtualStores" (selecteds)="selection($event)"></app-modal>

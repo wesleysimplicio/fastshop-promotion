@@ -25,7 +25,25 @@
         </div>
     </div>
 
+    <h5 class="mt-5">Restrições da promoção</h5>
+    <div class="row" [ngClass]="(paymentStep)? 'active' : ''">
+        <div class="col-8">
+            <strong>Forma de pagamento</strong>
+        </div>
+        <div class="col-4">
+            <i class="fas fa-check-circle"></i>
+        </div>
+    </div>
+
     <h5 class="mt-5">Propriedades dos produtos</h5>
+    <div class="row" [ngClass]="(stockStep)? 'active' : ''">
+        <div class="col-8">
+            <strong>Estoque</strong>
+        </div>
+        <div class="col-4">
+            <i class="fas fa-check-circle"></i>
+        </div>
+    </div>
     <div class="row" [ngClass]="(productsStep)? 'active' : ''">
         <div class="col-8">
             <strong>Catálogo de produtos</strong>

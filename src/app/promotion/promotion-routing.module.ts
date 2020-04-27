@@ -8,6 +8,8 @@ import { FormCouponsComponent } from './components/coupons/form-coupons/form-cou
 import { FormOpenComponent } from './components/open/form-open/form-open.component';
 import { FormOpenProductsComponent } from './components/open/form-open-products/form-open-products.component';
 import { OpenProductsComponent } from './components/open/open-products/open-products.component';
+import { FormOpenRestrictionsComponent } from './components/open/form-open-restrictions/form-open-restrictions.component';
+import { FormOpenStocksComponent } from './components/open/form-open-stocks/form-open-stocks.component';
 
 
 const routes: Routes = [
@@ -18,8 +20,10 @@ const routes: Routes = [
     { path: 'promotion/coupons/view/:id', component: FormCouponsComponent },
     { path: 'promotion/open', component: OpenComponent },
     { path: 'promotion/open/add', component: FormOpenComponent },
-    { path: 'promotion/open/add/products/:id', component: FormOpenProductsComponent },
     { path: 'promotion/open/edit/:id', component: FormOpenComponent },
+    { path: 'promotion/open/form/restrictions/:id', component: FormOpenRestrictionsComponent },
+    { path: 'promotion/open/form/stocks/:id', component: FormOpenStocksComponent },
+    { path: 'promotion/open/form/products/:id', component: FormOpenProductsComponent },
     { path: 'promotion/open/products/:id', component: OpenProductsComponent },
 ];
 

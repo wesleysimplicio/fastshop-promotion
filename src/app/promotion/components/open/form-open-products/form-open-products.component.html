@@ -1,4 +1,4 @@
-<app-steps [infoStep]="true" [definitionStep]="true" [periodStep]="true" [productsStep]="productForm.valid"></app-steps>
+<app-steps [routeId]="routeId" [infoStep]="true" [definitionStep]="true" [periodStep]="true" [productsStep]="productForm.valid" [stockStep]="true" [paymentStep]="true"></app-steps>
 
 <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
 
@@ -43,7 +43,8 @@
 
         <div class="row">
             <div class="col-5 offset-4 text-right">
-                <button type="button" outline="true" (click)="onBack()" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Voltar</button>
+                <button type="button" outline="true" (click)="onCancel()" mdbBtn color="danger" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Cancelar</button>
+                <button type="button" outline="true" (click)="onBack()" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Voltar</button>
                 <button type="submit" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Salvar</button>
             </div>
         </div>

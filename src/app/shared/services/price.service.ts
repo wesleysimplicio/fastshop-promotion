@@ -7,6 +7,8 @@ import { HttpError } from '../interface/http-error';
 import { PaymentType } from '../model/price/payment-type.model';
 import { VirtualStore } from '../model/price/virtual-store.model';
 import { Street } from '../model/price/street.model';
+import { BranchGroup } from '../model/price/branch-group.model';
+import { GroupSalesTable } from '../model/price/group-sales-table.model';
 
 @Injectable()
 export class PriceService {
@@ -63,6 +65,37 @@ export class PriceService {
                 ));
     }
 
+    getBranchGroup(): Observable<any> {
+        return this.http.get<Array<BranchGroup>>(`${environment.apiUrlPrice}v1/branch-group`,
+            {
+                observe: 'response',
+                headers: this.getHttpOptions()
+            }).pipe(
+                map(res => {
+                    return res;
+                }, err => {
+                    console.log(err);
+                }),
+                catchError(
+                    (error) => throwError(error || 'Server error')
+                ));
+    }
+
+    getGroupSalesTable(): Observable<any> {
+        return this.http.get<Array<GroupSalesTable>>(`${environment.apiUrlPrice}v1/group-sales-table`,
+            {
+                observe: 'response',
+                headers: this.getHttpOptions()
+            }).pipe(
+                map(res => {
+                    return res;
+                }, err => {
+                    console.log(err);
+                }),
+                catchError(
+                    (error) => throwError(error || 'Server error')
+                ));
+    }
 
     private getHttpOptions() {
 

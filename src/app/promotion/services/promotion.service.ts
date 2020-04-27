@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Promotion } from '../components/model/promotion.model';
+import { Promotion } from '../model/promotion.model';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { HttpError } from '../../shared/interface/http-error';
-import { Product } from '../components/model/product.model';
+import { Product } from '../model/product.model';
 
 
 @Injectable()

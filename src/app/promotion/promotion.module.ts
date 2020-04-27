@@ -8,7 +8,9 @@ import { StepsComponent } from './components/steps/steps.component';
 import { OpenProductsComponent } from './components/open/open-products/open-products.component';
 import { PromotionService } from './services/promotion.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CardsModule, InputsModule, ChartsModule, CheckboxModule, DropdownModule, MDBBootstrapModule } from 'angular-bootstrap-md';
+import {
+  CardsModule, InputsModule, ChartsModule, CheckboxModule, DropdownModule, MDBBootstrapModule, ModalModule
+} from 'angular-bootstrap-md';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -19,7 +21,9 @@ import { CurrencyMaskModule } from 'ngx-currency-mask';
 import { BreadcrumbComponent } from '../shared/components/breadcrumb/breadcrumb.component';
 import { PriceService } from '../shared/services/price.service';
 import { ShowAuthedDirective } from '../shared/directives/show-authed.directive';
-import { ModalComponent } from '../shared/components/modal/modal.component';
+import { ModalSelectionComponent } from '../shared/components/modal/modal-selection/modal-selection.component';
+import { FormOpenRestrictionsComponent } from './components/open/form-open-restrictions/form-open-restrictions.component';
+import { FormOpenStocksComponent } from './components/open/form-open-stocks/form-open-stocks.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
@@ -33,7 +37,9 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     FormOpenProductsComponent,
     BreadcrumbComponent,
     ShowAuthedDirective,
-    ModalComponent
+    FormOpenRestrictionsComponent,
+    ModalSelectionComponent,
+    FormOpenStocksComponent
   ],
   imports: [
     PromotionRoutingModule,
@@ -48,6 +54,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CommonModule,
     BrowserModule,
     CurrencyMaskModule,
+    ModalModule,
     NgxMaskModule.forRoot(options),
     MDBBootstrapModule.forRoot(),
     NgxDatatableModule.forRoot({

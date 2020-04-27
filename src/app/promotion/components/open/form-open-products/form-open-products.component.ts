@@ -42,7 +42,7 @@ export class FormOpenProductsComponent implements OnInit {
       },
       {
         url: '',
-        label: 'Produtos'
+        label: 'Propriedades'
       },
     );
   }
@@ -50,7 +50,7 @@ export class FormOpenProductsComponent implements OnInit {
   ngOnInit() {
     if (!this.routeId) {
       this.toastrService.warning('Ação inválida');
-      this.router.navigate(['promotion/']);
+      this.router.navigate(['/promotion/']);
       return;
     }
 
@@ -70,7 +70,7 @@ export class FormOpenProductsComponent implements OnInit {
     this.promotionService.addPromotionProduct(this.routeId, this.productForm.get('file').value).subscribe(
       (res) => {
         // Redireciona para produtos da promocao
-        this.router.navigate(['promotion/open/products/' + this.routeId]);
+        this.router.navigate(['/promotion/open/stocks/' + this.routeId]);
         this.toastrService.success('Arquivo enviado com sucesso');
       },
       (err: any) => {
@@ -124,7 +124,13 @@ export class FormOpenProductsComponent implements OnInit {
   onBack() {
     this.submitted = false;
     this.productForm.reset();
-    this.router.navigate(['promotion/open/edit/' + this.routeId]);
+    this.router.navigate(['/promotion/open/form/stocks/' + this.routeId]);
   }
+
+  onCancel() {
+    this.submitted = false;
+    this.router.navigate(['/promotion/open']);
+  }
+
 
 }

@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { } from 'angular-bootstrap-md';
+import { MDBModalService, MDBModalRef } from 'angular-bootstrap-md';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Promotion } from '../../model/promotion.model';
+import { Promotion } from '../../../model/promotion.model';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
-import { StatusEnum } from '../../enum/status.enum';
-import { DiscountTypeEnum } from '../../enum/discount-type.enum';
-
+import { StatusEnum } from '../../../enum/status.enum';
+import { DiscountTypeEnum } from '../../../enum/discount-type.enum';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
@@ -33,11 +32,8 @@ export class FormOpenComponent implements OnInit {
   activeInfoGeral: boolean;
   onlySave: boolean;
   showEndAt = true;
-  isProductsStep = false;
+  isEditStep = false;
   breadcrumbs = new Array<IBreadcrumb>();
-  paymentTypes = new Array<PaymentType>();
-  virtualStores = new Array<VirtualStore>();
-  streets = new Array<Street>();
   selecteds = [];
 
   constructor(
@@ -76,7 +72,7 @@ export class FormOpenComponent implements OnInit {
             this.buildForm();
             this.validDiscountType(this.promotion.discountType);
             this.definitionForm.get('discountValue').setValue(this.promotion.discountValue);
-            this.isProductsStep = true;
+            this.isEditStep = true;
           }
           // DATE FORMATS
           this.periodForm.get('startAt').setValue(
@@ -105,61 +101,12 @@ export class FormOpenComponent implements OnInit {
     } else {
       this.buildForm();
     }
-
-    this.getVirtualStorePrice();
-    this.getStreetPrice();
-    this.getPaymentTypePrice();
   }
 
-  selection(data){
+  selection(data) {
     this.selecteds = data;
     console.log(data);
-    
-  }
 
-  getVirtualStorePrice() {
-    this.priceService.getVirtualStore().subscribe(
-      (res) => {
-        this.virtualStores = res.body;
-      },
-      (err: any) => {
-        this.buildForm();
-        err.error.messages.forEach(element => {
-          this.toastrService.error(element.description);
-        });
-        return;
-      }
-    );
-  }
-
-  getStreetPrice() {
-    this.priceService.getStreet().subscribe(
-      (res) => {
-        this.streets = res.body;
-      },
-      (err: any) => {
-        this.buildForm();
-        err.error.messages.forEach(element => {
-          this.toastrService.error(element.description);
-        });
-        return;
-      }
-    );
-  }
-
-  getPaymentTypePrice() {
-    this.priceService.getPaymentType().subscribe(
-      (res) => {
-        this.paymentTypes = res.body;
-      },
-      (err: any) => {
-        this.buildForm();
-        err.error.messages.forEach(element => {
-          this.toastrService.error(element.description);
-        });
-        return;
-      }
-    );
   }
 
   toggleInfoGeral() {
@@ -280,9 +227,9 @@ export class FormOpenComponent implements OnInit {
     this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {
         if (this.onlySave) {
-          this.router.navigate(['promotion/open']);
+          this.router.navigate(['/promotion/open']);
         } else {
-          this.router.navigate(['promotion/open/add/products/' + res.body.id]);
+          this.router.navigate(['/promotion/open/form/restrictions/' + res.body.id]);
         }
         this.toastrService.success('Salvo com sucesso');
       },
@@ -316,7 +263,7 @@ export class FormOpenComponent implements OnInit {
     this.infoGeralForm.reset();
     this.periodForm.reset();
     this.definitionForm.reset();
-    this.router.navigate(['promotion/open']);
+    this.router.navigate(['/promotion/open']);
   }
 
 }

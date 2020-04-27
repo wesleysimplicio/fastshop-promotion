@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
 
     if (sessionStorage.getItem(`oidc.user:${environment.urlFastChannel}/:${environment.clientFastChannel}`)) {
       this.service.completeAuthentication().then();
-      this.router.navigate(['promotion']);
+      this.router.navigate(['/promotion']);
     } else {
       this.service.login();
     }
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 
   //   console.log(token.profile.preferred_username.substr(0, token.profile.preferred_username.indexOf('@')));
 
-  //   this.router.navigate(['promotion']);
+  //   this.router.navigate(['/promotion']);
   // }
 
   // goToPSV() {

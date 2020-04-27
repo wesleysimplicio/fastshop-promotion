@@ -4,8 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
-import { Product } from '../../model/product.model';
-import { Promotion } from '../../model/promotion.model';
+import { Product } from '../../../model/product.model';
+import { Promotion } from '../../../model/promotion.model';
 import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
 
 @Component({
@@ -57,7 +57,7 @@ export class OpenProductsComponent implements OnInit {
   ngOnInit() {
     if (!this.routeId) {
       this.toastrService.warning('Ação inválida');
-      this.router.navigate(['promotion/open']);
+      this.router.navigate(['/promotion/open']);
       return;
     }
     this.getPromotion();

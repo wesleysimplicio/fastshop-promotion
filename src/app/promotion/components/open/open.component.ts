@@ -3,7 +3,7 @@ import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { ToastrService } from 'ngx-toastr';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { StatusEnum } from '../enum/status.enum';
+import { StatusEnum } from '../../enum/status.enum';
 import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
 
 @Component({

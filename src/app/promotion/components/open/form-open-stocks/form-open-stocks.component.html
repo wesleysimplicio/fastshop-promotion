@@ -1,0 +1,116 @@
+<app-steps [routeId]="routeId" [infoStep]="true" [definitionStep]="true" [periodStep]="true" [paymentStep]="true" [stockStep]="true"></app-steps>
+
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+
+<div class="container animated fadeIn">
+
+    <!-- PRODUCT -->
+    <div class="row justify-content-md-center">
+        <div class="col-6">
+            <!-- Material form contact -->
+            <mdb-card>
+                <!--Card content-->
+                <mdb-card-body class="px-md-5 pt-md-5">
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <h5>Disponibilização de canal de venda e estoque</h5>
+                            <h6 class="font-weight-light">Defina os canais da Fast Shop onde o cupom será aplicado.</h6>
+                        </div>
+                    </div>
+                    <!-- Grupo de tabelas de vendas -->
+                    <div class="animated fadeIn">
+                        <div class="md-form col-12">
+                            <div class="row">
+                                Grupo de tabelas de vendas
+                                <a href="javascript:void(0)" (click)="openModal('STG')" class="font-12 select-link" mdbWavesEffect> Selecionar</a>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-12 px-0">
+                                <div *ngFor="let sel of selectedsSTG; let i = index " class="chip">
+                                    {{sel.name}}
+                                    <mdb-icon fas icon="times" class="close" (click)="removeSelection(i, 'STG')"></mdb-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Grupo de tabelas de vendas -->
+                    <hr>
+                    <!-- Lojas Virtuais -->
+                    <div class="animated fadeIn">
+                        <div class="md-form col-12">
+                            <div class="row">
+                                Lojas Virtuais
+                                <a href="javascript:void(0)" (click)="openModal('VS')" class="font-12 select-link" mdbWavesEffect> Selecionar</a>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-12 px-0">
+                                <div *ngFor="let sel of selectedsVS; let i = index " class="chip">
+                                    {{sel.name}}
+                                    <mdb-icon fas icon="times" class="close" (click)="removeSelection(i, 'VS')"></mdb-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Lojas Virtuais -->
+                    <hr>
+                    <!-- Grupo de Filiais -->
+                    <div class="animated fadeIn">
+                        <div class="md-form col-12">
+                            <div class="row">
+                                Grupo de Filiais
+                                <a href="javascript:void(0)" (click)="openModal('BG')" class="font-12 select-link" mdbWavesEffect> Selecionar</a>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-12 px-0">
+                                <div *ngFor="let sel of selectedsBG; let i = index " class="chip">
+                                    {{sel.name}}
+                                    <mdb-icon fas icon="times" class="close" (click)="removeSelection(i,'BG')"></mdb-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Grupo de Filiais -->
+                    <hr>
+                    <!-- Ruas Logísticas -->
+                    <div class="animated fadeIn">
+                        <div class="md-form col-12">
+                            <div class="row">
+                                Ruas Logísticas
+                                <a href="javascript:void(0)" (click)="openModal('ST')" class="font-12 select-link" mdbWavesEffect> Selecionar</a>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-12 px-0">
+                                <div *ngFor="let sel of selectedsST; let i = index " class="chip">
+                                    {{sel.name}}
+                                    <mdb-icon fas icon="times" class="close" (click)="removeSelection(i, 'ST')"></mdb-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ruas Logísticas -->
+
+
+                </mdb-card-body>
+            </mdb-card>
+            <!-- Material form contact -->
+        </div>
+    </div>
+    <!-- /PRODUCT -->
+
+
+    <div class="row">
+        <div class="col-6 offset-3 text-right">
+            <button type="button" (click)="onBack()" outline="true" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Voltar</button>
+
+            <button (click)="onlySave=true;onSubmit();" type="submit" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Salvar</button>
+            <button type="submit" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Ir para próximo passo</button>
+        </div>
+    </div>
+</div>
+
+<app-modal-selection #appModal *ngIf="showModal" [title]="title" [rows]="rows" [temp]="rows" [option]="option" [selected]="selecteds" (getSelecteds)="getSelecteds($event)" (getOption)="getOption($event)"></app-modal-selection>
