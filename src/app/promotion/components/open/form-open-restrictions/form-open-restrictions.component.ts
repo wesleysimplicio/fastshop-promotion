@@ -61,25 +61,27 @@ export class FormOpenRestrictionsComponent implements OnInit {
 
   ngOnInit() {
     if (!this.routeId) {
-
       this.toastrService.warning('Ação inválida');
       this.router.navigate(['/promotion/']);
       return;
 
-    } else {
-
-      this.isEditStep = true;
-      this.getPaymentTypePrice();
-      this.buildForm();
-      this.promotionService.getPromotion(this.routeId).subscribe(
-        (res) => {
-          this.promotion = res.body;
-          if (this.promotion.paymentType.id !== '') {
-            this.showPayment = true;
-          }
-          this.buildForm();
-        });
     }
+
+    this.isEditStep = true;
+    this.getPaymentTypePrice();
+    this.promotion.updatedBy = 'edileno@fastshop.com.br'; // TODO: REMOVER
+
+
+    this.buildForm();
+    this.promotionService.getPromotion(this.routeId).subscribe(
+      (res) => {
+        this.promotion = res.body;
+        if (this.promotion.paymentType && this.promotion.paymentType.id !== '') {
+          this.showPayment = true;
+        }
+        this.buildForm();
+      });
+
 
   }
 
@@ -100,7 +102,7 @@ export class FormOpenRestrictionsComponent implements OnInit {
 
   buildForm() {
     this.paymentForm = this.formBuilder.group({
-      paymentType: [this.promotion.paymentType.id, Validators.required],
+      paymentType: [(this.promotion.paymentType) ? this.promotion.paymentType.id : null],
     });
   }
 

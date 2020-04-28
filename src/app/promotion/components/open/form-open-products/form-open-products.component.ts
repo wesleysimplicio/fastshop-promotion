@@ -70,7 +70,7 @@ export class FormOpenProductsComponent implements OnInit {
     this.promotionService.addPromotionProduct(this.routeId, this.productForm.get('file').value).subscribe(
       (res) => {
         // Redireciona para produtos da promocao
-        this.router.navigate(['/promotion/open/stocks/' + this.routeId]);
+        this.router.navigate(['/promotion/open/products/' + this.routeId]);
         this.toastrService.success('Arquivo enviado com sucesso');
       },
       (err: any) => {

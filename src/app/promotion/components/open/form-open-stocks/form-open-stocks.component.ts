@@ -177,6 +177,7 @@ export class FormOpenStocksComponent implements OnInit {
     }
 
     this.getSendArrays();
+    this.promotion.updatedBy = 'edileno@fastshop.com.br'; // TODO: REMOVER
 
     this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {

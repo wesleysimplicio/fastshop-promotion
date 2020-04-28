@@ -26,7 +26,7 @@
             <ngx-datatable-column name="Produto" prop="prd"></ngx-datatable-column>
 
 
-            <ngx-datatable-column name="Promocional" prop="fixedPrice">
+            <ngx-datatable-column *ngIf="showPrice" name="Promocional" prop="fixedPrice">
                 <!-- <div [formGroup]="productsForm">
                     <div formArrayName="products"> 
                         [formGroupName]="rowIndex"

@@ -21,6 +21,7 @@ export class ModalSelectionComponent implements OnInit {
   @Input() option: string = null;
   @Output() getSelecteds = new EventEmitter();
   @Output() getOption = new EventEmitter();
+  
   constructor(private changeDetector: ChangeDetectorRef
   ) {
   }
@@ -44,9 +45,10 @@ export class ModalSelectionComponent implements OnInit {
 
   onSelect({ selected }) {
     console.log('Select Event', selected, this.selected);
-
+    this.changeDetector.detectChanges();
     this.selected.splice(0, this.selected.length);
     this.selected.push(...selected);
+
   }
 
   onActivate(event) {

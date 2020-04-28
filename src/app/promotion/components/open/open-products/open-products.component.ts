@@ -24,7 +24,8 @@ export class OpenProductsComponent implements OnInit {
   SelectionType = SelectionType;
   promotion: Promotion;
   breadcrumbs = new Array<IBreadcrumb>();
-
+  showPrice = false;
+  
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -82,7 +83,10 @@ export class OpenProductsComponent implements OnInit {
     this.promotionService.getPromotionProducts(this.routeId).subscribe(
       (res) => {
         res.body.forEach(element => {
-          element.fixedPrice = element.fixedPrice.toFixed(2);
+          if (element.fixedPrice) {
+            this.showPrice = true;
+            element.fixedPrice = element.fixedPrice.toFixed(2);
+          }
         });
         this.rows = res.body;
       },

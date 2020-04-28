@@ -66,7 +66,7 @@ export class Promotion {
         this.salesTableGroups = new Array<GroupSalesTable>();
         this.streets = new Array<Street>();
         this.virtualStores = new Array<VirtualStore>();
-        this.paymentType = { id: '' };
+        this.paymentType = null;
     }
 
 }

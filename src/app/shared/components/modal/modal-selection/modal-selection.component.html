@@ -21,7 +21,6 @@
                 </div> -->
                 <div>
                     <div style="float:left;width:100%">
-
                         <ngx-datatable #table style="width: 100%" class="default" [rows]="rows" [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="30" [limit]="10" [selected]="selected" [selectionType]="SelectionType.checkbox" (activate)="onActivate($event)"
                             [rowHeight]="50" [scrollbarV]="true" [scrollbarH]="true" (select)="onSelect($event)">
                             <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
