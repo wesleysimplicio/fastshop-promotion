@@ -24,6 +24,7 @@ export class FormOpenRestrictionsComponent implements OnInit {
   selecteds = [];
   promotion: Promotion;
   submitted = false;
+  title = 'Tipos de pagamento';
 
   constructor(
     private router: Router,
