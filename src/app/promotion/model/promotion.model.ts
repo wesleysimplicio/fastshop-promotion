@@ -40,7 +40,7 @@ export class Promotion {
     salesTableGroups: Array<GroupSalesTable>;
     streets: Array<Street>;
     virtualStores: Array<VirtualStore>;
-    paymentType: { id: string };
+    paymentTypes: Array<PaymentType>;
 
     constructor() {
         this.campaign = '';
@@ -66,7 +66,7 @@ export class Promotion {
         this.salesTableGroups = new Array<GroupSalesTable>();
         this.streets = new Array<Street>();
         this.virtualStores = new Array<VirtualStore>();
-        this.paymentType = null;
+        this.paymentTypes = new Array<PaymentType>();
     }
 
 }

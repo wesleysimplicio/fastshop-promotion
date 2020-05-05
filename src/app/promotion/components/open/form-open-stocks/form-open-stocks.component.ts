@@ -106,12 +106,10 @@ export class FormOpenStocksComponent implements OnInit {
       case 'VS':
         this.title = 'Loja Virtual';
         this.rows = this.virtualStores;
-        this.selectedsVS.map(el => {
-          el.isSelected = true;
-          // this.selectedsVS.push(el);
-        });
+        // this.selectedsVS.map(el => {
+        //   el.isSelected = true;
+        // });
         this.selecteds = this.selectedsVS;
-        console.log('this.selecteds', this.selecteds);
         break;
 
       case 'STG':
@@ -216,12 +214,10 @@ export class FormOpenStocksComponent implements OnInit {
   getVirtualStorePrice() {
     this.priceService.getVirtualStore().subscribe(
       (res) => {
-        res.body.forEach(el => {
-          this.virtualStores.push({ id: el.id, name: el.name });
-        });
-        // this.virtualStores = res.body;
-        console.log('this.virtualStores', this.virtualStores);
-
+        // res.body.forEach(el => {
+        //   this.virtualStores.push({ id: el.id, name: el.name });
+        // });
+        this.virtualStores = res.body;
       },
       (err: any) => {
         err.error.messages.forEach(element => {

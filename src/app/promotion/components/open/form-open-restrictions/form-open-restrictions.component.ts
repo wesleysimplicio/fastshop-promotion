@@ -1,9 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
-import { UtilValidation } from 'src/app/shared/util/util.validation';
 import { PriceService } from 'src/app/shared/services/price.service';
 import { PaymentType } from 'src/app/shared/model/price/payment-type.model';
 import { Promotion } from '../../../model/promotion.model';
@@ -20,7 +19,6 @@ export class FormOpenRestrictionsComponent implements OnInit {
   isEditStep = false;
   onlySave: boolean;
   showPayment = false;
-  paymentForm: FormGroup;
   paymentTypes = new Array<PaymentType>();
   showModalPayment = false;
   selecteds = [];
@@ -29,13 +27,10 @@ export class FormOpenRestrictionsComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private utilValidation: UtilValidation,
     private toastrService: ToastrService,
     private promotionService: PromotionService,
     private priceService: PriceService,
-    private changeDetector: ChangeDetectorRef
   ) {
     this.promotion = new Promotion();
     this.routeId = this.route.snapshot.params.id;
@@ -71,15 +66,13 @@ export class FormOpenRestrictionsComponent implements OnInit {
     this.getPaymentTypePrice();
     this.promotion.updatedBy = 'edileno@fastshop.com.br'; // TODO: REMOVER
 
-
-    this.buildForm();
     this.promotionService.getPromotion(this.routeId).subscribe(
       (res) => {
         this.promotion = res.body;
-        if (this.promotion.paymentType && this.promotion.paymentType.id !== '') {
+        if (this.promotion.paymentTypes && this.promotion.paymentTypes.length > 0) {
           this.showPayment = true;
+          this.selecteds = this.promotion.paymentTypes;
         }
-        this.buildForm();
       });
 
 
@@ -100,48 +93,16 @@ export class FormOpenRestrictionsComponent implements OnInit {
     );
   }
 
-  buildForm() {
-    this.paymentForm = this.formBuilder.group({
-      paymentType: [(this.promotion.paymentType) ? this.promotion.paymentType.id : null],
-    });
-  }
-
-  get pF() { return this.paymentForm.controls; }
-
   togglePayment() {
     if (!this.showPayment) {
       this.showPayment = true;
-      this.paymentForm.get('paymentType').setValidators(Validators.required);
     } else {
       this.showPayment = false;
-      this.paymentForm.get('paymentType').clearValidators();
     }
-    this.paymentForm.get('paymentType').setValue('');
-    this.paymentForm.updateValueAndValidity();
-    this.paymentForm.markAsDirty();
   }
-
-
-  isFormsValid() {
-    if (
-      !this.paymentForm.valid
-    ) {
-      this.utilValidation.validateAllFormFields(this.paymentForm);
-      this.toastrService.warning('Formulário inválido');
-      return false;
-    }
-    return true;
-  }
-
 
   onSubmit() {
     this.submitted = true;
-
-    if (
-      !this.isFormsValid()
-    ) {
-      return;
-    }
 
     if (this.routeId) {
       this.promotion.id = this.routeId;
@@ -149,7 +110,9 @@ export class FormOpenRestrictionsComponent implements OnInit {
 
     if (this.showPayment) {
 
-      this.promotion.paymentType = { id: this.paymentForm.get('paymentType').value };
+      this.promotion.paymentTypes = this.selecteds;
+      this.promotion.updatedBy = 'edileno@fastshop.com.br'; // TODO: REMOVER
+
       console.log('Enviado', this.promotion);
 
       this.promotionService.addUpdatePromotion(this.promotion).subscribe(

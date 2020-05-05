@@ -7,38 +7,43 @@
                 <h4 class="modal-title w-100 font-weight-bold">
                     {{title}}
                 </h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="getSelectionAndClose(true); frame.hide(); ">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="getSelectionAndClose(true); frame.hide();">
                     <span aria-hidden="true">&times;</span>
                     </button>
             </div>
-            <div class="modal-body mx-3">
+            <div class="modal-body mx-3" style="max-height: 540px; overflow: scroll;">
                 <div class="md-form mb-12 md-outline">
                     <input type="text" id="inputSearch" (keyup)="updateFilter($event)" class="form-control" mdbInput mdbValidate>
                     <label for="inputSearch">Pesquisar</label>
                 </div>
-                <!-- <div class="mb-12 text-right">
-                    <h6><a href="#" class="danger"> Limpar seleção </a></h6>
-                </div> -->
+                <div class="mb-12 text-right">
+                    <h6>
+                        <a href="javascript:void(0)" class="danger" (click)="selectAll(false)"> Limpar seleção </a></h6>
+                </div>
                 <div>
                     <div style="float:left;width:100%">
-                        <ngx-datatable #table style="width: 100%" class="default" [rows]="rows" [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="30" [limit]="10" [selected]="selected" [selectionType]="SelectionType.checkbox" (activate)="onActivate($event)"
-                            [rowHeight]="50" [scrollbarV]="true" [scrollbarH]="true" (select)="onSelect($event)">
-                            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
-                                <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
-                                    <input type="checkbox" [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)" />
-                                </ng-template>
-                                <ng-template ngx-datatable-cell-template let-row="row" let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
-                                    <input type="checkbox" [checked]="row.isSelected" (change)="onCheckboxChangeFn($event)" /> aa
-                                </ng-template>
-                            </ngx-datatable-column>
-                            <ngx-datatable-column *ngIf="option!='ST'" name="Todos" prop="name"></ngx-datatable-column>
-                            <ngx-datatable-column *ngIf="option=='ST'" name="Todos" prop="street">
-                                <ng-template ngx-datatable-cell-template let-row="row">
-                                    {{row.street}} - {{row.description}}
-                                </ng-template>
-                            </ngx-datatable-column>
-
-                        </ngx-datatable>
+                        <table class="table table-striped" *ngIf="rows">
+                            <thead>
+                                <tr>
+                                    <th> <input type="checkbox" value="1" [checked]="selected.length == rows.length" (change)="selectAll($event.target.checked)"> </th>
+                                    <th> Nomes </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of rows; let i=i ndex">
+                                    <td>
+                                        <input type="checkbox" (change)="onSelect(row,$event.target.checked)" name="check[]" id="check-{{i}}" [checked]="isSelected(row.id)" [value]="row">
+                                    </td>
+                                    <td *ngIf="option!='ST'">{{row.name}}</td>
+                                    <td *ngIf="option=='ST'">{{row.street}} - {{row.description}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="!rows">
+                            <h5>
+                                Nada encontrado
+                            </h5>
+                        </div>
                     </div>
 
                 </div>
@@ -47,7 +52,7 @@
             <div class="modal-footer justify-content-center">
                 <div class="row">
                     <div class="col-11 offset-1 text-center">
-                        <button mdbBtn color="primary" class="waves-info" mdbWavesEffect (click)="getSelectionAndClose();frame.hide();">Aplicarseleção</button>
+                        <button mdbBtn color="primary" class="waves-info" mdbWavesEffect (click)="getSelectionAndClose();frame.hide();">Aplicar seleção</button>
                     </div>
                 </div>
                 <div class="col-12 text-center">
