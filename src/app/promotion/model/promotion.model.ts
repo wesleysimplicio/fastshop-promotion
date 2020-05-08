@@ -29,6 +29,7 @@ export class Promotion {
     id: string;
     name: string;
     partner: string;
+    campaignChannel: string;
     products: Array<Product>;
     promotionType: string;
     tag: string;
@@ -43,7 +44,8 @@ export class Promotion {
     paymentTypes: Array<PaymentType>;
 
     constructor() {
-        this.campaign = null; // TODO: REMOVER
+        this.campaign = null; // TODO: VERIFICAR
+        this.campaignChannel = null; // TODO: VERIFICAR
         this.createdBy = 'form@promotion'; // TODO: REMOVER
         this.createdDate = null;
         this.description = '';
@@ -54,7 +56,7 @@ export class Promotion {
         this.hierarchy = null;
         this.id = '';
         this.name = '';
-        this.partner = null; // TODO: REMOVER
+        this.partner = null; // TODO: VERIFICAR
         this.products = new Array<Product>();
         this.promotionType = 'OPEN';
         this.tag = '';

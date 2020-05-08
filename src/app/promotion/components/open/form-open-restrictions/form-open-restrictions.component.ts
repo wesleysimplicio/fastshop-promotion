@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Validators } from '@angular/forms';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { PriceService } from 'src/app/shared/services/price.service';
 import { PaymentType } from 'src/app/shared/model/price/payment-type.model';
 import { Promotion } from '../../../model/promotion.model';
+import { UtilValidation } from 'src/app/shared/util/util.validation';
 
 @Component({
   selector: 'app-form-open-restrictions',
@@ -19,12 +20,14 @@ export class FormOpenRestrictionsComponent implements OnInit {
   isEditStep = false;
   onlySave: boolean;
   showPayment = false;
+  showCampaign = false;
   paymentTypes = new Array<PaymentType>();
   showModalPayment = false;
   selecteds = [];
   promotion: Promotion;
   submitted = false;
   title = 'Tipos de pagamento';
+  campaignForm: FormGroup;
 
   constructor(
     private router: Router,
@@ -32,6 +35,8 @@ export class FormOpenRestrictionsComponent implements OnInit {
     private toastrService: ToastrService,
     private promotionService: PromotionService,
     private priceService: PriceService,
+    private utilValidation: UtilValidation,
+    private formBuilder: FormBuilder
   ) {
     this.promotion = new Promotion();
     this.routeId = this.route.snapshot.params.id;
@@ -60,12 +65,11 @@ export class FormOpenRestrictionsComponent implements OnInit {
       this.toastrService.warning('Ação inválida');
       this.router.navigate(['/promotion/']);
       return;
-
     }
 
     this.isEditStep = true;
     this.getPaymentTypePrice();
-
+    this.buildForm();
     this.promotionService.getPromotion(this.routeId).subscribe(
       (res) => {
         this.promotion = res.body;
@@ -73,9 +77,22 @@ export class FormOpenRestrictionsComponent implements OnInit {
           this.showPayment = true;
           this.selecteds = this.promotion.paymentTypes;
         }
+        if (this.promotion.campaign != "") {
+          this.showCampaign = true;
+        }
+        this.buildForm();
       });
+  }
+
+  get cF() { return this.campaignForm.controls; }
 
 
+  buildForm() {
+    this.campaignForm = this.formBuilder.group({
+      campaign: [this.promotion.campaign, Validators.required],
+      partner: [this.promotion.partner, Validators.required],
+      campaignChannel: [this.promotion.campaignChannel, Validators.required],
+    });
   }
 
   getPaymentTypePrice() {
@@ -101,16 +118,56 @@ export class FormOpenRestrictionsComponent implements OnInit {
     }
   }
 
+  toggleCampaign() {
+    if (!this.showCampaign) {
+      this.showCampaign = true;
+      this.campaignForm.get('campaign').setValidators(Validators.required);
+      this.campaignForm.get('partner').setValidators(Validators.required);
+      this.campaignForm.get('campaignChannel').setValidators(Validators.required);
+    } else {
+      this.showCampaign = false;
+      this.campaignForm.get('campaign').clearValidators();
+      this.campaignForm.get('partner').clearValidators();
+      this.campaignForm.get('campaignChannel').clearValidators();
+
+    }
+    this.campaignForm.get('campaign').setValue('');
+    this.campaignForm.get('partner').setValue('');
+    this.campaignForm.get('campaignChannel').setValue('');
+    this.campaignForm.updateValueAndValidity();
+    this.campaignForm.markAsDirty();
+  }
+
+
+  isFormsValid() {
+    if (
+      !this.campaignForm.valid
+    ) {
+      this.utilValidation.validateAllFormFields(this.campaignForm);
+      this.toastrService.warning('Formulário inválido');
+      return false;
+    }
+    return true;
+  }
+
   onSubmit() {
     this.submitted = true;
 
-    if (this.routeId) {
+    if (this.showPayment || this.showCampaign) {
+
+      if (this.showPayment) {
+        this.promotion.paymentTypes = this.selecteds;
+      }
+
+      if (this.showCampaign) {
+        if (!this.isFormsValid()) { return; }
+      }
+
+      this.promotion.campaign = this.campaignForm.get('campaign').value;
+      this.promotion.campaignChannel = this.campaignForm.get('campaignChannel').value;
+      this.promotion.partner = this.campaignForm.get('partner').value;
+
       this.promotion.id = this.routeId;
-    }
-
-    if (this.showPayment) {
-
-      this.promotion.paymentTypes = this.selecteds;
       this.promotion.updatedBy = 'form@promotion'; // TODO: REMOVER
 
       console.log('Enviado', this.promotion);

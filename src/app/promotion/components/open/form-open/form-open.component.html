@@ -17,7 +17,7 @@
 
                         <div class="form-row">
                             <div class="col-8">
-                                <h4>Informações gerais</h4>
+                                <h2>Informações gerais</h2>
                             </div>
                         </div>
                         <div class="form-row">
@@ -31,7 +31,7 @@
                                     <label for="hierarchy">Hierarquia</label>
                                 </div>
                             </div>
-                            <div class="col-7 text-right pt-4">
+                            <div class="col-7 text-right pt-3">
                                 <div class="switch">
                                     <label>
                                             Ativar promoção?
@@ -94,7 +94,7 @@
 
                         <div class="form-row">
                             <div class="col-9">
-                                <h4>Definições</h4>
+                                <h2>Definições</h2>
                             </div>
                         </div>
 
@@ -110,7 +110,7 @@
                                     </div>
 
                                     <div class="form-check form-check-inline mt-1">
-                                        <input type="radio" class="form-check-input" id="discountType3" value="FIXED_DISCOUNT" formControlName="discountType" name="discountType">
+                                        <input type="radio" class="form-check-input" id="discountType3" value="DISCOUNT_FIXED" formControlName="discountType" name="discountType">
                                         <label class="form-check-label" for="discountType3">Desconto fixo</label>
                                     </div>
 
@@ -125,7 +125,7 @@
 
                         <div class="form-row">
                             <div class="col-7">
-                                <div class="md-form md-outline" *ngIf="dF.discountType.value == 'FIXED_DISCOUNT'">
+                                <div class="md-form md-outline" *ngIf="dF.discountType.value == 'DISCOUNT_FIXED'">
                                     <input id="discountValue" formControlName="discountValue" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" placeholder="1.000,00" type="text" class="form-control" mdbCharCounter mdbInput [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }"
                                     />
                                 </div>
@@ -161,9 +161,9 @@
                         <!-- Form -->
 
                         <div class="form-row">
-                            <div class="col-9">
-                                <h5>Definir período da promoção?</h5>
-                                <h6>Defina uma data de início e término para a promoção.</h6>
+                            <div class="col-10">
+                                <h2>Definir período da promoção?</h2>
+                                <h5>Defina uma data de início e término para a promoção.</h5>
                             </div>
                             <div class="col-2">
                                 <div class="switch">
@@ -176,7 +176,7 @@
 
                         </div>
                         <div *ngIf="showPeriod" [ngClass]="(!showPeriod)? '' :'animated fadeIn'  ">
-                            <div class="form-row">
+                            <div class="form-row mt-2">
                                 <div class="col-7">
                                     <div class="md-form md-outline">
                                         <input id="date_start" formControlName="startAt" mask="00/00/0000 00:00" type="text" maxlength="16" placeholder="DD/MM/AAAA HH:MM" class="form-control" mdbCharCounter mdbInput [ngClass]="{ 'is-invalid': submitted && pF.startAt.errors }" />

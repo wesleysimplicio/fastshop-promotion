@@ -27,7 +27,6 @@ import { FormOpenStocksComponent } from './components/open/form-open-stocks/form
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
-
 @NgModule({
   declarations: [
     FormCouponsComponent,
