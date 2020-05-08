@@ -77,7 +77,7 @@ export class FormOpenProductsComponent implements OnInit {
       (res) => {
         this.isDisabledSend = false;
         // Redireciona para produtos da promocao
-        this.router.navigate(['/promotion/open/products/' + this.routeId]);
+        // this.router.navigate(['/promotion/open/products/' + this.routeId]);
         this.showResponse = true;
         this.responseProducts = res;
         console.log(this.responseProducts);

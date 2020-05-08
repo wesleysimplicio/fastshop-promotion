@@ -65,7 +65,6 @@ export class FormOpenRestrictionsComponent implements OnInit {
 
     this.isEditStep = true;
     this.getPaymentTypePrice();
-    this.promotion.updatedBy = 'edileno@fastshop.com.br'; // TODO: REMOVER
 
     this.promotionService.getPromotion(this.routeId).subscribe(
       (res) => {
@@ -112,7 +111,7 @@ export class FormOpenRestrictionsComponent implements OnInit {
     if (this.showPayment) {
 
       this.promotion.paymentTypes = this.selecteds;
-      this.promotion.updatedBy = 'edileno@fastshop.com.br'; // TODO: REMOVER
+      this.promotion.updatedBy = 'form@promotion'; // TODO: REMOVER
 
       console.log('Enviado', this.promotion);
 

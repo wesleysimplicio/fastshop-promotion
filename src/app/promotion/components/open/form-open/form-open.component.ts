@@ -214,10 +214,9 @@ export class FormOpenComponent implements OnInit {
     this.promotion.endAt = (!this.showPeriod) ? null : moment(this.periodForm.get('endAt').value, 'DDMMYYYYHHmm').toDate();
     this.promotion.discountType = this.definitionForm.get('discountType').value;
     this.promotion.discountValue = this.definitionForm.get('discountValue').value;
-    this.promotion.updatedBy = 'edileno@fastshop.com.br'; // TODO: REMOVER
-    this.promotion.campaign = 'REMOVER no FORM'; // TODO: REMOVER
-
-
+    this.promotion.updatedBy = 'form@promotion'; // TODO: REMOVER
+    this.promotion.campaign = null; // TODO: REMOVER
+    
     console.log(this.promotion);
 
     if (this.routeId) {

@@ -43,8 +43,8 @@ export class Promotion {
     paymentTypes: Array<PaymentType>;
 
     constructor() {
-        this.campaign = '';
-        this.createdBy = '';
+        this.campaign = null; // TODO: REMOVER
+        this.createdBy = 'form@promotion'; // TODO: REMOVER
         this.createdDate = null;
         this.description = '';
         this.hierarchy = null;
@@ -54,13 +54,13 @@ export class Promotion {
         this.hierarchy = null;
         this.id = '';
         this.name = '';
-        this.partner = '';
+        this.partner = null; // TODO: REMOVER
         this.products = new Array<Product>();
         this.promotionType = 'OPEN';
         this.tag = '';
         this.startAt = '';
         this.status = StatusEnum.Desactive;
-        this.updatedBy = '';
+        this.updatedBy = 'form@promotion'; // TODO: REMOVER
         this.updatedDate = null;
         this.branchGroups = new Array<BranchGroup>();
         this.salesTableGroups = new Array<GroupSalesTable>();
