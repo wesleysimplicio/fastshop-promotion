@@ -11,6 +11,11 @@ h1 {
     font-size: 25px !important;
 }
 
+
+h2 {
+    font-size: 18px !important;
+}
+
 h1 small {
     font-size: 12px;
     vertical-align: top;
