@@ -24,6 +24,8 @@ import { ShowAuthedDirective } from '../shared/directives/show-authed.directive'
 import { ModalSelectionComponent } from '../shared/components/modal/modal-selection/modal-selection.component';
 import { FormOpenRestrictionsComponent } from './components/open/form-open-restrictions/form-open-restrictions.component';
 import { FormOpenStocksComponent } from './components/open/form-open-stocks/form-open-stocks.component';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
@@ -55,6 +57,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     BrowserModule,
     CurrencyMaskModule,
     ModalModule,
+    AccordionModule.forRoot(),
     NgxMaskModule.forRoot(options),
     MDBBootstrapModule.forRoot(),
     NgxDatatableModule.forRoot({

@@ -64,63 +64,96 @@
             <h1>Resultado do upload</h1>
         </div>
     </div>
-    <!-- Produtos incluidos com sucesso -->
-    <div class="row animated fadeIn">
-        <div class="col-12">
-            <h2>Produtos incluídos com sucesso</h2>
-        </div>
-        <div class="col-12">
-            <ngx-datatable style="width: 100%" class="material" [rows]="responseProducts.products"
-                [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="0" rowHeight="auto" [limit]="10">
-                <ngx-datatable-column name="Sku" [width]="40"></ngx-datatable-column>
-                <ngx-datatable-column name="Status" [width]="20">
-                    <ng-template let-row="row" ngx-datatable-cell-template>
-                        <div *ngIf="row.status == 'ENABLE'" class="enableColor">
-                            <i class="fas fa-circle fa-xs mr-1"></i> Ativo
-                        </div>
-                        <div *ngIf="row.status != 'ENABLE'" class="disableColor">
-                            <i class="fas fa-circle fa-xs mr-1"></i> Inativo
-                        </div>
-                    </ng-template>
-                </ngx-datatable-column>
-                <ngx-datatable-column name="Produto" prop="prd"></ngx-datatable-column>
-                <ngx-datatable-column name="Promocional" prop="fixedPrice">
-                    <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                        <div *ngIf="row.fixedPrice">
-                            <input name="product" disabled id="fixedPrice-{{rowIndex}}" type="number" [value]="row.fixedPrice" class="form-control"
-                                mdbInput />
-                        </div>
-                    </ng-template>
-                </ngx-datatable-column>
-                <ngx-datatable-column name="Criado" [width]="20" prop="createdDate">
-                    <ng-template let-row="row" ngx-datatable-cell-template>
-                        {{row.createdDate | date:'dd/MM/yyyy HH:mm'}}
-                    </ng-template>
-                </ngx-datatable-column>
-            </ngx-datatable>
-        </div>
-    </div>
-    <!-- Produtos incluidos com sucesso -->
 
-    <!-- Produtos NÃO inclusos -->
-    <div class="row animated fadeIn mt-5">
+    <div class="row">
         <div class="col-12">
-            <h2>Produtos não inclusos</h2>
-        </div>
-        <div class="col-12">
-            <ngx-datatable style="width: 100%; background: #ff000014!important;" class="material" [rows]="responseProducts.errorsDetails"
-                [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="0" rowHeight="auto" [limit]="10">
-                <ngx-datatable-column name="Número da linha" prop="lineNumber" [width]="20"></ngx-datatable-column>
-                <ngx-datatable-column name="Conteúdo da linha" prop="line"></ngx-datatable-column>
-                <ngx-datatable-column name="Descrição" prop="messageResponse">
-                    <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                        {{value.description}}
-                    </ng-template>
-                </ngx-datatable-column>
-            </ngx-datatable>
+            <mdb-card>
+                <mdb-card-body class="pt-md-12">
+                    <div class="row m-0">
+                        <div class="col-4 text-center">
+                            <h2>Total de produtos com sucesso: {{responseProducts.summary.totalProductsIncluded}} </h2>
+                        </div>
+                        <div class="col-4 text-center">
+                            <h2>Total de linhas com sucesso: {{responseProducts.summary.totalLinesSuccess}} </h2>
+                        </div>
+                        <div class="col-4 text-center">
+                            <h2>Total de linhas com erros: {{responseProducts.summary.totalLinesErrors}} </h2>
+                        </div>
+                    </div>
+                </mdb-card-body>
+            </mdb-card>
         </div>
     </div>
-    <!-- Produtos NÃO inclusos -->
+
+    <accordion [isAnimated]="true" [closeOthers]="true">
+        <accordion-group heading="Produtos incluídos com sucesso">
+            <div class="col-12">
+                <ngx-datatable style="width: 100%" class="material" [rows]="responseProducts.products"
+                    [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="0" rowHeight="auto"
+                    [limit]="10">
+                    <ngx-datatable-column name="Sku" [width]="40"></ngx-datatable-column>
+                    <ngx-datatable-column name="Status" [width]="20">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <div *ngIf="row.status == 'ENABLE'" class="enableColor">
+                                <i class="fas fa-circle fa-xs mr-1"></i> Ativo
+                            </div>
+                            <div *ngIf="row.status != 'ENABLE'" class="disableColor">
+                                <i class="fas fa-circle fa-xs mr-1"></i> Inativo
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Produto" prop="prd"></ngx-datatable-column>
+                    <ngx-datatable-column name="Promocional" prop="fixedPrice">
+                        <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row"
+                            ngx-datatable-cell-template>
+                            <div *ngIf="row.fixedPrice">
+                                <input name="product" disabled id="fixedPrice-{{rowIndex}}" type="number"
+                                    [value]="row.fixedPrice" class="form-control" mdbInput />
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Criado" [width]="20" prop="createdDate">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.createdDate | date:'dd/MM/yyyy HH:mm'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </accordion-group>
+        <accordion-group heading="Linhas incluídas com sucesso">
+
+            <div class="col-12">
+                <ngx-datatable style="width: 100%; background: #00ff0014!important;" class="material"
+                    [rows]="responseProducts.successDetails" [columnMode]="ColumnMode.force" [headerHeight]="50"
+                    [footerHeight]="0" rowHeight="auto" [limit]="10">
+                    <ngx-datatable-column name="Número da linha" prop="lineNumber" [width]="20"></ngx-datatable-column>
+                    <ngx-datatable-column name="Conteúdo da linha" prop="line"></ngx-datatable-column>
+                    <ngx-datatable-column name="Descrição" prop="messageResponse">
+                        <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row"
+                            ngx-datatable-cell-template>
+                            {{value.description}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </accordion-group>
+        <accordion-group heading="Linhas não incluídas">
+            <div class="col-12">
+                <ngx-datatable style="width: 100%; background: #ff000014!important;" class="material"
+                    [rows]="responseProducts.errorsDetails" [columnMode]="ColumnMode.force" [headerHeight]="50"
+                    [footerHeight]="0" rowHeight="auto" [limit]="10">
+                    <ngx-datatable-column name="Número da linha" prop="lineNumber" [width]="20"></ngx-datatable-column>
+                    <ngx-datatable-column name="Conteúdo da linha" prop="line"></ngx-datatable-column>
+                    <ngx-datatable-column name="Descrição" prop="messageResponse">
+                        <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row"
+                            ngx-datatable-cell-template>
+                            {{value.description}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </accordion-group>
+    </accordion>
 
     <div class="row  animated fadeIn">
         <div class="col-6 offset-6 text-right">
