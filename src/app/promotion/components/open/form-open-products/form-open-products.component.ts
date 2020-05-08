@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
+import { ResponseProducts } from 'src/app/shared/model/promotion/responses/form-products/response-products.model';
 
 @Component({
   selector: 'app-form-open-products',
@@ -17,6 +18,9 @@ export class FormOpenProductsComponent implements OnInit {
   submitted = false;
   routeId: any;
   breadcrumbs = new Array<IBreadcrumb>();
+  showResponse = false;
+  responseProducts: ResponseProducts;
+  isDisabledSend = false;
 
   constructor(
     private router: Router,
@@ -61,19 +65,27 @@ export class FormOpenProductsComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.isDisabledSend = true;
     if (
       !this.isFormsValid()
     ) {
+      this.isDisabledSend = false;
       return;
     }
 
     this.promotionService.addPromotionProduct(this.routeId, this.productForm.get('file').value).subscribe(
       (res) => {
+        this.isDisabledSend = false;
         // Redireciona para produtos da promocao
         this.router.navigate(['/promotion/open/products/' + this.routeId]);
+        this.showResponse = true;
+        this.responseProducts = res;
+        console.log(this.responseProducts);
+
         this.toastrService.success('Arquivo enviado com sucesso');
       },
       (err: any) => {
+        this.isDisabledSend = false;
         err.error.messages.forEach(element => {
           this.toastrService.error(element.description);
         });

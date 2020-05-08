@@ -8,7 +8,7 @@ body {
 }
 
 h1 {
-    font-size: 28px !important;
+    font-size: 25px !important;
 }
 
 h1 small {
@@ -97,7 +97,7 @@ nav ul li a {
 }
 
 .datatable-footer-inner {
-    height: 100px !important;
+    height: 97px !important;
 }
 
 
@@ -6879,7 +6879,7 @@ pre code {
 .row {
     display: flex;
     flex-wrap: wrap;
-    margin-right: -15px;
+    /* margin-right: -15px; */
     margin-left: -15px
 }
 
