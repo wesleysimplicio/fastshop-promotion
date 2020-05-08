@@ -23,6 +23,7 @@ export class FormOpenProductsComponent implements OnInit {
   responseProducts: ResponseProducts;
   isDisabledSend = false;
   // responseProducts = { "products": [{ "createdBy": null, "createdDate": "2020-05-08T13:42:25.453", "updatedBy": null, "updatedDate": null, "prd": "ARLN72_PRD", "sku": "ARLN72_220", "fixedPrice": 123.45, "status": "ENABLE" }, { "createdBy": null, "createdDate": "2020-05-08T13:42:26.695", "updatedBy": null, "updatedDate": null, "prd": "AAA_PRD", "sku": "AAA_PRD", "fixedPrice": 333, "status": "ENABLE" }, { "createdBy": null, "createdDate": "2020-05-08T13:42:26.724", "updatedBy": null, "updatedDate": null, "prd": "BDFRYERBPTO_PRD", "sku": "BDFRYERBPTO1", "fixedPrice": 876.99, "status": "ENABLE" }, { "createdBy": null, "createdDate": "2020-05-08T13:42:26.71", "updatedBy": null, "updatedDate": null, "prd": "BDFRYERBPTO_PRD", "sku": "BDFRYERBPTO2", "fixedPrice": 345.12, "status": "ENABLE" }, { "createdBy": null, "createdDate": "2020-05-08T13:42:25.438", "updatedBy": null, "updatedDate": null, "prd": "ARLN72_PRD", "sku": "ARLN72_110", "fixedPrice": 4444, "status": "ENABLE" }], "successDetails": [{ "lineNumber": 2, "line": "ARLN72_PRD;34;", "messageResponse": { "businessCode": 1, "description": "Produto incluido com sucesso" } }, { "lineNumber": 3, "line": "ARLN72_110;4444;", "messageResponse": { "businessCode": 1, "description": "Produto incluido com sucesso" } }, { "lineNumber": 4, "line": "ARLN72_220;123.45;", "messageResponse": { "businessCode": 1, "description": "Produto incluido com sucesso" } }, { "lineNumber": 13, "line": "AAA_PRD;333;", "messageResponse": { "businessCode": 1, "description": "Produto incluido com sucesso" } }, { "lineNumber": 14, "line": "BDFRYERBPTO2;345.12;", "messageResponse": { "businessCode": 1, "description": "Produto incluido com sucesso" } }, { "lineNumber": 15, "line": "BDFRYERBPTO1;876.99;", "messageResponse": { "businessCode": 1, "description": "Produto incluido com sucesso" } }], "errorsDetails": [{ "lineNumber": 5, "line": "BDFRYERBPTO1;-1;", "messageResponse": { "businessCode": -115, "description": "No campo 'FIXED PRICE', informar valor em reais entre '0.01' a '999999999.99'" } }, { "lineNumber": 6, "line": "BDFRYERBPTO1;876a.99;", "messageResponse": { "businessCode": -5, "description": "O campo 'FIXED PRICE' deve ser numérico" } }, { "lineNumber": 7, "line": "BDFRYERBPTO2;;", "messageResponse": { "businessCode": -113, "description": "O campo 'FIXED PRICE' não foi informado" } }, { "lineNumber": 8, "line": "BDFRYERBPTO1;876.999;", "messageResponse": { "businessCode": -5, "description": "O campo 'FIXED PRICE' deve ter no máximo '2' dígitos fracionários e no máximo '9' dígitos inteiros" } }, { "lineNumber": 9, "line": "BDFRYERBPTO1;811111111111111111111176.999;", "messageResponse": { "businessCode": -5, "description": "O campo 'FIXED PRICE' deve ter no máximo '2' dígitos fracionários e no máximo '9' dígitos inteiros" } }, { "lineNumber": 10, "line": "", "messageResponse": { "businessCode": -110, "description": "O campo 'SKU' não foi informado" } }, { "lineNumber": 11, "line": "AgorNao;333;", "messageResponse": { "businessCode": -112, "description": "Erro SKU não existe no catalogo" } }, { "lineNumber": 12, "line": ";2332", "messageResponse": { "businessCode": -110, "description": "O campo 'SKU' não foi informado" } }], "summary": { "totalProductsIncluded": 5, "totalLinesSuccess": 6, "totalLinesErrors": 8 } };
+  showPrice = false;
   ColumnMode = ColumnMode;
   SelectionType = SelectionType;
 
@@ -82,8 +83,14 @@ export class FormOpenProductsComponent implements OnInit {
         this.isDisabledSend = false;
         // Redireciona para produtos da promocao
         // this.router.navigate(['/promotion/open/products/' + this.routeId]);
-        this.showResponse = true;
+        res.products.forEach(element => {
+          if (element.fixedPrice) {
+            this.showPrice = true;
+            element.fixedPrice = element.fixedPrice.toFixed(2);
+          }
+        });
         this.responseProducts = res;
+        this.showResponse = true;
         console.log(this.responseProducts);
 
         this.toastrService.success('Arquivo enviado com sucesso');

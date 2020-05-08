@@ -103,7 +103,7 @@
                         </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column name="Produto" prop="prd"></ngx-datatable-column>
-                    <ngx-datatable-column name="Promocional" prop="fixedPrice">
+                    <ngx-datatable-column *ngIf="showPrice" name="Promocional" prop="fixedPrice">
                         <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row"
                             ngx-datatable-cell-template>
                             <div *ngIf="row.fixedPrice">
