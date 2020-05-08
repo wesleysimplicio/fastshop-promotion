@@ -87,8 +87,7 @@
                 <ngx-datatable-column name="Promocional" prop="fixedPrice">
                     <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
                         <div *ngIf="row.fixedPrice">
-                            <input name="product" disabled (change)="updateValue(row.sku,$event.target.value)"
-                                id="fixedPrice-{{rowIndex}}" type="number" [value]="row.fixedPrice" class="form-control"
+                            <input name="product" disabled id="fixedPrice-{{rowIndex}}" type="number" [value]="row.fixedPrice" class="form-control"
                                 mdbInput />
                         </div>
                     </ng-template>
