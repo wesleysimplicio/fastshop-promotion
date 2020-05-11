@@ -77,7 +77,7 @@ export class FormOpenRestrictionsComponent implements OnInit {
           this.showPayment = true;
           this.selecteds = this.promotion.paymentTypes;
         }
-        if (this.promotion.campaign != "") {
+        if (this.promotion.campaign) {
           this.showCampaign = true;
         }
         this.buildForm();
