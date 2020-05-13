@@ -24,7 +24,7 @@ export class Promotion {
     description: string;
     discountType: DiscountTypeEnum;
     discountValue: number;
-    endAt: Date | string;
+    endAt: string;
     hierarchy: number;
     id: string;
     name: string;
@@ -33,7 +33,7 @@ export class Promotion {
     products: Array<Product>;
     promotionType: string;
     tag: string;
-    startAt: Date | string;
+    startAt: string;
     status: StatusEnum;
     updatedBy: string;
     updatedDate: Date;

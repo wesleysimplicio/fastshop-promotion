@@ -87,7 +87,6 @@ export class FormOpenComponent implements OnInit {
             this.showEndAt = true;
             this.endAtNull();
           }
-
           this.activeInfoGeral = (this.promotion.status === StatusEnum.Active) ? true : false;
         },
         (err: any) => {
@@ -210,14 +209,12 @@ export class FormOpenComponent implements OnInit {
     this.promotion.name = this.infoGeralForm.get('name').value;
     this.promotion.description = this.infoGeralForm.get('description').value;
     this.promotion.tag = this.infoGeralForm.get('tag').value;
-    this.promotion.startAt = (!this.showPeriod) ? moment().toDate() : moment(this.periodForm.get('startAt').value, 'DDMMYYYYHHmm').toDate();
-    this.promotion.endAt = (!this.showPeriod) ? null : moment(this.periodForm.get('endAt').value, 'DDMMYYYYHHmm').toDate();
+    this.promotion.startAt = (!this.showPeriod) ? moment().format("YYYY-MM-DDTHH:mm:ss").toString() : moment(this.periodForm.get('startAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
+    this.promotion.endAt = (!this.showPeriod || !this.showEndAt) ? null : moment(this.periodForm.get('endAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
     this.promotion.discountType = this.definitionForm.get('discountType').value;
     this.promotion.discountValue = this.definitionForm.get('discountValue').value;
     this.promotion.updatedBy = 'form@promotion'; // TODO: REMOVER
     this.promotion.campaign = null; // TODO: REMOVER
-    
-    console.log(this.promotion);
 
     if (this.routeId) {
       this.promotion.id = this.routeId;
