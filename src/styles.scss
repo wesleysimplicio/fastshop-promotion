@@ -4,7 +4,7 @@
 @import '~@swimlane/ngx-datatable/themes/material.scss';
 @import '~@swimlane/ngx-datatable/assets/icons.css';
 app-steps {
-    width: 300px;
+    width: 281px;
     height: 100%;
     float: right;
     position: fixed;
@@ -12,8 +12,7 @@ app-steps {
     right: 0;
     background: #FAFAFA;
     padding: 40px 20px 20px 30px;
-    h5 {
-        font-size: 18px;
+    h4 {
         margin-bottom: 20px;
     }
     div.row {
@@ -21,6 +20,9 @@ app-steps {
         color: #AAAAAA;
         &.active {
             color: #02B302;
+        }
+        i {
+            font-size: 16px;
         }
     }
 }

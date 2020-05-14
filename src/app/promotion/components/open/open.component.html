@@ -4,7 +4,7 @@
     <div class="col-3">
         <h1>Promoções cadastradas </h1>
     </div>
-    <div class="col-4 mb-4">
+    <div class="col-4 mb-2">
         <div class="form-group">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Pesquise por nome, data, etc…" aria-label="Pesquise por nome, data, etc…" aria-describedby="button-addon2">
@@ -42,8 +42,8 @@
                     </div>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Nome" prop="name"></ngx-datatable-column>
-            <ngx-datatable-column name="Selo" prop="tag"></ngx-datatable-column>
+            <ngx-datatable-column name="Nome da promoção" prop="name"></ngx-datatable-column>
+            <ngx-datatable-column name="Tag de carrinho" prop="tag"></ngx-datatable-column>
             <ngx-datatable-column name="Início" prop="startAt">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     {{row.startAt | date:'dd/MM/yyyy HH:mm'}}
@@ -59,7 +59,7 @@
                 <ng-template let-row="row" ngx-datatable-cell-template>
 
                     <div class="dropdown" mdbDropdown>
-                        <button mdbDropdownToggle mdbBtn class="dropdown-toggle waves-light white btn-sm" type="button" mdbWavesEffect>
+                        <button mdbDropdownToggle class="noButtonGrid" type="button" mdbWavesEffect>
                             <i class="fas fa-ellipsis-v"></i>
                         </button>
 

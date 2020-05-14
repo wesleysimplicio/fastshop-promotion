@@ -209,7 +209,10 @@ export class FormOpenComponent implements OnInit {
     this.promotion.name = this.infoGeralForm.get('name').value;
     this.promotion.description = this.infoGeralForm.get('description').value;
     this.promotion.tag = this.infoGeralForm.get('tag').value;
-    this.promotion.startAt = (!this.showPeriod) ? moment().format("YYYY-MM-DDTHH:mm:ss").toString() : moment(this.periodForm.get('startAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
+    this.promotion.startAt = (!this.showPeriod) ?
+      moment().add(10, 'minutes').format("YYYY-MM-DDTHH:mm:ss").toString() :
+      moment(this.periodForm.get('startAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
+
     this.promotion.endAt = (!this.showPeriod || !this.showEndAt) ? null : moment(this.periodForm.get('endAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
     this.promotion.discountType = this.definitionForm.get('discountType').value;
     this.promotion.discountValue = this.definitionForm.get('discountValue').value;

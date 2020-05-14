@@ -1,10 +1,17 @@
-<app-steps [routeId]="routeId" [infoStep]="infoGeralForm.valid" [definitionStep]="definitionForm.valid" [periodStep]="periodForm.valid" [productsStep]="isEditStep" [stockStep]="isEditStep" [paymentStep]="isEditStep">
+<app-steps [routeId]="routeId" [infoStep]="infoGeralForm.valid" [definitionStep]="definitionForm.valid"
+    [periodStep]="periodForm.valid" [productsStep]="isEditStep" [stockStep]="isEditStep" [paymentStep]="isEditStep">
 </app-steps>
 
-<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+<!-- <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb> -->
 
 <div class="container animated fadeIn">
     <form class="animated fadeIn" *ngIf="promotion != null">
+
+        <div class="row justify-content-md-center">
+            <div class="col-6">
+                <img src="assets/img/step1.PNG" alt="">
+            </div>
+        </div>
 
         <!-- INFOGERAL -->
         <div class="row justify-content-md-center" [formGroup]="infoGeralForm">
@@ -14,7 +21,6 @@
                     <!--Card content-->
                     <mdb-card-body class="px-md-5 pt-md-5">
                         <!-- Form -->
-
                         <div class="form-row">
                             <div class="col-8">
                                 <h2>Informações gerais</h2>
@@ -23,7 +29,9 @@
                         <div class="form-row">
                             <div class="col-4">
                                 <div class="md-form md-outline">
-                                    <input onlyNumber id="hierarchy" formControlName="hierarchy" type="text" pattern="\d{1,99}" maxlength="2" placeholder="1-99" class="form-control" mdbInput [ngClass]="{ 'is-invalid': submitted && igF.hierarchy.errors }" />
+                                    <input onlyNumber id="hierarchy" formControlName="hierarchy" type="text"
+                                        pattern="\d{1,99}" maxlength="2" placeholder="1-99" class="form-control"
+                                        mdbInput [ngClass]="{ 'is-invalid': submitted && igF.hierarchy.errors }" />
                                     <div *ngIf="submitted && igF.hierarchy.errors" class="invalid-feedback">
                                         <div *ngIf="igF.hierarchy.errors.required">Hierarquia é obrigatório</div>
                                         <div *ngIf="igF.hierarchy.errors.pattern">Somente números</div>
@@ -34,10 +42,10 @@
                             <div class="col-7 text-right pt-3">
                                 <div class="switch">
                                     <label>
-                                            Ativar promoção?
-                                                <input type="checkbox" (click)="toggleInfoGeral()" [checked]="activeInfoGeral" >
-                                                <span class="lever"></span> 
-                                                </label>
+                                        Ativar promoção?
+                                        <input type="checkbox" (click)="toggleInfoGeral()" [checked]="activeInfoGeral">
+                                        <span class="lever"></span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +53,9 @@
                         <div class="form-row">
                             <div class="col-11">
                                 <div class="md-form md-outline">
-                                    <input id="name" type="text" length="30" placeholder="Ex: Promoção de Natal Samsung" class="form-control" formControlName="name" mdbCharCounter mdbInput [ngClass]="{ 'is-invalid': submitted && igF.name.errors }" />
+                                    <input id="name" type="text" length="30" placeholder="Ex: Promoção de Natal Samsung"
+                                        class="form-control" formControlName="name" mdbCharCounter mdbInput
+                                        [ngClass]="{ 'is-invalid': submitted && igF.name.errors }" />
                                     <div *ngIf="submitted && igF.name.errors" class="invalid-feedback">
                                         <div *ngIf="igF.name.errors.required">Nome é obrigatório</div>
                                     </div>
@@ -57,7 +67,9 @@
                         <div class="form-row">
                             <div class="col-11">
                                 <div class="md-form md-outline">
-                                    <textarea rows="3" formControlName="description" id="description" length="144" placeholder="Ex: Promoção solicitada via e-mail pelo gerente João no dia 20 de janeiro de 2020." class="form-control md-textarea" mdbCharCounter mdbInput></textarea>
+                                    <textarea rows="3" formControlName="description" id="description" length="144"
+                                        placeholder="Ex: Promoção solicitada via e-mail pelo gerente João no dia 20 de janeiro de 2020."
+                                        class="form-control md-textarea" mdbCharCounter mdbInput></textarea>
                                     <label for="description">Descrição (opcional)</label>
                                 </div>
                             </div>
@@ -66,7 +78,9 @@
                         <div class="form-row">
                             <div class="col-11">
                                 <div class="md-form md-outline">
-                                    <input id="coupon" type="text" formControlName="tag" length="40" placeholder="Ex: Desconto Primeira Compra" class="form-control" mdbCharCounter mdbInput [ngClass]="{ 'is-invalid': submitted && igF.tag.errors }" />
+                                    <input id="coupon" type="text" formControlName="tag" length="40"
+                                        placeholder="Ex: Desconto Primeira Compra" class="form-control" mdbCharCounter
+                                        mdbInput [ngClass]="{ 'is-invalid': submitted && igF.tag.errors }" />
                                     <div *ngIf="submitted && igF.tag.errors" class="invalid-feedback">
                                         <div *ngIf="igF.tag.errors.required">Selo é obrigatório</div>
                                     </div>
@@ -105,17 +119,20 @@
                                     <h5>Tipo de desconto</h5>
 
                                     <div class="form-check form-check-inline mt-1">
-                                        <input type="radio" class="form-check-input" id="discountType" value="PERCENTAGE" formControlName="discountType" name="discountType">
+                                        <input type="radio" class="form-check-input" id="discountType"
+                                            value="PERCENTAGE" formControlName="discountType" name="discountType">
                                         <label class="form-check-label" for="discountType">Porcentagem</label>
                                     </div>
 
                                     <div class="form-check form-check-inline mt-1">
-                                        <input type="radio" class="form-check-input" id="discountType3" value="DISCOUNT_FIXED" formControlName="discountType" name="discountType">
+                                        <input type="radio" class="form-check-input" id="discountType3"
+                                            value="DISCOUNT_FIXED" formControlName="discountType" name="discountType">
                                         <label class="form-check-label" for="discountType3">Desconto fixo</label>
                                     </div>
 
                                     <div class="form-check form-check-inline mt-1">
-                                        <input type="radio" class="form-check-input" id="discountType2" value="FIXED_PRICE" formControlName="discountType" name="discountType">
+                                        <input type="radio" class="form-check-input" id="discountType2"
+                                            value="FIXED_PRICE" formControlName="discountType" name="discountType">
                                         <label class="form-check-label" for="discountType2">Preço fixo</label>
                                     </div>
 
@@ -126,12 +143,16 @@
                         <div class="form-row">
                             <div class="col-7">
                                 <div class="md-form md-outline" *ngIf="dF.discountType.value == 'DISCOUNT_FIXED'">
-                                    <input id="discountValue" formControlName="discountValue" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" placeholder="1.000,00" type="text" class="form-control" mdbCharCounter mdbInput [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }"
-                                    />
+                                    <input id="discountValue" formControlName="discountValue" currencyMask
+                                        [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+                                        placeholder="1.000,00" type="text" class="form-control" mdbCharCounter mdbInput
+                                        [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }" />
                                 </div>
                                 <div class="md-form md-outline" *ngIf="dF.discountType.value == 'PERCENTAGE'">
-                                    <input currencyMask [options]="{ suffix: ' %', precision: 1}" id="discountValue" formControlName="discountValue" type="text" maxlength="6" placeholder="1-99%" class="form-control" mdbInput [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }"
-                                    />
+                                    <input currencyMask [options]="{ suffix: ' %', precision: 1}" id="discountValue"
+                                        formControlName="discountValue" type="text" maxlength="6" placeholder="1-99%"
+                                        class="form-control" mdbInput
+                                        [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }" />
                                     <div *ngIf="submitted && dF.discountValue.errors" class="invalid-feedback">
                                         <div *ngIf="dF.discountValue.errors.required">Valor é obrigatório</div>
                                         <div *ngIf="dF.discountValue.errors.pattern">Somente números</div>
@@ -168,9 +189,9 @@
                             <div class="col-2">
                                 <div class="switch">
                                     <label>
-                                            <input type="checkbox" (click)="togglePeriod()" [checked]="showPeriod" >
-                                            <span class="lever"></span> 
-                                            </label>
+                                        <input type="checkbox" (click)="togglePeriod()" [checked]="showPeriod">
+                                        <span class="lever"></span>
+                                    </label>
                                 </div>
                             </div>
 
@@ -179,7 +200,10 @@
                             <div class="form-row mt-2">
                                 <div class="col-7">
                                     <div class="md-form md-outline">
-                                        <input id="date_start" formControlName="startAt" mask="00/00/0000 00:00" type="text" maxlength="16" placeholder="DD/MM/AAAA HH:MM" class="form-control" mdbCharCounter mdbInput [ngClass]="{ 'is-invalid': submitted && pF.startAt.errors }" />
+                                        <input id="date_start" formControlName="startAt" mask="00/00/0000 00:00"
+                                            type="text" maxlength="16" placeholder="DD/MM/AAAA HH:MM"
+                                            class="form-control" mdbCharCounter mdbInput
+                                            [ngClass]="{ 'is-invalid': submitted && pF.startAt.errors }" />
                                         <div *ngIf="submitted && pF.startAt.errors" class="invalid-feedback">
                                             <div *ngIf="pF.startAt.errors.required">Início é obrigatório</div>
                                         </div>
@@ -191,7 +215,10 @@
                             <div class="form-row" *ngIf="showEndAt">
                                 <div class="col-7">
                                     <div class="md-form md-outline">
-                                        <input id="date_end" formControlName="endAt" mask="00/00/0000 00:00" type="text" maxlength="16" placeholder="DD/MM/AAAA HH:MM" class="form-control" mdbCharCounter mdbInput [ngClass]="{ 'is-invalid': submitted && pF.endAt.errors }" />
+                                        <input id="date_end" formControlName="endAt" mask="00/00/0000 00:00" type="text"
+                                            maxlength="16" placeholder="DD/MM/AAAA HH:MM" class="form-control"
+                                            mdbCharCounter mdbInput
+                                            [ngClass]="{ 'is-invalid': submitted && pF.endAt.errors }" />
                                         <div *ngIf="submitted && pF.endAt.errors" class="invalid-feedback">
                                             <div *ngIf="pF.endAt.errors.required">Término é obrigatório</div>
                                         </div>
@@ -203,8 +230,10 @@
                             <div class="form-row">
                                 <div class="col-7">
                                     <div class="md-form md-outline">
-                                        <mdb-checkbox *ngIf="showEndAt" (click)="endAtNull()" [checked]="false">Sem término</mdb-checkbox>
-                                        <mdb-checkbox *ngIf="!showEndAt" (click)="endAtNull()" [checked]="true">Sem término</mdb-checkbox>
+                                        <mdb-checkbox *ngIf="showEndAt" (click)="endAtNull()" [checked]="false">Sem
+                                            término</mdb-checkbox>
+                                        <mdb-checkbox *ngIf="!showEndAt" (click)="endAtNull()" [checked]="true">Sem
+                                            término</mdb-checkbox>
                                     </div>
                                 </div>
                             </div>
@@ -222,13 +251,18 @@
 
         <div class="row">
             <div *ngIf="routeId" class="col-6 offset-3 text-right">
-                <button type="button" outline="true" (click)="onCancel()" mdbBtn color="danger" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Cancelar</button>
-                <button (click)="onlySave=true;onSubmit();" type="submit" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Salvar</button>
-                <button type="submit" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Ir para próximo passo</button>
+                <button type="button" outline="true" (click)="onCancel()" mdbBtn color="danger" mdbWavesEffect
+                    class="z-depth-0 my-4 waves-effect">Cancelar</button>
+                <button (click)="onlySave=true;onSubmit();" type="submit" mdbBtn color="success" mdbWavesEffect
+                    class="z-depth-0 my-4 ml-3 waves-effect">Salvar</button>
+                <button type="submit" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect
+                    class="z-depth-0 my-4 ml-3 waves-effect">Ir para próximo passo</button>
             </div>
             <div *ngIf="!routeId" class="col-5 offset-4 text-right">
-                <button type="button" outline="true" (click)="onCancel()" mdbBtn color="danger" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Cancelar</button>
-                <button type="submit" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Ir para próximo passo</button>
+                <button type="button" outline="true" (click)="onCancel()" mdbBtn color="danger" mdbWavesEffect
+                    class="z-depth-0 my-4 waves-effect">Cancelar</button>
+                <button type="submit" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect
+                    class="z-depth-0 my-4 ml-3 waves-effect">Ir para próximo passo</button>
             </div>
         </div>
     </form>

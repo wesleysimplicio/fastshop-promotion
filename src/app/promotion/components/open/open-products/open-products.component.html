@@ -1,6 +1,6 @@
-<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+<!-- <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb> -->
 
-<div class="row animated fadeIn">
+<div class="row animated fadeIn mt-3">
     <div class="col-6" *ngIf="promotion">
         <h1>Produtos do cupom {{nameCoupon}} {{promotion.name}}</h1>
     </div>
@@ -52,6 +52,6 @@
 
 <div class="row animated fadeIn">
     <div class="col-5 offset-7 text-right">
-        <a routerLink="/promotion/open" outline="true" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Voltar</a>
+        <a routerLink="/promotion/open" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Ir para painel</a>
     </div>
 </div>
