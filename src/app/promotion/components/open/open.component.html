@@ -7,7 +7,7 @@
     <div class="col-4 mb-2">
         <div class="form-group">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Pesquise por nome, data, etc…" aria-label="Pesquise por nome, data, etc…" aria-describedby="button-addon2">
+                <input type="text" class="form-control" (keyup)="updateFilter($event)" placeholder="Pesquise por nome da promoção" aria-label="Pesquise por nome, data, etc…" aria-describedby="button-addon2">
                 <div class="input-group-append">
                     <button mdbBtn color="primary" outline="true" size="md" class="m-0 px-3 py-2" type="button" id="button-addon2" mdbWavesEffect>
                         <i class="fas fa-search"></i>    
@@ -24,7 +24,7 @@
 
 <div class="row animated fadeIn">
     <div class="col-md-12">
-        <ngx-datatable style="width: 100%; min-height: 280px;" class="material" [rows]="rows" [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="10">
+        <ngx-datatable #table style="width: 100%; min-height: 280px;" class="material" [rows]="rows" [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="10">
             <ngx-datatable-column name="Hierarquia" prop="hierarchy" [width]="30">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     <div class="text-center">

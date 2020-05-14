@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ColumnMode, SelectionType, DatatableComponent } from '@swimlane/ngx-datatable';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { ToastrService } from 'ngx-toastr';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
@@ -15,10 +15,11 @@ export class OpenComponent implements OnInit {
 
   rows = [];
   selected = [];
-
+  temp: [];
   ColumnMode = ColumnMode;
   SelectionType = SelectionType;
   breadcrumbs = new Array<IBreadcrumb>();
+  @ViewChild(DatatableComponent, { static: true }) table: DatatableComponent;
 
   constructor(
     private promotionService: PromotionService,
@@ -44,6 +45,7 @@ export class OpenComponent implements OnInit {
     this.promotionService.getPromotion().subscribe(
       (res) => {
         this.rows = res.body;
+        this.temp = res.body;
       },
       (err: any) => {
         err.error.messages.forEach(element => {
@@ -66,6 +68,19 @@ export class OpenComponent implements OnInit {
         });
       }
     );
+  }
+
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+    // filter our data
+    const temp = this.temp.filter(function (d:any) {
+      return d.name.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+
+    // update the rows
+    this.rows = temp;
+
+    this.table.offset = 0;
   }
 
 }
