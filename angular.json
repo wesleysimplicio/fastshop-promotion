@@ -80,6 +80,15 @@
                     "configurations": {
                         "production": {
                             "browserTarget": "FastShopPromotion:build:production"
+                        },
+                        "develop": {
+                            "browserTarget": "FastShopPromotion:build:develop"
+                        },
+                        "local": {
+                            "browserTarget": "FastShopPromotion:build:local"
+                        },
+                        "qa": {
+                            "browserTarget": "FastShopPromotion:build:qa"
                         }
                     }
                 },
@@ -128,6 +137,12 @@
                     "configurations": {
                         "production": {
                             "devServerTarget": "FastShopPromotion:serve:production"
+                        },
+                        "develop": {
+                            "devServerTarget": "FastShopPromotion:serve:develop"
+                        },
+                        "local": {
+                            "devServerTarget": "FastShopPromotion:serve:local"
                         }
                     }
                 }
