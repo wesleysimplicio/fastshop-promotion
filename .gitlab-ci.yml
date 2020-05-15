@@ -1,0 +1,178 @@
+# Corp: Fast Shop S. A.
+# Maintener: Ricardo Peroto - tjoserp@estabilis.com
+# Maintener: Daniel Gines - daniel@estabilis.com
+# Organização: Estabilis
+
+variables:
+  FORCE_COLOR: "1" # para ficar bonito no terminal \o/
+  ENVIRONMENT: $CI_COMMIT_REF_NAME # Controlará os ambientes
+
+stages:
+  - angular-build
+  - sonarqube
+  - docker-build
+  - release
+  - deployment
+  - deployment-qa
+
+angular-inspection:
+  stage: angular-build
+  image: node:10
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    when: always
+    paths:
+      - dist/
+  cache:
+    key: $CI_COMMIT_SHA
+    paths:
+      - dist/
+      - node_modules/
+  services:
+      - name: docker:dind
+  before_script:
+    - npm install --silent
+    - npm i -g @angular-devkit/build-angular@0.800.6
+    - npm i -g @angular/cli@8.0.6
+    - ng version
+  script:
+     - ng build --configuration=local --aot --build-optimizer 
+  tags:
+    - gitlab-runner-docker01
+  only:
+    - /feature\/.*/
+    - /fix\/.*/
+    - /hotfix\/.*/
+    - merge_requests
+
+angular-build:
+  stage: angular-build
+  image: node:10
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    when: always
+    paths:
+      - dist/
+  cache:
+    key: $CI_COMMIT_SHA
+    paths:
+      - dist/
+  services:
+      - name: docker:dind
+  before_script:
+    - npm install --silent
+    - npm i -g @angular-devkit/build-angular@0.800.6
+    - npm i -g @angular/cli@8.0.6
+    - ng version 
+  script:
+     - if [[ $ENVIRONMENT =~ ^qa.* ]]; then ENVIRONMENT=qa; fi; 
+     - ng build --configuration=$ENVIRONMENT --aot --build-optimizer  
+  tags:
+    - gitlab-runner-docker01
+  only:
+    - develop
+    - master
+    - staging
+    - /qa\/.*/ 
+
+docker-build:
+  stage: docker-build
+  services:
+    - name: docker:dind
+  dependencies:
+    -  angular-build
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    when: always
+    paths:
+      - dist/
+  cache:
+    key: $CI_COMMIT_SHA
+    paths:
+      - dist/
+      - node_modules/
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - ls -alh ./http/ || true
+    - docker build -f Dockerfile --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA --tag $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+  tags:
+    - gitlab-runner-docker01
+  only:
+    - develop
+    - qa
+    - master
+    - staging
+    - /qa\/.*/
+
+release:
+  stage: release
+  before_script: 
+    - >
+     (if [[ $CI_COMMIT_REF_NAME == "develop" ]] || [[ $CI_COMMIT_REF_NAME =~ ^qa.* ]];
+     then aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_DEV;
+     aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_DEV;
+     else aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_MASTER;
+     aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_MASTER;
+     fi)
+    - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker pull $CI_REGISTRY_IMAGE:latest
+    - if [[ $ENVIRONMENT =~ ^qa.* ]]; then ENVIRONMENT=qa; fi; 
+    - >
+     (if [[ $CI_COMMIT_REF_NAME == "develop" ]] || [[ $CI_COMMIT_REF_NAME =~ ^qa.* ]];
+     then docker tag $CI_REGISTRY_IMAGE:latest $AWS_REGISTRY_IMAGE_DEV/$CI_PROJECT_NAME-$ENVIRONMENT:latest;
+     docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $AWS_REGISTRY_IMAGE_DEV/$CI_PROJECT_NAME-$ENVIRONMENT:$CI_COMMIT_SHORT_SHA;
+     docker push $AWS_REGISTRY_IMAGE_DEV/$CI_PROJECT_NAME-$ENVIRONMENT:$CI_COMMIT_SHORT_SHA;
+     docker push $AWS_REGISTRY_IMAGE_DEV/$CI_PROJECT_NAME-$ENVIRONMENT:latest;
+     else docker tag $CI_REGISTRY_IMAGE:latest $AWS_REGISTRY_IMAGE_MASTER/$CI_PROJECT_NAME-$ENVIRONMENT:latest;
+     docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $AWS_REGISTRY_IMAGE_MASTER/$CI_PROJECT_NAME-$ENVIRONMENT:$CI_COMMIT_SHORT_SHA;
+     docker push $AWS_REGISTRY_IMAGE_MASTER/$CI_PROJECT_NAME-$ENVIRONMENT:$CI_COMMIT_SHORT_SHA;
+     docker push $AWS_REGISTRY_IMAGE_MASTER/$CI_PROJECT_NAME-$ENVIRONMENT:latest;
+     fi)
+  tags:
+    - gitlab-runner-shell01
+  only:
+    - master
+    - staging
+    - develop
+    - /qa\/.*/
+
+deployment:
+  stage: deployment
+  dependencies:
+    - release
+  image: fabfuel/ecs-deploy:latest
+  script:
+    - >
+      (if [[ $CI_COMMIT_REF_NAME == "develop" ]]; 
+      then ecs deploy $AWS_CLUSTER_NAME-$ENVIRONMENT $CI_PROJECT_NAME-$ENVIRONMENT --region $AWS_DEFAULT_REGION --access-key-id $AWS_ACCESS_KEY_ID_DEV --secret-access-key $AWS_SECRET_ACCESS_KEY_DEV --timeout=1800;
+      else ecs deploy $AWS_CLUSTER_NAME-$ENVIRONMENT $CI_PROJECT_NAME-$ENVIRONMENT --region $AWS_DEFAULT_REGION --access-key-id $AWS_ACCESS_KEY_ID_MASTER --secret-access-key $AWS_SECRET_ACCESS_KEY_MASTER --timeout=1800; 
+      fi)
+  tags:
+    - gitlab-runner-docker01
+  only:
+    - master
+    - staging
+    - develop
+
+deployment-qa:
+  stage: deployment-qa
+  dependencies:
+    - release
+  image: fabfuel/ecs-deploy:latest
+  script:
+    - ENVIRONMENT=qa; 
+    - ecs deploy $AWS_CLUSTER_NAME-$ENVIRONMENT $CI_PROJECT_NAME-$ENVIRONMENT --region $AWS_DEFAULT_REGION --access-key-id $AWS_ACCESS_KEY_ID_DEV --secret-access-key $AWS_SECRET_ACCESS_KEY_DEV --timeout=1800;
+  tags:
+    - gitlab-runner-docker01
+  only:
+    - /qa\/.*/
+  environment:
+    name: qa
+  when: manual
+
