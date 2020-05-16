@@ -28,10 +28,10 @@ export class UtilValidation {
 
     dateStartEndValidation(startAt, endAt, showEndAt) {
 
-        if (startAt && moment(startAt, 'DDMMYYYYHHmm').toDate() < moment().toDate()) {
-            this.toastrService.warning('Data de Início não pode ser menor que data atual');
-            return false;
-        }
+        // if (startAt && moment(startAt, 'DDMMYYYYHHmm').toDate() < moment().toDate()) {
+        //     this.toastrService.warning('Data de Início não pode ser menor que data atual');
+        //     return false;
+        // }
 
         if (showEndAt) {
 
