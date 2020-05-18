@@ -143,6 +143,9 @@
                         },
                         "local": {
                             "devServerTarget": "FastShopPromotion:serve:local"
+                        },
+                        "qa": {
+                            "devServerTarget": "FastShopPromotion:serve:qa"
                         }
                     }
                 }
