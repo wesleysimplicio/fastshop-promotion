@@ -217,7 +217,6 @@ export class FormOpenComponent implements OnInit {
     this.promotion.discountType = this.definitionForm.get('discountType').value;
     this.promotion.discountValue = this.definitionForm.get('discountValue').value;
     this.promotion.updatedBy = 'form@promotion'; // TODO: REMOVER
-    this.promotion.campaign = null; // TODO: REMOVER
 
     if (this.routeId) {
       this.promotion.id = this.routeId;
