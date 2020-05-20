@@ -91,7 +91,7 @@ export class FormOpenRestrictionsComponent implements OnInit {
     this.campaignForm = this.formBuilder.group({
       campaign: [this.promotion.campaign, Validators.required],
       partner: [this.promotion.partner, Validators.required],
-      campaignChannel: [this.promotion.campaignChannel, Validators.required],
+      // campaignChannel: [this.promotion.campaignChannel, Validators.required],
     });
   }
 
@@ -123,17 +123,17 @@ export class FormOpenRestrictionsComponent implements OnInit {
       this.showCampaign = true;
       this.campaignForm.get('campaign').setValidators(Validators.required);
       this.campaignForm.get('partner').setValidators(Validators.required);
-      this.campaignForm.get('campaignChannel').setValidators(Validators.required);
+      // this.campaignForm.get('campaignChannel').setValidators(Validators.required);
     } else {
       this.showCampaign = false;
       this.campaignForm.get('campaign').clearValidators();
       this.campaignForm.get('partner').clearValidators();
-      this.campaignForm.get('campaignChannel').clearValidators();
+      // this.campaignForm.get('campaignChannel').clearValidators();
 
     }
     this.campaignForm.get('campaign').setValue('');
     this.campaignForm.get('partner').setValue('');
-    this.campaignForm.get('campaignChannel').setValue('');
+    // this.campaignForm.get('campaignChannel').setValue('');
     this.campaignForm.updateValueAndValidity();
     this.campaignForm.markAsDirty();
   }
@@ -164,7 +164,7 @@ export class FormOpenRestrictionsComponent implements OnInit {
       }
 
       this.promotion.campaign = this.campaignForm.get('campaign').value;
-      this.promotion.campaignChannel = this.campaignForm.get('campaignChannel').value;
+      // this.promotion.campaignChannel = this.campaignForm.get('campaignChannel').value;
       this.promotion.partner = this.campaignForm.get('partner').value;
 
       this.promotion.id = this.routeId;
