@@ -11,6 +11,7 @@ stages:
   - angular-build
   - deployment
   - deployment-qa
+  - deployment-prod
 
 angular-inspection:
   stage: angular-build
@@ -84,7 +85,6 @@ deployment-dev:
     - gitlab-runner-shell01
   only:
     - develop
-    - /feature\/.*/
 
 deployment-qa:
   stage: deployment-qa
@@ -100,5 +100,23 @@ deployment-qa:
   environment:
     name: qa
   when: manual
+  
+deployment:
+  stage: deployment-prod
+  image: ubuntu:latest
+  before_script:
+    - apt-get update && apt install curl -y && apt install zip -y
+    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    - unzip awscliv2.zip
+    - ./aws/install
+    - aws --version
+    - aws configure set aws_access_key_id $ID_MASTER;
+    - aws configure set aws_secret_access_key $SECRET_MASTER;
+  script:
+    -  aws s3 cp dist/ s3://payment-term.fastshop.com.br --recursive
+  tags:
+    - gitlab-runner-docker01
+  only:
+    - master
 
 
