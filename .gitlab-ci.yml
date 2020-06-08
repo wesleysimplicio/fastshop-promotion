@@ -113,7 +113,7 @@ deployment:
     - aws configure set aws_access_key_id $ID_MASTER;
     - aws configure set aws_secret_access_key $SECRET_MASTER;
   script:
-    -  aws s3 cp dist/ s3://payment-term.fastshop.com.br --recursive
+    - aws s3 cp dist/ s3://promotion-management.fastshop.com.br --recursive
   tags:
     - gitlab-runner-docker01
   only:
