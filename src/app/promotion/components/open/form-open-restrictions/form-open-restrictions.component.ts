@@ -17,6 +17,7 @@ export class FormOpenRestrictionsComponent implements OnInit {
 
   breadcrumbs = [];
   routeId: any;
+  search = '';
   isEditStep = false;
   onlySave: boolean;
   showPayment = false;
@@ -40,6 +41,8 @@ export class FormOpenRestrictionsComponent implements OnInit {
   ) {
     this.promotion = new Promotion();
     this.routeId = this.route.snapshot.params.id;
+    this.search = this.route.snapshot.params.search || '';
+
     this.breadcrumbs.push(
       {
         url: '/promotion',
@@ -175,9 +178,9 @@ export class FormOpenRestrictionsComponent implements OnInit {
       this.promotionService.addUpdatePromotion(this.promotion).subscribe(
         (res) => {
           if (this.onlySave) {
-            this.router.navigate(['/promotion/open']);
+            this.router.navigate(['/promotion/open/' + this.search]);
           } else {
-            this.router.navigate(['/promotion/open/form/stocks/' + res.body.id]);
+            this.router.navigate(['/promotion/open/form/stocks/' + res.body.id + '/' + this.search]);
           }
           this.toastrService.success('Salvo com sucesso');
         },
@@ -189,18 +192,18 @@ export class FormOpenRestrictionsComponent implements OnInit {
         }
       );
     } else {
-      this.router.navigate(['/promotion/open/form/stocks/' + this.routeId]);
+      this.router.navigate(['/promotion/open/form/stocks/' + this.routeId + '/' + this.search]);
     }
 
   }
 
   onCancel() {
     this.submitted = false;
-    this.router.navigate(['/promotion/open']);
+    this.router.navigate(['/promotion/open' + '/' + this.search]);
   }
 
   onBack() {
-    this.router.navigate(['/promotion/open/edit/' + this.routeId]);
+    this.router.navigate(['/promotion/open/edit/' + this.routeId + '/' + this.search]);
   }
 
   selection(event) {

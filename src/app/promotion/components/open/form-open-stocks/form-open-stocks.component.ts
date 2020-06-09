@@ -21,6 +21,7 @@ export class FormOpenStocksComponent implements OnInit {
 
   breadcrumbs = [];
   routeId: any;
+  search = '';
   isEditStep = false;
   onlySave: boolean;
   selectedsVS = []; selectedsST = []; selectedsBG = []; selectedsSTG = [];
@@ -55,6 +56,8 @@ export class FormOpenStocksComponent implements OnInit {
     this.getBranchGroup();
     this.getGroupSalesTable();
     this.routeId = this.route.snapshot.params.id;
+    this.search = this.route.snapshot.params.search || '';
+
     this.breadcrumbs.push(
       {
         url: '/promotion',
@@ -180,9 +183,9 @@ export class FormOpenStocksComponent implements OnInit {
     this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {
         if (this.onlySave) {
-          this.router.navigate(['/promotion/open']);
+          this.router.navigate(['/promotion/open/' + this.search]);
         } else {
-          this.router.navigate(['/promotion/open/form/products/' + res.body.id]);
+          this.router.navigate(['/promotion/open/form/products/' + res.body.id + '/' + this.search]);
         }
         this.toastrService.success('Salvo com sucesso');
       },
@@ -271,7 +274,7 @@ export class FormOpenStocksComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['/promotion/open/form/restrictions/' + this.routeId]);
+    this.router.navigate(['/promotion/open/form/restrictions/' + this.routeId + '/' + this.search]);
   }
 
   removeSelection(index, option) {

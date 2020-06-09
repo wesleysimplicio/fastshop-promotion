@@ -8,7 +8,7 @@
 
 <div class="row animated fadeIn">
     <div class="col-12">
-        <ngx-datatable style="width: 100%" class="material" [rows]="rows" [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="10" [selected]="selected" [selectionType]="SelectionType.checkbox" [selectAllRowsOnPage]="false"
+        <ngx-datatable style="width: 100%" class="material" [rows]="rows" [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="100" [selected]="selected" [selectionType]="SelectionType.checkbox" [selectAllRowsOnPage]="false"
             [displayCheck]="displayCheck" (activate)="onActivate($event)" (select)="onSelect($event)">
             <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
             </ngx-datatable-column>
@@ -52,6 +52,6 @@
 
 <div class="row animated fadeIn">
     <div class="col-5 offset-7 text-right">
-        <a routerLink="/promotion/open" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Ir para painel</a>
+        <a routerLink="/promotion/open/{{search}}" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 waves-effect">Ir para painel</a>
     </div>
 </div>

@@ -17,6 +17,7 @@ export class OpenProductsComponent implements OnInit {
 
   nameCoupon: string;
   routeId: any;
+  search = '';
   rows = new Array<Product>();
   selected = [];
   productsForm: FormGroup;
@@ -34,7 +35,7 @@ export class OpenProductsComponent implements OnInit {
     private formBuilder: FormBuilder,
   ) {
     this.routeId = this.route.snapshot.params.id;
-
+    this.search = this.route.snapshot.params.search || '';
     this.breadcrumbs.push(
       {
         url: '/promotion',

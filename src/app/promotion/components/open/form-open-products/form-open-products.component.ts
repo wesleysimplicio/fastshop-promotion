@@ -18,6 +18,7 @@ export class FormOpenProductsComponent implements OnInit {
   productForm: FormGroup;
   submitted = false;
   routeId: any;
+  search = '';
   breadcrumbs = new Array<IBreadcrumb>();
   showResponse = false;
   responseProducts: ResponseProducts;
@@ -35,6 +36,8 @@ export class FormOpenProductsComponent implements OnInit {
     private promotionService: PromotionService
   ) {
     this.routeId = this.route.snapshot.params.id;
+    this.search = this.route.snapshot.params.search || '';
+
     this.breadcrumbs.push(
       {
         url: '/promotion',
@@ -140,16 +143,16 @@ export class FormOpenProductsComponent implements OnInit {
   onBack() {
     this.submitted = false;
     this.productForm.reset();
-    this.router.navigate(['/promotion/open/form/stocks/' + this.routeId]);
+    this.router.navigate(['/promotion/open/form/stocks/' + this.routeId + '/' + this.search]);
   }
 
   onCancel() {
     this.submitted = false;
-    this.router.navigate(['/promotion/open']);
+    this.router.navigate(['/promotion/open/' + this.search]);
   }
 
   onProducts() {
-    this.router.navigate(['/promotion/open/products/' + this.routeId]);
+    this.router.navigate(['/promotion/open/products/' + this.routeId + '/' + this.search]);
   }
 
 }

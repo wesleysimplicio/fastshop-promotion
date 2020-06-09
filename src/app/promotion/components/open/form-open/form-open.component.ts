@@ -22,11 +22,12 @@ import { Street } from 'src/app/shared/model/price/street.model';
 })
 export class FormOpenComponent implements OnInit {
 
-  showPeriod = true;
+  showPeriod = false;
   infoGeralForm: FormGroup;
   periodForm: FormGroup;
   definitionForm: FormGroup;
   routeId: any;
+  search = '';
   promotion: Promotion;
   submitted = false;
   activeInfoGeral: boolean;
@@ -64,6 +65,8 @@ export class FormOpenComponent implements OnInit {
 
   ngOnInit() {
     this.routeId = this.route.snapshot.params.id;
+    this.search = this.route.snapshot.params.search || '';
+
     if (this.routeId) {
       this.promotionService.getPromotion(this.routeId).subscribe(
         (res) => {
@@ -78,6 +81,9 @@ export class FormOpenComponent implements OnInit {
           this.periodForm.get('startAt').setValue(
             moment(this.promotion.startAt, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm')
           );
+          if (this.promotion.startAt) {
+            this.showPeriod = true;
+          }
           if (this.promotion.endAt) {
             this.periodForm.get('endAt').setValue(
               moment(this.promotion.endAt, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm')
@@ -225,9 +231,9 @@ export class FormOpenComponent implements OnInit {
     this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {
         if (this.onlySave) {
-          this.router.navigate(['/promotion/open']);
+          this.router.navigate(['/promotion/open/' + this.search]);
         } else {
-          this.router.navigate(['/promotion/open/form/restrictions/' + res.body.id]);
+          this.router.navigate(['/promotion/open/form/restrictions/' + res.body.id + '/' + this.search]);
         }
         this.toastrService.success('Salvo com sucesso');
       },
@@ -261,7 +267,7 @@ export class FormOpenComponent implements OnInit {
     this.infoGeralForm.reset();
     this.periodForm.reset();
     this.definitionForm.reset();
-    this.router.navigate(['/promotion/open']);
+    this.router.navigate(['/promotion/open/' + this.search]);
   }
 
 }

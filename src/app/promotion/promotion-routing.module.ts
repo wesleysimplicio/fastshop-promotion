@@ -18,13 +18,26 @@ const routes: Routes = [
     { path: 'promotion/coupons/add', component: FormCouponsComponent },
     { path: 'promotion/coupons/edit/:id', component: FormCouponsComponent },
     { path: 'promotion/coupons/view/:id', component: FormCouponsComponent },
-    { path: 'promotion/open', component: OpenComponent },
     { path: 'promotion/open/add', component: FormOpenComponent },
+
+    { path: 'promotion/open', component: OpenComponent },
+    { path: 'promotion/open/:search', component: OpenComponent },
+    
     { path: 'promotion/open/edit/:id', component: FormOpenComponent },
+    { path: 'promotion/open/edit/:id/:search', component: FormOpenComponent },
+
     { path: 'promotion/open/form/restrictions/:id', component: FormOpenRestrictionsComponent },
+    { path: 'promotion/open/form/restrictions/:id/:search', component: FormOpenRestrictionsComponent },
+
     { path: 'promotion/open/form/stocks/:id', component: FormOpenStocksComponent },
+    { path: 'promotion/open/form/stocks/:id/:search', component: FormOpenStocksComponent },
+
     { path: 'promotion/open/form/products/:id', component: FormOpenProductsComponent },
+    { path: 'promotion/open/form/products/:id/:search', component: FormOpenProductsComponent },
+
+    { path: 'promotion/open/products/:id/:search', component: OpenProductsComponent },
     { path: 'promotion/open/products/:id', component: OpenProductsComponent },
+
 ];
 
 @NgModule({
