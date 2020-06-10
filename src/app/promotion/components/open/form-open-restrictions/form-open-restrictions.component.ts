@@ -134,8 +134,8 @@ export class FormOpenRestrictionsComponent implements OnInit {
       // this.campaignForm.get('campaignChannel').clearValidators();
 
     }
-    this.campaignForm.get('campaign').setValue('');
-    this.campaignForm.get('partner').setValue('');
+    this.campaignForm.get('campaign').setValue(null);
+    this.campaignForm.get('partner').setValue(null);
     // this.campaignForm.get('campaignChannel').setValue('');
     this.campaignForm.updateValueAndValidity();
     this.campaignForm.markAsDirty();
@@ -156,10 +156,12 @@ export class FormOpenRestrictionsComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    if (this.showPayment || this.showCampaign) {
+    // if (this.showPayment || this.showCampaign) {
 
       if (this.showPayment) {
         this.promotion.paymentTypes = this.selecteds;
+      }else{
+        this.promotion.paymentTypes = null;
       }
 
       if (this.showCampaign) {
@@ -191,10 +193,9 @@ export class FormOpenRestrictionsComponent implements OnInit {
           });
         }
       );
-    } else {
-      this.router.navigate(['/promotion/open/form/stocks/' + this.routeId + '/' + this.search]);
-    }
-
+    // } else {
+    //   this.router.navigate(['/promotion/open/form/stocks/' + this.routeId + '/' + this.search]);
+    // }
   }
 
   onCancel() {

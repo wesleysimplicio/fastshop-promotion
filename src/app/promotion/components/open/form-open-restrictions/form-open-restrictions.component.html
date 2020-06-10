@@ -4,7 +4,7 @@
 <!-- <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb> -->
 
 <div class="container animated fadeIn">
-    <form (ngSubmit)="onSubmit()" class="animated fadeIn">
+    <form class="animated fadeIn">
 
         <div class="row justify-content-md-center">
             <div class="col-6">
@@ -144,9 +144,9 @@
                 <button type="button" (click)="onBack()" outline="true" mdbBtn color="success" mdbWavesEffect
                     class="z-depth-0 my-4 waves-effect">Voltar</button>
 
-                <button *ngIf="showPayment" (click)="onlySave=true;onSubmit();" type="submit" mdbBtn color="success"
+                <button *ngIf="showPayment || showCampaign" (click)="onlySave=true;onSubmit();" type="button" mdbBtn color="success"
                     mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Salvar</button>
-                <button type="submit" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect
+                <button type="button" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect
                     class="z-depth-0 my-4 ml-3 waves-effect">Ir para próximo passo</button>
             </div>
         </div>

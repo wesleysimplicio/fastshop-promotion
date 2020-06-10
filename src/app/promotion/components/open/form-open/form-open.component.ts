@@ -129,8 +129,8 @@ export class FormOpenComponent implements OnInit {
       this.periodForm.get('startAt').clearValidators();
       this.periodForm.get('endAt').clearValidators();
     }
-    this.periodForm.get('startAt').setValue('');
-    this.periodForm.get('endAt').setValue('');
+    this.periodForm.get('startAt').setValue(null);
+    this.periodForm.get('endAt').setValue(null);
     this.periodForm.updateValueAndValidity();
     this.periodForm.markAsDirty();
     this.showEndAt = true;
@@ -144,7 +144,7 @@ export class FormOpenComponent implements OnInit {
       this.showEndAt = false;
       this.periodForm.get('endAt').clearValidators();
     }
-    this.periodForm.get('endAt').setValue('');
+    this.periodForm.get('endAt').setValue(null);
     this.periodForm.updateValueAndValidity();
     this.periodForm.markAsDirty();
   }
@@ -188,7 +188,7 @@ export class FormOpenComponent implements OnInit {
       this.definitionForm.get('discountValue').setValidators(Validators.required);
     }
 
-    this.definitionForm.get('discountValue').setValue('');
+    this.definitionForm.get('discountValue').setValue(null);
     this.periodForm.updateValueAndValidity();
     this.definitionForm.markAsDirty();
   }
