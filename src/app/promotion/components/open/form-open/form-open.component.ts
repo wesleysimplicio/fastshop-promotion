@@ -206,7 +206,8 @@ export class FormOpenComponent implements OnInit {
       !this.utilValidation.dateStartEndValidation(
         this.periodForm.get(`startAt`).value,
         this.periodForm.get(`endAt`).value,
-        this.showEndAt)
+        this.showEndAt,
+        this.isEditStep)
     ) {
       return;
     }
