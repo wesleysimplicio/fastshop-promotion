@@ -34,7 +34,7 @@ angular-inspection:
     - npm i -g @angular/cli@8.0.6
     - ng version
   script:
-     - ng build --configuration=$ENVIRONMENT --aot --build-optimizer
+     - ng build --configuration=local --aot --build-optimizer
   tags:
     - gitlab-runner-docker01
   only:
