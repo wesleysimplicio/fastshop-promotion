@@ -83,16 +83,20 @@ export class FormOpenComponent implements OnInit {
           );
           if (this.promotion.startAt) {
             this.showPeriod = true;
+            this.periodForm.get('startAt').setValidators(Validators.required);
           }
           if (this.promotion.endAt) {
             this.periodForm.get('endAt').setValue(
               moment(this.promotion.endAt, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm')
             );
-            this.periodForm.markAsDirty();
+            this.periodForm.get('endAt').setValidators(Validators.required);
           } else {
             this.showEndAt = true;
             this.endAtNull();
           }
+          this.periodForm.updateValueAndValidity();
+          this.periodForm.markAsDirty();
+
           this.activeInfoGeral = (this.promotion.status === StatusEnum.Active) ? true : false;
         },
         (err: any) => {
@@ -163,8 +167,8 @@ export class FormOpenComponent implements OnInit {
       tag: [this.promotion.tag, Validators.required]
     });
     this.periodForm = this.formBuilder.group({
-      startAt: [this.promotion.startAt, Validators.required],
-      endAt: [this.promotion.endAt, Validators.required],
+      startAt: [this.promotion.startAt],
+      endAt: [this.promotion.endAt],
     });
 
     this.definitionForm = this.formBuilder.group({
