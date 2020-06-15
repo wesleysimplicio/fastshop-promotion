@@ -17,12 +17,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
 
-    if (sessionStorage.getItem(`oidc.user:${environment.urlFastChannel}/:${environment.clientFastChannel}`)) {
-      this.service.completeAuthentication().then();
-      this.router.navigate(['/promotion']);
-    } else {
-      this.service.login();
-    }
+    // if (sessionStorage.getItem(`oidc.user:${environment.urlFastChannel}/:${environment.clientFastChannel}`)) {
+    //   this.service.completeAuthentication().then();
+    //   this.router.navigate(['/promotion']);
+    // } else {
+    //   this.service.login();
+    // }
 
   }
 

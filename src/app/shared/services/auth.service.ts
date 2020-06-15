@@ -16,8 +16,8 @@ export class AuthService {
 
   constructor(
   ) {
-    this.isAuthenticatedSubject = new BehaviorSubject<boolean>(
-      JSON.parse(sessionStorage.getItem(`oidc.user:${environment.urlFastChannel}/:${environment.clientFastChannel}`)));
+  //  this.isAuthenticatedSubject = new BehaviorSubject<boolean>(
+    //  JSON.parse(sessionStorage.getItem(`oidc.user:${environment.urlFastChannel}/:${environment.clientFastChannel}`)));
     this.isAuthenticatedListener = this.isAuthenticatedSubject.asObservable();
     this.manager.getUser().then(user => {
       this.user = user;
