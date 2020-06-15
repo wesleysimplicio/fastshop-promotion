@@ -20,7 +20,6 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { CurrencyMaskModule } from 'ngx-currency-mask';
 import { BreadcrumbComponent } from '../shared/components/breadcrumb/breadcrumb.component';
 import { PriceService } from '../shared/services/price.service';
-import { ShowAuthedDirective } from '../shared/directives/show-authed.directive';
 import { ModalSelectionComponent } from '../shared/components/modal/modal-selection/modal-selection.component';
 import { FormOpenRestrictionsComponent } from './components/open/form-open-restrictions/form-open-restrictions.component';
 import { FormOpenStocksComponent } from './components/open/form-open-stocks/form-open-stocks.component';
@@ -37,7 +36,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CouponsComponent,
     FormOpenProductsComponent,
     BreadcrumbComponent,
-    ShowAuthedDirective,
     FormOpenRestrictionsComponent,
     ModalSelectionComponent,
     FormOpenStocksComponent
