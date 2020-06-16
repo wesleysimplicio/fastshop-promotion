@@ -9,7 +9,7 @@
 
         <div class="row justify-content-md-center">
             <div class="col-6">
-                <img src="assets/img/step1.PNG" alt="">
+                <img src="assets/img/step1.png" alt="">
             </div>
         </div>
 
@@ -80,10 +80,11 @@
                                 <div class="md-form md-outline">
                                     <input id="coupon" type="text" formControlName="tag" length="40"
                                         placeholder="Ex: Desconto Primeira Compra" class="form-control" mdbCharCounter
-                                        mdbInput [ngClass]="{ 'is-invalid': submitted && igF.tag.errors }" />
-                                    <div *ngIf="submitted && igF.tag.errors" class="invalid-feedback">
+                                        mdbInput />
+                                    <!-- [ngClass]="{ 'is-invalid': submitted && igF.tag.errors }" />
+                                   <div *ngIf="submitted && igF.tag.errors" class="invalid-feedback">
                                         <div *ngIf="igF.tag.errors.required">Selo é obrigatório</div>
-                                    </div>
+                                    </div> -->
                                     <label for="coupon">Selo no carrinho do cliente</label>
                                 </div>
                             </div>
@@ -147,6 +148,10 @@
                                         [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
                                         placeholder="1.000,00" type="text" class="form-control" mdbCharCounter mdbInput
                                         [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }" />
+                                    <div *ngIf="submitted && dF.discountValue.errors" class="invalid-feedback">
+                                        <div *ngIf="dF.discountValue.errors.required">Valor é obrigatório</div>
+                                        <div *ngIf="dF.discountValue.errors.min">Valor minimo é de R$ 0.10</div>
+                                    </div>
                                 </div>
                                 <div class="md-form md-outline" *ngIf="dF.discountType.value == 'PERCENTAGE'">
                                     <input currencyMask [options]="{ suffix: ' %', precision: 1}" id="discountValue"

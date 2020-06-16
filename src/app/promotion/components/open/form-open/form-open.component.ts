@@ -164,7 +164,7 @@ export class FormOpenComponent implements OnInit {
       hierarchy: [this.promotion.hierarchy, Validators.required],
       status: [this.promotion.status],
       description: [this.promotion.description],
-      tag: [this.promotion.tag, Validators.required]
+      tag: [this.promotion.tag]
     });
     this.periodForm = this.formBuilder.group({
       startAt: [this.promotion.startAt],
@@ -189,10 +189,10 @@ export class FormOpenComponent implements OnInit {
     if (e === DiscountTypeEnum.Fixed_Price) {
       this.definitionForm.get('discountValue').clearValidators();
     } else {
-      this.definitionForm.get('discountValue').setValidators(Validators.required);
+      this.definitionForm.get('discountValue').setValidators([Validators.required, Validators.min(1)]);
     }
 
-    this.definitionForm.get('discountValue').setValue(null);
+    this.definitionForm.get('discountValue').setValue(0);
     this.periodForm.updateValueAndValidity();
     this.definitionForm.markAsDirty();
   }
