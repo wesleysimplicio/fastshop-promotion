@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
+  production: false,
   apiUrl: 'https://promotion-fast.herokuapp.com/promotion-management/api/',
   apiUrlPrice: 'https://price-management-qa.fastshopdev.com/price-management/api/',
   callBack: 'http://promotion-management-qa.fastshop.com.br/',

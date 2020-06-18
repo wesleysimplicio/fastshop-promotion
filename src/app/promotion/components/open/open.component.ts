@@ -7,6 +7,9 @@ import { StatusEnum } from '../../enum/status.enum';
 import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { UserService } from 'src/app/shared/model/user/user.service';
 
 @Component({
   selector: 'app-open',
@@ -29,8 +32,11 @@ export class OpenComponent implements OnInit {
     private promotionService: PromotionService,
     private toastrService: ToastrService,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
     private router: Router,
+    private formBuilder: FormBuilder,
+    public service: AuthService,
+    private loading: NgxSpinnerService,
+    private userService: UserService,
   ) {
     this.search = this.route.snapshot.params.search || '';
     this.buildForm();
@@ -48,6 +54,10 @@ export class OpenComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.service.completeAuthentication().then();
+    this.userService.notifyUserLoggedSubject();
+    this.userService.notifyAccessLevelSubject();
+    this.hasUserLogged();
     this.getPromotion();
   }
 
@@ -111,6 +121,13 @@ export class OpenComponent implements OnInit {
     this.rows = temp;
 
     this.table.offset = 0;
+  }
+
+  private hasUserLogged(): void {
+    const userLogged = this.userService.getUserLogged();
+    if (!userLogged) {
+      this.router.navigate(['/login']);
+    }
   }
 
 }

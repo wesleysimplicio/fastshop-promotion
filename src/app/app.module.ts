@@ -18,6 +18,8 @@ import { PromotionModule } from './promotion/promotion.module';
 import { JwtIntercerptorService } from './shared/services/jwt-intercerptor.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { UnauthorizedUserComponent } from './shared/components/unauthorized-user/unauthorized-user.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -39,6 +41,7 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     ErrorComponent,
     HomeComponent,
     LoginComponent,
+    UnauthorizedUserComponent
   ],
   imports: [
     PromotionModule,
@@ -46,6 +49,7 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     CommonModule,
     HttpClientModule,
     NgxSpinnerModule,
+    BrowserModule,
     MDBBootstrapModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 5000,
@@ -66,7 +70,7 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   ],
   bootstrap: [AppComponent],
   exports: [
-    NgxSpinnerModule,
+    NgxSpinnerModule
   ]
 })
 export class AppModule { }

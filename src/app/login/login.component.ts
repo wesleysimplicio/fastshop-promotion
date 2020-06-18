@@ -5,7 +5,6 @@ import { Passport } from '../shared/model/login/passport.model';
 import { PassportUserService } from '../shared/services/passport-user-service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
