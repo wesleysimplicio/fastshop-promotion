@@ -20,6 +20,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { UnauthorizedUserComponent } from './shared/components/unauthorized-user/unauthorized-user.component';
 import { BrowserModule } from '@angular/platform-browser';
+import { ShowAuthedDirective } from './shared/directives/show-authed.directive';
+import { AuthGuardService } from './shared/services/auth-guard.service';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -41,11 +43,12 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     ErrorComponent,
     HomeComponent,
     LoginComponent,
-    UnauthorizedUserComponent
+    UnauthorizedUserComponent,
+    ShowAuthedDirective 
   ],
   imports: [
-    PromotionModule,
     AppRoutingModule,
+    PromotionModule,
     CommonModule,
     HttpClientModule,
     NgxSpinnerModule,
@@ -66,7 +69,8 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
       useClass: JwtIntercerptorService,
       multi: true,
     },
-    CookieService
+    CookieService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent],
   exports: [

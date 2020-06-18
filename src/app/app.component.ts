@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.utilities.showLoadingSubject.subscribe(val => { this.load = val; });
+    // this.utilities.showLoadingSubject.subscribe(val => { this.load = val; });
     this.isLogged();
   }
 

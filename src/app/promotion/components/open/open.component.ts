@@ -54,10 +54,6 @@ export class OpenComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.service.completeAuthentication().then();
-    this.userService.notifyUserLoggedSubject();
-    this.userService.notifyAccessLevelSubject();
-    this.hasUserLogged();
     this.getPromotion();
   }
 
