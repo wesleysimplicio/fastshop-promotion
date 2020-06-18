@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { Passport } from '../shared/model/login/passport.model';
+import { PassportUserService } from '../shared/services/passport-user-service';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 
 @Component({
   selector: 'app-login',
@@ -10,30 +14,25 @@ import { environment } from 'src/environments/environment';
 export class LoginComponent implements OnInit {
 
   constructor(
+    private passportUserService: PassportUserService,
     private router: Router,
+    private loading: NgxSpinnerService
   ) { }
 
   ngOnInit() {
-
-    // if (sessionStorage.getItem(`oidc.user:${environment.urlFastChannel}/:${environment.clientFastChannel}`)) {
-    //   this.service.completeAuthentication().then();
-    //   this.router.navigate(['/promotion']);
-    // } else {
-    //   this.service.login();
-    // }
-
+    this.loading.show();
+    this.getPassport();
   }
 
-  // goToTagPrice() {
-  //   const token: any = JSON.parse(sessionStorage.getItem(`oidc.user:${environment.urlFastChannel}/:${environment.urlFastChannel}`));
+  private getPassport() {
+    const passport = this.passportUserService.get();
+    passport ? this.login(passport) : this.redirectToSSOLoginPage();
+  }
 
-  //   console.log(token.profile.preferred_username.substr(0, token.profile.preferred_username.indexOf('@')));
+  redirectToSSOLoginPage = () => (window.location.href = environment.login);
 
-  //   this.router.navigate(['/promotion']);
-  // }
-
-  // goToPSV() {
-  //   this.router.navigate(['precos-venda']);
-  // }
+  private login = (passport: Passport) => {
+    this.router.navigate(['/promotion']);
+  }
 
 }

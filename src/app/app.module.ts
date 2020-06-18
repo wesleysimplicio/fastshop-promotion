@@ -16,6 +16,9 @@ import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from 'ngx-currency-mask/src/
 import { LoginComponent } from './login/login.component';
 import { PromotionModule } from './promotion/promotion.module';
 import { JwtIntercerptorService } from './shared/services/jwt-intercerptor.service';
+import { CookieService } from 'ngx-cookie-service';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -42,6 +45,7 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     AppRoutingModule,
     CommonModule,
     HttpClientModule,
+    NgxSpinnerModule,
     MDBBootstrapModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 5000,
@@ -57,8 +61,12 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtIntercerptorService,
       multi: true,
-    }
+    },
+    CookieService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [
+    NgxSpinnerModule,
+  ]
 })
 export class AppModule { }
