@@ -22,6 +22,7 @@ import { UnauthorizedUserComponent } from './shared/components/unauthorized-user
 import { BrowserModule } from '@angular/platform-browser';
 import { ShowAuthedDirective } from './shared/directives/show-authed.directive';
 import { AuthGuardService } from './shared/services/auth-guard.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -48,17 +49,17 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   ],
   imports: [
     AppRoutingModule,
-    PromotionModule,
-    CommonModule,
-    HttpClientModule,
-    NgxSpinnerModule,
     BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    NgxSpinnerModule, 
     MDBBootstrapModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }), // ToastrModule added
+    PromotionModule,
   ],
   providers: [
     UtilitiesService,
@@ -69,12 +70,11 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
       useClass: JwtIntercerptorService,
       multi: true,
     },
-    CookieService,
-    AuthGuardService
+    CookieService
+  ], 
+  exports: [
+    NgxSpinnerModule,
   ],
   bootstrap: [AppComponent],
-  exports: [
-    NgxSpinnerModule
-  ]
 })
 export class AppModule { }

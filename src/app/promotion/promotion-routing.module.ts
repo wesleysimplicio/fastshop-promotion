@@ -11,7 +11,6 @@ import { OpenProductsComponent } from './components/open/open-products/open-prod
 import { FormOpenRestrictionsComponent } from './components/open/form-open-restrictions/form-open-restrictions.component';
 import { FormOpenStocksComponent } from './components/open/form-open-stocks/form-open-stocks.component';
 
-
 const routes: Routes = [
     { path: '', component: OpenComponent },
     { path: 'promotion/coupons', component: CouponsComponent },
@@ -37,7 +36,6 @@ const routes: Routes = [
 
     { path: 'promotion/open/products/:id/:search', component: OpenProductsComponent },
     { path: 'promotion/open/products/:id', component: OpenProductsComponent },
-
 ];
 
 @NgModule({

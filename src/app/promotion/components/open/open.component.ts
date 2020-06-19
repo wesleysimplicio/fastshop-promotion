@@ -34,9 +34,7 @@ export class OpenComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    public service: AuthService,
-    private loading: NgxSpinnerService,
-    private userService: UserService,
+    private userService : UserService
   ) {
     this.search = this.route.snapshot.params.search || '';
     this.buildForm();
@@ -54,8 +52,17 @@ export class OpenComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.hasUserLogged();
     this.getPromotion();
   }
+
+  private hasUserLogged(): void {
+    const userLogged = this.userService.getUserLogged();
+    if (!userLogged) {
+      this.router.navigate(['/login']);
+    }
+  }
+
 
   cleanData(): void {
     this.searchForm.reset();
@@ -119,12 +126,6 @@ export class OpenComponent implements OnInit {
     this.table.offset = 0;
   }
 
-  private hasUserLogged(): void {
-    const userLogged = this.userService.getUserLogged();
-    if (!userLogged) {
-      this.router.navigate(['/login']);
-    }
-  }
 
 }
 

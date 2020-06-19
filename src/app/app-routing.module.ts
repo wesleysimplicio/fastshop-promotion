@@ -27,7 +27,7 @@ const routes: Routes = [
     path: 'usuario-nao-autorizado',
     component: UnauthorizedUserComponent
   },
-  { path: '**', redirectTo: 'error/notfound' },
+  // { path: '**', redirectTo: 'error/notfound' },
   { path: 'error/:type', component: ErrorComponent },
 ];
 
