@@ -25,7 +25,7 @@ export class PromotionService {
                 map(res => {
                     return res;
                 }, err => {
-                    console.log(err);
+                    console.error(err);
                 }),
                 catchError(
                     (error) => throwError(error || 'Server error')
@@ -42,7 +42,7 @@ export class PromotionService {
                 map(res => {
                     return res;
                 }, err => {
-                    console.log(err);
+                    console.error(err);
                 }),
                 catchError(
                     (error) => throwError(error || 'Server error')
@@ -58,7 +58,7 @@ export class PromotionService {
                 map(res => {
                     return res;
                 }, err => {
-                    console.log(err);
+                    console.error(err);
                 }),
                 catchError(
                     (error) => throwError(error || 'Server error')
@@ -74,7 +74,7 @@ export class PromotionService {
                 map(res => {
                     return res;
                 }, err => {
-                    console.log(err);
+                    console.error(err);
                 }),
                 catchError(
                     (error) => throwError(error || 'Server error')
@@ -103,7 +103,7 @@ export class PromotionService {
             map(res => {
                 return res;
             }, err => {
-                console.log(err);
+                console.error(err);
             }),
             catchError(
                 (error) => throwError(error || 'Server error')

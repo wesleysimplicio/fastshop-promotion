@@ -1,0 +1,50 @@
+<app-steps [routeId]="routeId" [infoStep]="isValidForm('info')" [definitionStep]="isValidForm('definition')"
+    [periodStep]="isValidForm('period')" [productsStep]="isEditStep" [stockStep]="isEditStep"
+    [paymentStep]="isEditStep">
+</app-steps>
+
+<div class="container animated fadeIn">
+    <form class="animated fadeIn" *ngIf="promotion != null">
+
+        <div class="row justify-content-md-center">
+            <div class="col-md-6">
+                <img src="assets/img/step1.png" alt="">
+            </div>
+        </div>
+
+        <!-- INFOGERAL -->
+        <app-infogeral [promotion]='promotion' [submitted]="submitted" (getForm)="updateForm('info',$event)"
+            (getFormValid)="updateFormValid('info',$event)" [infoGeralForm]="infoGeralForm">
+        </app-infogeral>
+
+        <!-- /INFOGERAL -->
+
+        <!-- DEFINITION -->
+        <app-definition [promotion]='promotion' [submitted]="submitted" (getForm)="updateForm('definition',$event)"
+            (getFormValid)="updateFormValid('definition',$event)" [definitionForm]="definitionForm"></app-definition>
+        <!-- /DEFINITION -->
+
+        <!-- PERIOD -->
+        <app-period [promotion]='promotion' [submitted]="submitted" (getForm)="updateForm('period',$event)"
+            (getFormValid)="updateFormValid('period',$event)" (getShowPeriod)="showPeriod=$event" (getShowEndAt)="showEndAt=$event" [periodForm]="periodForm"></app-period>
+        <!-- /PERIOD -->
+
+        <div class="row">
+            <div *ngIf="routeId" class="col-6 offset-3 text-right">
+                <button type="button" outline="true" (click)="onCancel()" mdbBtn color="danger" mdbWavesEffect
+                    class="z-depth-0 my-4 waves-effect">Cancelar</button>
+                <button (click)="onlySave=true;onSubmit();" type="submit" mdbBtn color="success" mdbWavesEffect
+                    class="z-depth-0 my-4 ml-3 waves-effect">Salvar</button>
+                <button type="submit" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect
+                    class="z-depth-0 my-4 ml-3 waves-effect">Ir para próximo passo</button>
+            </div>
+            <div *ngIf="!routeId" class="col-5 offset-4 text-right">
+                <button type="button" outline="true" (click)="onCancel()" mdbBtn color="danger" mdbWavesEffect
+                    class="z-depth-0 my-4 waves-effect">Cancelar</button>
+                <button type="submit" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect
+                    class="z-depth-0 my-4 ml-3 waves-effect">Ir para próximo passo</button>
+            </div>
+        </div>
+    </form>
+    <!-- Form -->
+</div>

@@ -24,6 +24,13 @@ import { ModalSelectionComponent } from '../shared/components/modal/modal-select
 import { FormOpenRestrictionsComponent } from './components/open/form-open-restrictions/form-open-restrictions.component';
 import { FormOpenStocksComponent } from './components/open/form-open-stocks/form-open-stocks.component';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { InfogeralComponent } from '../shared/components/promotion/form-step1/infogeral/infogeral/infogeral.component';
+import { DefinitionComponent } from '../shared/components/promotion/form-step1/definition/definition/definition.component';
+import { PeriodComponent } from '../shared/components/promotion/form-step1/period/period/period.component';
+import { ListingComponent } from '../shared/components/promotion/listing/listing.component';
+import { FormStep1Component } from '../shared/components/promotion/form-step1/form-step1.component';
+import { FormStep2Component } from '../shared/components/promotion/form-step2/form-step2.component';
+import { FormStep3Component } from '../shared/components/promotion/form-step3/form-step3.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
@@ -38,7 +45,14 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     BreadcrumbComponent,
     FormOpenRestrictionsComponent,
     ModalSelectionComponent,
-    FormOpenStocksComponent
+    FormOpenStocksComponent,
+    InfogeralComponent,
+    DefinitionComponent,
+    PeriodComponent,
+    ListingComponent,
+    FormStep1Component,
+    FormStep2Component,
+    FormStep3Component 
   ],
   imports: [
     PromotionRoutingModule,

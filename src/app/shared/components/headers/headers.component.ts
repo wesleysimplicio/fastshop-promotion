@@ -26,7 +26,7 @@ export class HeadersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getUserLoggedSubject();
-    //this.getAccessLevelSubject();
+    this.getAccessLevelSubject();
     this.userService.notifyUserLoggedSubject();
   }
 

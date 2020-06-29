@@ -26,7 +26,7 @@ export class PriceService {
                 map(res => {
                     return res;
                 }, err => {
-                    console.log(err);
+                    console.error(err);
                 }),
                 catchError(
                     (error) => throwError(error || 'Server error')
@@ -42,7 +42,7 @@ export class PriceService {
                 map(res => {
                     return res;
                 }, err => {
-                    console.log(err);
+                    console.error(err);
                 }),
                 catchError(
                     (error) => throwError(error || 'Server error')
@@ -58,7 +58,7 @@ export class PriceService {
                 map(res => {
                     return res;
                 }, err => {
-                    console.log(err);
+                    console.error(err);
                 }),
                 catchError(
                     (error) => throwError(error || 'Server error')
@@ -74,7 +74,7 @@ export class PriceService {
                 map(res => {
                     return res;
                 }, err => {
-                    console.log(err);
+                    console.error(err);
                 }),
                 catchError(
                     (error) => throwError(error || 'Server error')
@@ -90,7 +90,7 @@ export class PriceService {
                 map(res => {
                     return res;
                 }, err => {
-                    console.log(err);
+                    console.error(err);
                 }),
                 catchError(
                     (error) => throwError(error || 'Server error')

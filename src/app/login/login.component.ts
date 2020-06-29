@@ -25,10 +25,8 @@ export class LoginComponent implements OnInit {
 
   private getPassport() {
     const passport = this.passportUserService.get();
-    passport ? this.login(passport) : this.redirectToSSOLoginPage();
+    passport ? this.login(passport) : window.location.href = environment.login;
   }
-
-  redirectToSSOLoginPage = () => (window.location.href = environment.login);
 
   private login = (passport: Passport) => {
     this.router.navigate(['/promotion']);

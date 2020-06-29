@@ -28,7 +28,7 @@ export class PassportUserService {
     const passportCookie = this.cookieService.get(CookieEnum.PASSPORT_USER_KEY);
 
     if (!passportCookie || passportCookie === '') {
-      return;
+      return null;
     }
 
     const decryptedPassportCookie = atob(passportCookie);
@@ -37,7 +37,7 @@ export class PassportUserService {
     this.descryptToken            = this.decodeToken(passport.user.token) as User;
 
     if (this.invalidDate(this.descryptToken.exp)) {
-      return;
+      return null;
     }
 
     this.tokenService.setToken(passport.user.token);

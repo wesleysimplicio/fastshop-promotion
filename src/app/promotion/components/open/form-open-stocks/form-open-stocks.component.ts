@@ -56,7 +56,7 @@ export class FormOpenStocksComponent implements OnInit {
     this.getBranchGroup();
     this.getGroupSalesTable();
     this.routeId = this.route.snapshot.params.id;
-    this.search = this.route.snapshot.params.search || '';
+    this.search = window.localStorage.getItem('PROMO_SEARCH'); 
 
     this.breadcrumbs.push(
       {
@@ -91,12 +91,10 @@ export class FormOpenStocksComponent implements OnInit {
       this.promotionService.getPromotion(this.routeId).subscribe(
         (res) => {
           this.promotion = res.body;
-          console.log('promotion', this.promotion);
 
           this.selectedsVS = (this.promotion.virtualStores !== undefined) ? this.promotion.virtualStores : [];
           this.selectedsBG = (this.promotion.branchGroups !== undefined) ? this.promotion.branchGroups : [];
           this.selectedsST = (this.promotion.streets !== undefined) ? this.promotion.streets : [];
-          console.log('selectedsST', this.selectedsST);
 
           this.selectedsSTG = (this.promotion.salesTableGroups !== undefined) ? this.promotion.salesTableGroups : [];
         });
@@ -109,9 +107,6 @@ export class FormOpenStocksComponent implements OnInit {
       case 'VS':
         this.title = 'Loja Virtual';
         this.rows = this.virtualStores;
-        // this.selectedsVS.map(el => {
-        //   el.isSelected = true;
-        // });
         this.selecteds = this.selectedsVS;
         break;
 
@@ -183,9 +178,9 @@ export class FormOpenStocksComponent implements OnInit {
     this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {
         if (this.onlySave) {
-          this.router.navigate(['/promotion/open/' + this.search]);
+          this.router.navigate(['/promotion/open/']);
         } else {
-          this.router.navigate(['/promotion/open/form/products/' + res.body.id + '/' + this.search]);
+          this.router.navigate(['/promotion/open/form/products/' + res.body.id]);
         }
         this.toastrService.success('Salvo com sucesso');
       },
@@ -274,7 +269,7 @@ export class FormOpenStocksComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['/promotion/open/form/restrictions/' + this.routeId + '/' + this.search]);
+    this.router.navigate(['/promotion/open/form/restrictions/' + this.routeId]);
   }
 
   removeSelection(index, option) {

@@ -43,15 +43,23 @@
                 <!-- Links -->
 
                 <ul class="navbar-nav ml-auto nav-flex-icons">
-                    <li class="nav-item avatar dropdown" dropdown>
+                    <li class="nav-item avatar dropdown" dropdown *ngIf="(userLoggedSubject$ | async) as user; else logoutExit">
                         <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light"
                             mdbWavesEffect>
-                            Wesley Simplicio</a>
+                            {{ user?.sub }}</a>
                         <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary"
                             role="menu">
                             <a class="dropdown-item waves-light" mdbWavesEffect href="#" (click)="logout()">Sair</a>
                         </div>
                     </li>
+                    <ng-template #logoutExit>
+                        <li class="nav-item dropdown">
+                          <a class="navbar-brand dropdown-togglex" href="#" id="loginLogout" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Login
+                          </a>
+                        </li>
+                      </ng-template>
                 </ul>
             </links>
             <!-- Collapsible content -->

@@ -35,7 +35,7 @@ export class OpenProductsComponent implements OnInit {
     private formBuilder: FormBuilder,
   ) {
     this.routeId = this.route.snapshot.params.id;
-    this.search = this.route.snapshot.params.search || '';
+    this.search = window.localStorage.getItem('PROMO_SEARCH'); 
     this.breadcrumbs.push(
       {
         url: '/promotion',
@@ -100,8 +100,6 @@ export class OpenProductsComponent implements OnInit {
   }
 
   updateValue(sku, event) {
-    console.log('update', sku, event.replace('R$', ''));
-
     this.promotionService.updatePromotionPriceProduct(this.routeId, event.replace('R$', ''), sku).subscribe(
       (res) => {
         this.toastrService.success('Preço alterado com sucesso');
@@ -126,8 +124,6 @@ export class OpenProductsComponent implements OnInit {
   }
 
   onSelect({ selected }) {
-    console.log('Select Event', selected, this.selected);
-
     this.selected.splice(0, this.selected.length);
     this.selected.push(...selected);
   }

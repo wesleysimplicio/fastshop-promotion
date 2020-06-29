@@ -41,7 +41,7 @@ export class FormOpenRestrictionsComponent implements OnInit {
   ) {
     this.promotion = new Promotion();
     this.routeId = this.route.snapshot.params.id;
-    this.search = this.route.snapshot.params.search || '';
+    this.search = window.localStorage.getItem('PROMO_SEARCH'); 
 
     this.breadcrumbs.push(
       {
@@ -92,8 +92,8 @@ export class FormOpenRestrictionsComponent implements OnInit {
 
   buildForm() {
     this.campaignForm = this.formBuilder.group({
-      campaign: [this.promotion.campaign, Validators.required],
-      partner: [this.promotion.partner, Validators.required],
+      campaign: [this.promotion.campaign], //, Validators.required],
+      partner: [this.promotion.partner], //, Validators.required],
       // campaignChannel: [this.promotion.campaignChannel, Validators.required],
     });
   }
@@ -102,7 +102,6 @@ export class FormOpenRestrictionsComponent implements OnInit {
     this.priceService.getPaymentType().subscribe(
       (res) => {
         this.paymentTypes = res.body;
-        console.log('PaymentType Carregado', this.paymentTypes);
       },
       (err: any) => {
         err.error.messages.forEach(element => {
@@ -124,13 +123,13 @@ export class FormOpenRestrictionsComponent implements OnInit {
   toggleCampaign() {
     if (!this.showCampaign) {
       this.showCampaign = true;
-      this.campaignForm.get('campaign').setValidators(Validators.required);
-      this.campaignForm.get('partner').setValidators(Validators.required);
+      // this.campaignForm.get('campaign').setValidators(Validators.required);
+      // this.campaignForm.get('partner').setValidators(Validators.required);
       // this.campaignForm.get('campaignChannel').setValidators(Validators.required);
     } else {
       this.showCampaign = false;
-      this.campaignForm.get('campaign').clearValidators();
-      this.campaignForm.get('partner').clearValidators();
+      // this.campaignForm.get('campaign').clearValidators();
+      // this.campaignForm.get('partner').clearValidators();
       // this.campaignForm.get('campaignChannel').clearValidators();
 
     }
@@ -158,58 +157,63 @@ export class FormOpenRestrictionsComponent implements OnInit {
 
     // if (this.showPayment || this.showCampaign) {
 
-      if (this.showPayment) {
-        this.promotion.paymentTypes = this.selecteds;
-      }else{
-        this.promotion.paymentTypes = null;
-      }
+    if (this.showPayment) {
+      this.promotion.paymentTypes = this.selecteds;
+    } else {
+      this.promotion.paymentTypes = null;
+    }
 
-      if (this.showCampaign) {
-        if (!this.isFormsValid()) { return; }
-      }
+    if (this.showCampaign) {
+      if (!this.isFormsValid()) { return; }
+    }
 
-      this.promotion.campaign = this.campaignForm.get('campaign').value;
-      // this.promotion.campaignChannel = this.campaignForm.get('campaignChannel').value;
-      this.promotion.partner = this.campaignForm.get('partner').value;
+    // this.promotion.campaignChannel = this.campaignForm.get('campaignChannel').value;
+    this.promotion.campaign = (
+      this.campaignForm.get('campaign').value === "" ||
+      this.campaignForm.get('campaign').value === null
+    ) ? null : this.campaignForm.get('campaign').value;
 
-      this.promotion.id = this.routeId;
-      this.promotion.updatedBy = 'form@promotion'; // TODO: REMOVER
+    this.promotion.partner = (
+      this.campaignForm.get('partner').value === "" ||
+      this.campaignForm.get('partner').value === null
+    ) ? null : this.campaignForm.get('partner').value;
 
-      console.log('Enviado', this.promotion);
+    this.promotion.id = this.routeId;
+    this.promotion.updatedBy = 'form@promotion'; // TODO: REMOVER
 
-      this.promotionService.addUpdatePromotion(this.promotion).subscribe(
-        (res) => {
-          if (this.onlySave) {
-            this.router.navigate(['/promotion/open/' + this.search]);
-          } else {
-            this.router.navigate(['/promotion/open/form/stocks/' + res.body.id + '/' + this.search]);
-          }
-          this.toastrService.success('Salvo com sucesso');
-        },
-        (err: any) => {
-          this.submitted = false;
-          err.error.messages.forEach(element => {
-            this.toastrService.error(element.description);
-          });
+    console.log('Enviado', this.promotion);
+
+    this.promotionService.addUpdatePromotion(this.promotion).subscribe(
+      (res) => {
+        if (this.onlySave) {
+          this.router.navigate(['/promotion/open/']);
+        } else {
+          this.router.navigate(['/promotion/open/form/stocks/' + res.body.id]);
         }
-      );
+        this.toastrService.success('Salvo com sucesso');
+      },
+      (err: any) => {
+        this.submitted = false;
+        err.error.messages.forEach(element => {
+          this.toastrService.error(element.description);
+        });
+      }
+    );
     // } else {
-    //   this.router.navigate(['/promotion/open/form/stocks/' + this.routeId + '/' + this.search]);
+    //   this.router.navigate(['/promotion/open/form/stocks/' + this.routeId]);
     // }
   }
 
   onCancel() {
     this.submitted = false;
-    this.router.navigate(['/promotion/open' + '/' + this.search]);
+    this.router.navigate(['/promotion/open']);
   }
 
   onBack() {
-    this.router.navigate(['/promotion/open/edit/' + this.routeId + '/' + this.search]);
+    this.router.navigate(['/promotion/open/edit/' + this.routeId]);
   }
 
   selection(event) {
-    console.log(event);
-
     this.selecteds = event;
     this.showModalPayment = false;
   }

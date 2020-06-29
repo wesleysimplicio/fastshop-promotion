@@ -53,7 +53,6 @@ export class ModalSelectionComponent implements OnInit {
         this.selected.push(el);
       });
     }
-    console.log('selected', this.selected);
   }
 
   isSelected(itemId) {
@@ -78,7 +77,6 @@ export class ModalSelectionComponent implements OnInit {
     } else {
       this.selected.splice(isSelectIndex, 1);
     }
-    console.log('selected', this.selected);
   }
 
   updateFilter(event) {

@@ -7,14 +7,14 @@
     <form class="animated fadeIn">
 
         <div class="row justify-content-md-center">
-            <div class="col-6">
+            <div class="col-md-6">
                 <img src="assets/img/step2.png" alt="">
             </div>
         </div>
 
         <!-- TIPO PAGAMENTOS -->
         <div class="row justify-content-md-center">
-            <div class="col-6">
+            <div class="col-md-6">
                 <mdb-card>
                     <mdb-card-body class="px-md-5 pt-md-5">
 
@@ -63,7 +63,7 @@
 
         <!-- Campanha -->
         <div class="row justify-content-md-center" [formGroup]="campaignForm">
-            <div class="col-6">
+            <div class="col-md-6">
                 <mdb-card>
                     <mdb-card-body class="px-md-5 pt-md-5">
 
@@ -88,7 +88,7 @@
                             <div class="form-row mt-2">
                                 <div class="col-11">
                                     <div class="md-form md-outline">
-                                        <input id="partner" type="text" formControlName="partner" length="40"
+                                        <input id="partner" type="text" formControlName="partner" length="30"
                                             placeholder="Ex: Google" class="form-control"
                                             mdbCharCounter mdbInput
                                             [ngClass]="{ 'is-invalid': submitted && cF.partner.errors }" />
@@ -118,12 +118,13 @@
                             <div class="form-row">
                                 <div class="col-11">
                                     <div class="md-form md-outline">
-                                        <input id="campaign" type="text" formControlName="campaign" length="40"
+                                        <input id="campaign" type="text" formControlName="campaign" length="30"
                                             placeholder="Ex: Samsung Galaxy S10 + Galaxy Fit" class="form-control"
                                             mdbCharCounter mdbInput
                                             [ngClass]="{ 'is-invalid': submitted && cF.campaign.errors }" />
                                         <div *ngIf="submitted && cF.campaign.errors" class="invalid-feedback">
                                             <div *ngIf="cF.campaign.errors.required">Campanha é obrigatório</div>
+                                            <!-- <div *ngIf="cF.campaign.errors.min">O campo deve ter pelo menos '5' caracteres e no máximo '30' caracteres</div> -->
                                         </div>
                                         <label for="campaign">Campanha</label>
                                     </div>

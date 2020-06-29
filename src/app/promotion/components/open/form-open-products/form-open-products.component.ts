@@ -36,7 +36,7 @@ export class FormOpenProductsComponent implements OnInit {
     private promotionService: PromotionService
   ) {
     this.routeId = this.route.snapshot.params.id;
-    this.search = this.route.snapshot.params.search || '';
+    this.search = window.localStorage.getItem('PROMO_SEARCH'); 
 
     this.breadcrumbs.push(
       {
@@ -143,16 +143,16 @@ export class FormOpenProductsComponent implements OnInit {
   onBack() {
     this.submitted = false;
     this.productForm.reset();
-    this.router.navigate(['/promotion/open/form/stocks/' + this.routeId + '/' + this.search]);
+    this.router.navigate(['/promotion/open/form/stocks/' + this.routeId]);
   }
 
   onCancel() {
     this.submitted = false;
-    this.router.navigate(['/promotion/open/' + this.search]);
+    this.router.navigate(['/promotion/open/']);
   }
 
   onProducts() {
-    this.router.navigate(['/promotion/open/products/' + this.routeId + '/' + this.search]);
+    this.router.navigate(['/promotion/open/products/' + this.routeId]);
   }
 
 }

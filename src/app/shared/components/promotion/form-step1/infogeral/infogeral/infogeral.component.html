@@ -1,0 +1,83 @@
+<div class="row justify-content-md-center animated fadeIn" [formGroup]="infoGeralForm">
+    <div class="col-md-6">
+        <!-- Material form contact -->
+        <mdb-card>
+            <!--Card content-->
+            <mdb-card-body class="px-md-5 pt-md-5">
+                <!-- Form -->
+                <div class="form-row">
+                    <div class="col-8">
+                        <h2>Informações gerais</h2>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-4">
+                        <div class="md-form md-outline">
+                            <input onlyNumber id="hierarchy" formControlName="hierarchy" type="text"
+                                pattern="\d{1,99}" maxlength="2" placeholder="1-99" class="form-control"
+                                mdbInput [ngClass]="{ 'is-invalid': submitted && igF.hierarchy.errors }" />
+                            <div *ngIf="submitted && igF.hierarchy.errors" class="invalid-feedback">
+                                <div *ngIf="igF.hierarchy.errors.required">Hierarquia é obrigatório</div>
+                                <div *ngIf="igF.hierarchy.errors.pattern">Somente números</div>
+                            </div>
+                            <label for="hierarchy">Hierarquia</label>
+                        </div>
+                    </div>
+                    <div class="col-7 text-right pt-3">
+                        <div class="switch">
+                            <label>
+                                Ativar promoção?
+                                <input type="checkbox" (click)="toggleInfoGeral()" [checked]="activeInfoGeral">
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-11">
+                        <div class="md-form md-outline">
+                            <input id="name" type="text" length="30" placeholder="Ex: Promoção de Natal Samsung"
+                                class="form-control" formControlName="name" mdbCharCounter mdbInput
+                                [ngClass]="{ 'is-invalid': submitted && igF.name.errors }" />
+                            <div *ngIf="submitted && igF.name.errors" class="invalid-feedback">
+                                <div *ngIf="igF.name.errors.required">Nome é obrigatório</div>
+                            </div>
+                            <label for="name">Nome da promoção</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-11">
+                        <div class="md-form md-outline">
+                            <textarea rows="3" formControlName="description" id="description" length="144"
+                                placeholder="Ex: Promoção solicitada via e-mail pelo gerente João no dia 20 de janeiro de 2020."
+                                class="form-control md-textarea" mdbCharCounter mdbInput></textarea>
+                            <label for="description">Descrição (opcional)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-11">
+                        <div class="md-form md-outline">
+                            <input id="coupon" type="text" formControlName="tag" length="40"
+                                placeholder="Ex: Desconto Primeira Compra" class="form-control" mdbCharCounter
+                                mdbInput />
+                            <!-- [ngClass]="{ 'is-invalid': submitted && igF.tag.errors }" />
+                           <div *ngIf="submitted && igF.tag.errors" class="invalid-feedback">
+                                <div *ngIf="igF.tag.errors.required">Selo é obrigatório</div>
+                            </div> -->
+                            <label for="coupon">Selo no carrinho do cliente</label>
+                        </div>
+                    </div>
+                </div>
+
+
+            </mdb-card-body>
+
+        </mdb-card>
+        <!-- Material form contact -->
+    </div>
+</div>
