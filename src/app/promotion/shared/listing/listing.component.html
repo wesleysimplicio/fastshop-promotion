@@ -22,7 +22,7 @@
         </form>
     </div>
     <div class="col-3 offset-2 text-right">
-        <a href="#" routerLink="/promotion/{{strTypePromo}}/add" class="btn btn-success">{{strNewPromo}}</a>
+        <a href="#" routerLink="/promotion/{{typePromo}}/add" class="btn btn-success">{{strNewPromo}}</a>
     </div>
 </div>
 
@@ -69,8 +69,8 @@
                         </button>
 
                         <div class="dropdown-menu dropdown-primary fa-sm">
-                            <a routerLink="/promotion/{{strTypePromo}}/edit/{{row.id}}" class="dropdown-item" href="#">Editar</a>
-                            <a routerLink="/promotion/{{strTypePromo}}/products/{{row.id}}" class="dropdown-item"
+                            <a routerLink="/promotion/{{typePromo}}/edit/{{row.id}}" class="dropdown-item" href="#">Editar</a>
+                            <a routerLink="/promotion/{{typePromo}}/products/{{row.id}}" class="dropdown-item"
                                 href="#">Visualizar produtos</a>
                             <a (click)="updateStatusPromotion(row.id,row.status)" class="dropdown-item disableColor"
                                 *ngIf="row.status == 'ENABLE'">Inativar</a>

@@ -3,11 +3,11 @@ import { } from 'angular-bootstrap-md';
 import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
 
 @Component({
-  selector: 'app-form-coupons',
-  templateUrl: './form-coupons.component.html',
-  styleUrls: ['./form-coupons.component.scss']
+  selector: 'app-form-coupon',
+  templateUrl: './form-coupon.component.html',
+  styleUrls: ['./form-coupon.component.scss']
 })
-export class FormCouponsComponent implements OnInit {
+export class FormCouponComponent implements OnInit {
 
   breadcrumbs = new Array<IBreadcrumb>();
 
@@ -19,7 +19,7 @@ export class FormCouponsComponent implements OnInit {
         label: 'Promoção'
       },
       {
-        url: '/promotion/coupons',
+        url: '/promotion/coupon',
         label: 'Cupom'
       },
       {

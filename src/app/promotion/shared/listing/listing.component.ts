@@ -25,7 +25,7 @@ export class ListingComponent implements OnInit, OnChanges {
   searchForm: FormGroup;
   @ViewChild(DatatableComponent, { static: true }) table: DatatableComponent;
   @Input() strTitlePromo = '';
-  @Input() strTypePromo = '';
+  @Input() typePromo = '';
   @Input() strNameOfPromo = '';
   @Input() strNewPromo = '';
 
@@ -44,9 +44,9 @@ export class ListingComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.strTypePromo !== window.localStorage.getItem('PROMO_SEARCH_TYPE')) {
+    if (this.typePromo !== window.localStorage.getItem('PROMO_SEARCH_TYPE')) {
       window.localStorage.setItem('PROMO_SEARCH', '');
-      window.localStorage.setItem('PROMO_SEARCH_TYPE', this.strTypePromo);
+      window.localStorage.setItem('PROMO_SEARCH_TYPE', this.typePromo);
       this.search = '';
       this.buildForm();
     }
@@ -65,7 +65,7 @@ export class ListingComponent implements OnInit, OnChanges {
   }
 
   getPromotion() {
-    this.promotionService.getPromotion().subscribe(
+    this.promotionService.getPromotion('',this.typePromo).subscribe(
       (res) => {
         this.rows = res.body;
         this.temp = res.body;
@@ -97,9 +97,9 @@ export class ListingComponent implements OnInit, OnChanges {
   }
   onSubmit() {
     this.updateFilter(this.searchForm.get('search').value);
-    this.router.navigate(['/promotion/' + this.strTypePromo]);
+    this.router.navigate(['/promotion/' + this.typePromo]);
     window.localStorage.setItem('PROMO_SEARCH', this.searchForm.get('search').value);
-    window.localStorage.setItem('PROMO_SEARCH_TYPE', this.strTypePromo);
+    window.localStorage.setItem('PROMO_SEARCH_TYPE', this.typePromo);
   }
 
   updateFilter(event) {

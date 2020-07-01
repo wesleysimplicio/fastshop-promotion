@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { PromotionRoutingModule } from './promotion-routing.module';
-import { FormCouponsComponent } from './components/coupons/form-coupons/form-coupons.component';
+import { FormCouponComponent } from './components/coupon/form-coupon/form-coupon.component';
 import { FormOpenComponent } from './components/open/form-open/form-open.component';
 import { OpenComponent } from './components/open/open.component';
 import { StepsComponent } from './components/steps/steps.component';
@@ -14,7 +14,7 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { CouponsComponent } from './components/coupons/coupons.component';
+import { CouponComponent } from './components/coupon/coupon.component';
 import { FormOpenProductsComponent } from './components/open/form-open-products/form-open-products.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { CurrencyMaskModule } from 'ngx-currency-mask';
@@ -35,12 +35,12 @@ import { FormStep3Component } from './shared/form-step3/form-step3.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [
-    FormCouponsComponent,
+    FormCouponComponent,
     FormOpenComponent,
     OpenComponent,
     StepsComponent,
     OpenProductsComponent,
-    CouponsComponent,
+    CouponComponent,
     FormOpenProductsComponent,
     BreadcrumbComponent,
     FormOpenRestrictionsComponent,

@@ -57,7 +57,7 @@ export class UserService {
     this.removeUserLogged();
     this.tokenService.removeToken();
     this.cookieService.delete(CookieEnum.PASSPORT_USER_KEY, '/', '.fastshop.com.br');
-    window.location.href = environment.logout;
+    window.localStorage.setItem('PROMO_LOGOUT', '1');
   }
 
 }

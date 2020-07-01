@@ -153,9 +153,9 @@ export class FormStep1Component implements OnInit {
     this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {
         if (this.onlySave) {
-          this.router.navigate(['/promotion/open/']);
+          this.router.navigate(['/promotion/'+ this.typeOfPromo]);
         } else {
-          this.router.navigate(['/promotion/open/form/restrictions/' + res.body.id]);
+          this.router.navigate(['/promotion/ '+ this.typeOfPromo + '/form/restrictions/' + res.body.id]);
         }
         this.toastrService.success('Salvo com sucesso');
       },
@@ -207,7 +207,7 @@ export class FormStep1Component implements OnInit {
 
   onCancel() {
     this.submitted = false;
-    this.router.navigate(['/promotion/open/']);
+    this.router.navigate(['/promotion/' + this.typeOfPromo]);
   }
 
 

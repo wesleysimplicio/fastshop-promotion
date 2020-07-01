@@ -49,8 +49,8 @@ export class PromotionService {
                 ));
     }
 
-    getPromotion(idPromotion = ''): Observable<any> {
-        return this.http.get<Array<Promotion>>(`${environment.apiUrl}v1/promotion/${idPromotion}`,
+    getPromotion(idPromotion = '', typePromo = 'open'): Observable<any> {
+        return this.http.get<Array<Promotion>>(`${environment.apiUrl}v1/promotion/${idPromotion}?promotionType=` + typePromo.toLocaleUpperCase(),
             {
                 observe: 'response',
                 headers: this.getHttpOptions()

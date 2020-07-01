@@ -3,8 +3,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OpenComponent } from './components/open/open.component';
-import { CouponsComponent } from './components/coupons/coupons.component';
-import { FormCouponsComponent } from './components/coupons/form-coupons/form-coupons.component';
+import { CouponComponent } from './components/coupon/coupon.component';
+import { FormCouponComponent } from './components/coupon/form-coupon/form-coupon.component';
 import { FormOpenComponent } from './components/open/form-open/form-open.component';
 import { FormOpenProductsComponent } from './components/open/form-open-products/form-open-products.component';
 import { OpenProductsComponent } from './components/open/open-products/open-products.component';
@@ -13,10 +13,10 @@ import { FormOpenStocksComponent } from './components/open/form-open-stocks/form
 
 const routes: Routes = [
     { path: '', component: OpenComponent },
-    { path: 'promotion/coupons', component: CouponsComponent },
-    { path: 'promotion/coupons/add', component: FormCouponsComponent },
-    { path: 'promotion/coupons/edit/:id', component: FormCouponsComponent },
-    { path: 'promotion/coupons/view/:id', component: FormCouponsComponent },
+    { path: 'promotion/coupon', component: CouponComponent },
+    { path: 'promotion/coupon/add', component: FormCouponComponent },
+    { path: 'promotion/coupon/edit/:id', component: FormCouponComponent },
+    { path: 'promotion/coupon/view/:id', component: FormCouponComponent },
     { path: 'promotion/open/add', component: FormOpenComponent },
     { path: 'promotion/open', component: OpenComponent },
     { path: 'promotion/open/edit/:id', component: FormOpenComponent },

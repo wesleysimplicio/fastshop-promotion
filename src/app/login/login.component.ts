@@ -24,8 +24,13 @@ export class LoginComponent implements OnInit {
   }
 
   private getPassport() {
-    const passport = this.passportUserService.get();
-    passport ? this.login(passport) : window.location.href = environment.login;
+    if (window.localStorage.getItem('PROMO_LOGOUT')) {
+      window.localStorage.removeItem('PROMO_LOGOUT');
+      window.location.href = environment.logout;
+    } else {
+      const passport = this.passportUserService.get();
+      passport ? this.login(passport) : window.location.href = environment.login;
+    }
   }
 
   private login = (passport: Passport) => {
