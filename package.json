@@ -5,7 +5,6 @@
         "ng": "ng",
         "start:dev": "ng serve",
         "start": "node server.js",
-        "postinstall": "ng build --prod",
         "build": "ng build",
         "test": "ng test --no-watch --code-coverage --browsers=ChromeHeadless",
         "test:watch": "ng test --code-coverage --browsers=ChromeHeadless",
@@ -66,9 +65,5 @@
         "ts-node": "~7.0.0",
         "tslint": "~5.15.0",
         "typescript": "~3.5.3"
-    },
-    "engines": {
-        "node": "13.5.0",
-        "npm": "6.13.4"
     }
 }

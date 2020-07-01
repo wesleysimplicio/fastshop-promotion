@@ -32,17 +32,14 @@ export class ListingComponent implements OnInit, OnChanges {
   constructor(
     private promotionService: PromotionService,
     private toastrService: ToastrService,
-    private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private userService: UserService
   ) {
     this.search = window.localStorage.getItem('PROMO_SEARCH');
     this.buildForm();
   }
 
   ngOnInit() {
-    this.hasUserLogged();
     this.getPromotion();
   }
 
@@ -54,14 +51,6 @@ export class ListingComponent implements OnInit, OnChanges {
       this.buildForm();
     }
   }
-
-  private hasUserLogged(): void {
-    const userLogged = this.userService.getUserLogged();
-    if (!userLogged) {
-      this.router.navigate(['/login']);
-    }
-  }
-
 
   cleanData(): void {
     this.searchForm.reset();

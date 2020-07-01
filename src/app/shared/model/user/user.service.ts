@@ -32,7 +32,7 @@ export class UserService {
     window.localStorage.setItem(USER_LOGGED, data);
   }
 
-  getUserLoggedSubject(): Observable<User> {
+  getUserLoggedSubject(): Subject<User> {
     return this.userLoggedSubject;
   }
 

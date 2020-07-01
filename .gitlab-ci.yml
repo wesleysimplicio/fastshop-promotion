@@ -15,7 +15,7 @@ stages:
 
 angular-inspection:
   stage: angular-build
-  image: node:10
+  image: node:12
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
     when: always
@@ -30,22 +30,23 @@ angular-inspection:
       - name: docker:dind
   before_script:
     - npm install --silent
-    - npm i -g @angular-devkit/build-angular@0.800.6
-    - npm i -g @angular/cli@8.0.6
+    - npm i -g @angular-devkit/build-angular@0.803.21
+    - npm i -g @angular/cli@8.3.21
+    - npm i -g @angular/common@8.2.14
+    - npm i -g ngx-cookie-service 
     - ng version
   script:
-     - ng build --configuration=local --aot --build-optimizer
+     - ng build --configuration=local
   tags:
     - gitlab-runner-docker01
   only:
     - /feature\/.*/
     - /fix\/.*/
     - /hotfix\/.*/
-    - merge_requests
 
 angular-build:
   stage: angular-build
-  image: node:10
+  image: node:latest
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
     when: always
@@ -58,13 +59,13 @@ angular-build:
   services:
       - name: docker:dind
   before_script:
-    - npm install --silent
-    - npm i -g @angular-devkit/build-angular@0.800.6
-    - npm i -g @angular/cli@8.0.6
+    - npm install
+    - npm i -g @angular-devkit/build-angular
+    - npm i -g @angular/cli
     - ng version 
   script:
      - if [[ $ENVIRONMENT =~ ^qa.* ]]; then ENVIRONMENT=qa; fi; 
-     - ng build --configuration=$ENVIRONMENT --aot --build-optimizer  
+     - ng build --configuration=$ENVIRONMENT  
   tags:
     - gitlab-runner-docker01
   only:
@@ -75,26 +76,37 @@ angular-build:
 
 deployment-dev:  
   stage: deployment
+  image: ubuntu:latest
   before_script:
-# $CI_COMMIT_REF_NAME == "develop" # Valor do artefato.
-    - set aws_access_key_id $AWS_ACCESS_KEY_ID;
-    - set aws_secret_access_key_id $AWS_SECRET_ACCESS_KEY;
+    - apt-get update && apt install curl -y && apt install zip -y
+    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    - unzip awscliv2.zip
+    - ./aws/install
+    - aws --version
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_DEV;
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_DEV;
   script:
     - aws s3 cp dist/ s3://promotion-management-develop.fastshop.com.br --recursive
   tags:
-    - gitlab-runner-shell01
+    - gitlab-runner-docker01
   only:
     - develop
 
 deployment-qa:
   stage: deployment-qa
+  image: ubuntu:latest
   before_script:
-    - set aws_access_key_id $AWS_ACCESS_KEY_ID;
-    - set aws_secret_access_key_id $AWS_SECRET_ACCESS_KEY;
+    - apt-get update && apt install curl -y && apt install zip -y
+    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    - unzip awscliv2.zip
+    - ./aws/install
+    - aws --version
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_DEV;
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_DEV;
   script:
     - aws s3 cp dist/ s3://promotion-management-qa.fastshop.com.br --recursive
   tags:
-    - gitlab-runner-shell01
+    - gitlab-runner-docker01
   only:
     - /qa\/.*/
   environment:
@@ -118,5 +130,3 @@ deployment:
     - gitlab-runner-docker01
   only:
     - master
-
-

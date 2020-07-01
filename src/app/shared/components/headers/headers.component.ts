@@ -1,5 +1,5 @@
 import { environment } from '../../../../environments/environment';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../../model/user/user.model';
@@ -14,9 +14,10 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeadersComponent implements OnInit, OnDestroy {
 
-  userLoggedSubject$: Observable<User>;
+  userLoggedSubject$ = new Subject<User>();
   private subscriptions = new Subscription();
   accessLevel = false;
+  user = new User();
 
   constructor(
     private authService: AuthService,
@@ -28,6 +29,12 @@ export class HeadersComponent implements OnInit, OnDestroy {
     this.getUserLoggedSubject();
     this.getAccessLevelSubject();
     this.userService.notifyUserLoggedSubject();
+    this.userLoggedSubject$.subscribe(res => {
+      this.user = res;
+      })
+    if(!this.user){
+      window.location.reload();
+    }
   }
 
   ngOnDestroy(): void {

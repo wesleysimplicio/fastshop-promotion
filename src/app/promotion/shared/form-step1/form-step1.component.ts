@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Promotion } from 'src/app/promotion/model/promotion.model';
 import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
@@ -30,8 +30,9 @@ export class FormStep1Component implements OnInit {
   showEndAt = true;
   showPeriod = false;
   isEditStep = false;
-  breadcrumbs = new Array<IBreadcrumb>();
   selecteds = [];
+  @Input() breadcrumbs = new Array<IBreadcrumb>();
+  @Input() typeOfPromo = '';
 
   constructor(
     private router: Router,
@@ -42,20 +43,7 @@ export class FormStep1Component implements OnInit {
     private promotionService: PromotionService,
     private priceService: PriceService
   ) {
-    this.breadcrumbs.push(
-      {
-        url: '/promotion',
-        label: 'Promoção'
-      },
-      {
-        url: '/promotion/open',
-        label: 'Vitrine'
-      },
-      {
-        url: '',
-        label: 'Cadastro'
-      },
-    );
+ 
   }
 
   ngOnInit() {

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UtilitiesService } from './shared/services/utilities.service';
 import { UserService } from './shared/model/user/user.service';
-import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,22 +13,24 @@ export class AppComponent implements OnInit, OnDestroy {
   public userLogged = false;
 
   constructor(
-    private utilities: UtilitiesService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router,
   ) {
   }
 
   ngOnInit() {
-    // this.utilities.showLoadingSubject.subscribe(val => { this.load = val; });
-    this.isLogged();
+    this.hasUserLogged();
+  }
+
+  private hasUserLogged(): void {
+    const userLogged = this.userService.getUserLogged();
+    if (!userLogged) {
+      this.router.navigate(['/login']);
+    }
   }
 
   ngOnDestroy(): void {
     this.userService.removeCredentials();
-  }
-
-  private isLogged(): void {
-    this.userLogged = this.userService.isLogged();
   }
 
 }
