@@ -8,6 +8,10 @@ import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
 import { PriceService } from 'src/app/shared/services/price.service';
 import * as moment from 'moment';
+import { PromotionTypeEnum } from '../../enum/promotion-type.enum';
+import { Subject } from 'rxjs';
+import { User } from 'src/app/shared/model/user/user.model';
+import { UserService } from 'src/app/shared/model/user/user.service';
 
 @Component({
   selector: 'app-form-step1',
@@ -33,6 +37,7 @@ export class FormStep1Component implements OnInit {
   selecteds = [];
   @Input() breadcrumbs = new Array<IBreadcrumb>();
   @Input() typeOfPromo = '';
+  user = new User();
 
   constructor(
     private router: Router,
@@ -41,14 +46,19 @@ export class FormStep1Component implements OnInit {
     private toastrService: ToastrService,
     private utilValidation: UtilValidation,
     private promotionService: PromotionService,
-    private priceService: PriceService
+    private priceService: PriceService,
+    private userService: UserService
   ) {
- 
+
   }
 
   ngOnInit() {
+   this.userService.getUserLoggedSubject().subscribe(res => {
+      this.user = res;
+    });
+    
     this.routeId = this.route.snapshot.params.id;
-    this.search = window.localStorage.getItem('PROMO_SEARCH'); 
+    this.search = window.localStorage.getItem('PROMO_SEARCH');
 
     if (this.routeId) {
       this.promotionService.getPromotion(this.routeId).subscribe(
@@ -118,7 +128,7 @@ export class FormStep1Component implements OnInit {
     ) {
       return;
     }
-    
+
     if (this.showPeriod &&
       !this.utilValidation.dateStartEndValidation(
         this.periodForm.get(`startAt`).value,
@@ -144,18 +154,22 @@ export class FormStep1Component implements OnInit {
     this.promotion.endAt = (!this.showPeriod || !this.showEndAt) ? null : moment(this.periodForm.get('endAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
     this.promotion.discountType = this.definitionForm.get('discountType').value;
     this.promotion.discountValue = this.definitionForm.get('discountValue').value;
-    this.promotion.updatedBy = 'form@promotion'; // TODO: REMOVER
+    this.promotion.updatedBy = this.user.sub;
+    this.promotion.promotionType = (this.typeOfPromo === PromotionTypeEnum.Open)
+      ? PromotionTypeEnum.Open.toLocaleUpperCase() : PromotionTypeEnum.Coupon.toLocaleUpperCase();
 
     if (this.routeId) {
       this.promotion.id = this.routeId;
+    }else{
+      this.promotion.createdBy = this.user.sub;
     }
 
     this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {
         if (this.onlySave) {
-          this.router.navigate(['/promotion/'+ this.typeOfPromo]);
+          this.router.navigate(['/promotion/' + this.typeOfPromo]);
         } else {
-          this.router.navigate(['/promotion/ '+ this.typeOfPromo + '/form/restrictions/' + res.body.id]);
+          this.router.navigate(['/promotion/' + this.typeOfPromo + '/form/restrictions/' + res.body.id]);
         }
         this.toastrService.success('Salvo com sucesso');
       },

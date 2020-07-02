@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { StatusEnum } from 'src/app/promotion/enum/status.enum';
 import { Promotion } from 'src/app/promotion/model/promotion.model';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
+import { PromotionTypeEnum } from 'src/app/promotion/enum/promotion-type.enum';
 
 @Component({
   selector: 'app-infogeral',
@@ -12,9 +13,12 @@ import { UtilValidation } from 'src/app/shared/util/util.validation';
 export class InfogeralComponent implements OnInit, OnChanges {
 
   activeInfoGeral: boolean;
+  strNameOfPromo = '';
+  strPromo='';
   @Input() submitted = false;
   @Input() infoGeralForm: FormGroup;
   @Input() promotion = new Promotion();
+  @Input() typeOfPromo = '';
   @Output() getForm = new EventEmitter();
   @Output() getFormValid = new EventEmitter();
 
@@ -34,6 +38,7 @@ export class InfogeralComponent implements OnInit, OnChanges {
         this.getFormValid.emit(this.isFormsValid());
       }
     );
+    this.strChanges();
   }
 
   ngOnChanges() {
@@ -41,6 +46,16 @@ export class InfogeralComponent implements OnInit, OnChanges {
   }
 
   get igF() { return this.infoGeralForm.controls; }
+
+  strChanges() {
+    if (this.typeOfPromo === PromotionTypeEnum.Coupon) {
+      this.strNameOfPromo = 'Nome do cupom';
+      this.strPromo='Cupom';
+    } else {
+      this.strNameOfPromo = 'Nome da promoção';
+      this.strPromo='Promoção';
+    }
+  }
 
   buildForm() {
     this.infoGeralForm = this.formBuilder.group({
@@ -64,7 +79,7 @@ export class InfogeralComponent implements OnInit, OnChanges {
     ) {
       this.utilValidation.validateAllFormFields(this.infoGeralForm);
       console.log('return false infoGeralForm;');
-      return false; 
+      return false;
     }
 
     return true;

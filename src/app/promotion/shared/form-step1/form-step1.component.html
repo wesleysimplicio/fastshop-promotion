@@ -1,4 +1,4 @@
-<app-steps [routeId]="routeId" [infoStep]="isValidForm('info')" [definitionStep]="isValidForm('definition')"
+<app-steps [typeOfPromo]="typeOfPromo" [routeId]="routeId" [infoStep]="isValidForm('info')" [definitionStep]="isValidForm('definition')"
     [periodStep]="isValidForm('period')" [productsStep]="isEditStep" [stockStep]="isEditStep"
     [paymentStep]="isEditStep">
 </app-steps>
@@ -8,24 +8,25 @@
 
         <div class="row justify-content-md-center">
             <div class="col-md-6">
-                <img src="assets/img/step1.png" alt="">
+                <img *ngIf="typeOfPromo=='open'" src="assets/img/step1.png" alt="">
+                <img *ngIf="typeOfPromo=='coupon'" src="assets/img/step1_coupon.png" alt="">
             </div>
         </div>
 
         <!-- INFOGERAL -->
-        <app-infogeral [promotion]='promotion' [submitted]="submitted" (getForm)="updateForm('info',$event)"
+        <app-infogeral [typeOfPromo]="typeOfPromo" [promotion]='promotion' [submitted]="submitted" (getForm)="updateForm('info',$event)"
             (getFormValid)="updateFormValid('info',$event)" [infoGeralForm]="infoGeralForm">
         </app-infogeral>
 
         <!-- /INFOGERAL -->
 
         <!-- DEFINITION -->
-        <app-definition [promotion]='promotion' [submitted]="submitted" (getForm)="updateForm('definition',$event)"
+        <app-definition [typeOfPromo]="typeOfPromo" [promotion]='promotion' [submitted]="submitted" (getForm)="updateForm('definition',$event)"
             (getFormValid)="updateFormValid('definition',$event)" [definitionForm]="definitionForm"></app-definition>
         <!-- /DEFINITION -->
 
         <!-- PERIOD -->
-        <app-period [promotion]='promotion' [submitted]="submitted" (getForm)="updateForm('period',$event)"
+        <app-period [typeOfPromo]="typeOfPromo" [promotion]='promotion' [submitted]="submitted" (getForm)="updateForm('period',$event)"
             (getFormValid)="updateFormValid('period',$event)" (getShowPeriod)="showPeriod=$event" (getShowEndAt)="showEndAt=$event" [periodForm]="periodForm"></app-period>
         <!-- /PERIOD -->
 

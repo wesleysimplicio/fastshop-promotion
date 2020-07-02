@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Promotion } from 'src/app/promotion/model/promotion.model';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
 import * as moment from 'moment';
+import { PromotionTypeEnum } from 'src/app/promotion/enum/promotion-type.enum';
 
 @Component({
   selector: 'app-period',
@@ -13,9 +14,11 @@ export class PeriodComponent implements OnInit {
 
   showPeriod = false;
   showEndAt = true;
+  strPromo = '';
   @Input() submitted = false;
   @Input() periodForm: FormGroup;
   @Input() promotion = new Promotion();
+  @Input() typeOfPromo = '';
   @Output() getForm = new EventEmitter();
   @Output() getFormValid = new EventEmitter();
   @Output() getShowPeriod = new EventEmitter();
@@ -57,6 +60,7 @@ export class PeriodComponent implements OnInit {
         this.getShowEndAt.emit(this.showEndAt);
       }
     );
+    this.strChanges();
   }
 
   ngOnChanges() {
@@ -67,6 +71,15 @@ export class PeriodComponent implements OnInit {
 
   get pF() { return this.periodForm.controls; }
 
+  strChanges() {
+    if (this.typeOfPromo === PromotionTypeEnum.Coupon) {
+      this.strPromo='cupom';
+    } else {
+      this.strPromo='promoção';
+    }
+  }
+
+  
   buildForm() {
     this.periodForm = this.formBuilder.group({
       startAt: [this.promotion.startAt],

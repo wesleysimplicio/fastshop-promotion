@@ -14,6 +14,7 @@ export class DefinitionComponent implements OnInit, OnChanges {
   @Input() definitionForm: FormGroup;
   @Input() submitted = false;
   @Input() promotion = new Promotion();
+  @Input() typeOfPromo = '';
   @Output() getForm = new EventEmitter();
   @Output() getFormValid = new EventEmitter();
 

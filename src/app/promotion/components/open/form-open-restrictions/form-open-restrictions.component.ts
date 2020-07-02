@@ -7,6 +7,8 @@ import { PriceService } from 'src/app/shared/services/price.service';
 import { PaymentType } from 'src/app/shared/model/price/payment-type.model';
 import { Promotion } from '../../../model/promotion.model';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
+import { UserService } from 'src/app/shared/model/user/user.service';
+import { User } from 'src/app/shared/model/user/user.model';
 
 @Component({
   selector: 'app-form-open-restrictions',
@@ -29,6 +31,7 @@ export class FormOpenRestrictionsComponent implements OnInit {
   submitted = false;
   title = 'Tipos de pagamento';
   campaignForm: FormGroup;
+  user = new User();
 
   constructor(
     private router: Router,
@@ -37,11 +40,12 @@ export class FormOpenRestrictionsComponent implements OnInit {
     private promotionService: PromotionService,
     private priceService: PriceService,
     private utilValidation: UtilValidation,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private userService: UserService
   ) {
     this.promotion = new Promotion();
     this.routeId = this.route.snapshot.params.id;
-    this.search = window.localStorage.getItem('PROMO_SEARCH'); 
+    this.search = window.localStorage.getItem('PROMO_SEARCH');
 
     this.breadcrumbs.push(
       {
@@ -64,6 +68,10 @@ export class FormOpenRestrictionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userService.getUserLoggedSubject().subscribe(res => {
+      this.user = res;
+    });
+
     if (!this.routeId) {
       this.toastrService.warning('Ação inválida');
       this.router.navigate(['/promotion/']);
@@ -102,6 +110,12 @@ export class FormOpenRestrictionsComponent implements OnInit {
     this.priceService.getPaymentType().subscribe(
       (res) => {
         this.paymentTypes = res.body;
+        // GAMBIARRA PARA TIRAR CARTAO DE CREDITO //TODO: REMOVER
+        const removeCreditCard = this.paymentTypes.findIndex(function (node) {
+          return node.name === 'Cartão de Crédito';
+        });
+        this.paymentTypes.splice(removeCreditCard, 1);
+
       },
       (err: any) => {
         err.error.messages.forEach(element => {
@@ -179,7 +193,7 @@ export class FormOpenRestrictionsComponent implements OnInit {
     ) ? null : this.campaignForm.get('partner').value;
 
     this.promotion.id = this.routeId;
-    this.promotion.updatedBy = 'form@promotion'; // TODO: REMOVER
+    this.promotion.updatedBy = this.user.sub;
 
     console.log('Enviado', this.promotion);
 

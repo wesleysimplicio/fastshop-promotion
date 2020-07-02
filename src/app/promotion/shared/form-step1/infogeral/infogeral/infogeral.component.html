@@ -26,7 +26,7 @@
                     <div class="col-7 text-right pt-3">
                         <div class="switch">
                             <label>
-                                Ativar promoção?
+                                Ativar {{strPromo}}?
                                 <input type="checkbox" (click)="toggleInfoGeral()" [checked]="activeInfoGeral">
                                 <span class="lever"></span>
                             </label>
@@ -37,13 +37,13 @@
                 <div class="form-row">
                     <div class="col-11">
                         <div class="md-form md-outline">
-                            <input id="name" type="text" length="30" placeholder="Ex: Promoção de Natal Samsung"
+                            <input id="name" type="text" length="30" placeholder="Ex: {{strPromo}} de Natal Samsung"
                                 class="form-control" formControlName="name" mdbCharCounter mdbInput
                                 [ngClass]="{ 'is-invalid': submitted && igF.name.errors }" />
                             <div *ngIf="submitted && igF.name.errors" class="invalid-feedback">
                                 <div *ngIf="igF.name.errors.required">Nome é obrigatório</div>
                             </div>
-                            <label for="name">Nome da promoção</label>
+                            <label for="name">{{strNameOfPromo}}</label>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                     <div class="col-11">
                         <div class="md-form md-outline">
                             <textarea rows="3" formControlName="description" id="description" length="144"
-                                placeholder="Ex: Promoção solicitada via e-mail pelo gerente João no dia 20 de janeiro de 2020."
+                                placeholder="Ex: {{strPromo}} solicitada via e-mail pelo gerente João no dia 20 de janeiro de 2020."
                                 class="form-control md-textarea" mdbCharCounter mdbInput></textarea>
                             <label for="description">Descrição (opcional)</label>
                         </div>

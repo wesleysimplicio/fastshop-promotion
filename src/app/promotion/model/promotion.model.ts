@@ -6,6 +6,7 @@ import { PaymentType } from 'src/app/shared/model/price/payment-type.model';
 import { Street } from 'src/app/shared/model/price/street.model';
 import { GroupSalesTable } from 'src/app/shared/model/price/group-sales-table.model';
 import { BranchGroup } from 'src/app/shared/model/price/branch-group.model';
+import { PromotionTypeEnum } from '../enum/promotion-type.enum';
 
 export interface IdName {
     id: string;
@@ -44,8 +45,8 @@ export class Promotion {
     paymentTypes: Array<PaymentType>;
 
     constructor() {
-        this.campaign = null; // TODO: VERIFICAR
-        this.campaignChannel = null; // TODO: VERIFICAR
+        this.campaign = null;
+        this.campaignChannel = null;
         this.createdBy = 'form@promotion'; // TODO: REMOVER
         this.createdDate = null;
         this.description = null;
@@ -56,9 +57,9 @@ export class Promotion {
         this.hierarchy = null;
         this.id = null;
         this.name = null;
-        this.partner = null; // TODO: VERIFICAR
+        this.partner = null;
         this.products = new Array<Product>();
-        this.promotionType = 'OPEN';
+        this.promotionType = PromotionTypeEnum.Open.toLocaleUpperCase();
         this.tag = null;
         this.startAt = null;
         this.status = StatusEnum.Desactive;

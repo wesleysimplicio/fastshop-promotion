@@ -11,6 +11,8 @@ import { VirtualStore } from 'src/app/shared/model/price/virtual-store.model';
 import { BranchGroup } from 'src/app/shared/model/price/branch-group.model';
 import { GroupSalesTable } from 'src/app/shared/model/price/group-sales-table.model';
 import { ModalSelectionComponent } from 'src/app/shared/components/modal/modal-selection/modal-selection.component';
+import { UserService } from 'src/app/shared/model/user/user.service';
+import { User } from 'src/app/shared/model/user/user.model';
 
 @Component({
   selector: 'app-form-open-stocks',
@@ -40,7 +42,8 @@ export class FormOpenStocksComponent implements OnInit {
   option = '';
   selecteds = [];
   showModal = false;
-
+  user = new User();
+  
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -49,7 +52,8 @@ export class FormOpenStocksComponent implements OnInit {
     private toastrService: ToastrService,
     private promotionService: PromotionService,
     private priceService: PriceService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private userService: UserService
   ) {
     this.getStreetPrice();
     this.getVirtualStorePrice();
@@ -79,6 +83,10 @@ export class FormOpenStocksComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userService.getUserLoggedSubject().subscribe(res => {
+      this.user = res;
+    });
+
     if (!this.routeId) {
 
       this.toastrService.warning('Ação inválida');
@@ -173,7 +181,7 @@ export class FormOpenStocksComponent implements OnInit {
     }
 
     this.getSendArrays();
-    this.promotion.updatedBy = 'form@promotion'; // TODO: REMOVER
+    this.promotion.updatedBy = this.user.sub;
 
     this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {

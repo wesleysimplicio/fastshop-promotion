@@ -4,7 +4,6 @@ import { PromotionRoutingModule } from './promotion-routing.module';
 import { FormCouponComponent } from './components/coupon/form-coupon/form-coupon.component';
 import { FormOpenComponent } from './components/open/form-open/form-open.component';
 import { OpenComponent } from './components/open/open.component';
-import { StepsComponent } from './components/steps/steps.component';
 import { OpenProductsComponent } from './components/open/open-products/open-products.component';
 import { PromotionService } from './services/promotion.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -31,6 +30,7 @@ import { ListingComponent } from './shared/listing/listing.component';
 import { FormStep1Component } from './shared/form-step1/form-step1.component';
 import { FormStep2Component } from './shared/form-step2/form-step2.component';
 import { FormStep3Component } from './shared/form-step3/form-step3.component';
+import { StepsComponent } from './shared/steps/steps.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({

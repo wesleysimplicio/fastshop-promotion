@@ -1,5 +1,5 @@
 <div class="steps-promotion">
-    <h5>Propriedades da promoção</h5>
+    <h5>Propriedades {{strPromo}}</h5>
     <div class="row" [ngClass]="(infoStep)? 'active' : ''">
         <div class="col-10">
             <strong>Informações gerais</strong>
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <h5 class="mt-5">Restrições da promoção</h5>
+    <h5 class="mt-5">Restrições {{strPromo}}</h5>
     <div class="row" [ngClass]="(paymentStep)? 'active' : ''">
         <div class="col-10">
             <strong>Forma de pagamento</strong>
