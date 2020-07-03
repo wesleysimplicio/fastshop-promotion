@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Promotion } from 'src/app/promotion/model/promotion.model';
 import { DiscountTypeEnum } from 'src/app/promotion/enum/discount-type.enum';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
+import { PromotionTypeEnum } from 'src/app/promotion/enum/promotion-type.enum';
 
 @Component({
   selector: 'app-definition',
@@ -28,6 +29,7 @@ export class DefinitionComponent implements OnInit, OnChanges {
     if (this.promotion) {
       this.validDiscountType(this.promotion.discountType);
       this.definitionForm.get('discountValue').setValue(this.promotion.discountValue);
+      this.definitionForm.get('couponCode').setValue(this.promotion.couponCode);
     }
     this.getForm.emit(this.definitionForm);
     this.definitionForm.statusChanges.subscribe(
@@ -35,10 +37,23 @@ export class DefinitionComponent implements OnInit, OnChanges {
         this.getFormValid.emit(this.isFormsValid());
       }
     );
+    this.promoType();
   }
 
   ngOnChanges() {
     this.getFormValid.emit(this.isFormsValid());
+  }
+
+  promoType() {
+    if (this.typeOfPromo === PromotionTypeEnum.Coupon) {
+      this.definitionForm.get('couponAmount').setValidators(Validators.required);
+      this.definitionForm.get('couponCode').setValidators(Validators.required);
+    } else {
+      this.definitionForm.get('couponAmount').clearValidators();
+      this.definitionForm.get('couponCode').clearValidators();
+    }
+    this.definitionForm.updateValueAndValidity();
+    this.definitionForm.markAsDirty();
   }
 
   isFormsValid() {
@@ -56,6 +71,9 @@ export class DefinitionComponent implements OnInit, OnChanges {
 
   buildForm() {
     this.definitionForm = this.formBuilder.group({
+      cumulative: [this.promotion.cumulative],
+      couponAmount: [this.promotion.couponAmount],
+      couponCode: [this.promotion.couponCode],
       discountType: [this.promotion.discountType, Validators.required],
       discountValue: [this.promotion.discountValue, [
         Validators.required,

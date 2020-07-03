@@ -12,26 +12,40 @@
                 </div>
 
                 <!-- Form -->
+                <div class="form-row" *ngIf="typeOfPromo!=='open'">
+                    <div class="col-11">
+                        <div class="md-form md-outline">
+                            <input id="couponCode" type="text" length="30" placeholder="Ex: PRIMEIRACOMPRA"
+                                class="form-control" formControlName="couponCode" mdbCharCounter mdbInput
+                                [ngClass]="{ 'is-invalid': submitted && dF.couponCode.errors }" />
+                            <div *ngIf="submitted && dF.couponCode.errors" class="invalid-feedback">
+                                <div *ngIf="dF.couponCode.errors.required">Cupom é obrigatório</div>
+                            </div>
+                            <label for="couponCode">Cupom de desconto</label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-row">
                     <div class="col-7">
                         <div class="md-form">
                             <h5>Tipo de desconto</h5>
 
                             <div class="form-check form-check-inline mt-1">
-                                <input type="radio" class="form-check-input" id="discountType"
-                                    value="PERCENTAGE" formControlName="discountType" name="discountType">
+                                <input type="radio" class="form-check-input" id="discountType" value="PERCENTAGE"
+                                    formControlName="discountType" name="discountType">
                                 <label class="form-check-label" for="discountType">Porcentagem</label>
                             </div>
 
                             <div class="form-check form-check-inline mt-1">
-                                <input type="radio" class="form-check-input" id="discountType3"
-                                    value="DISCOUNT_FIXED" formControlName="discountType" name="discountType">
+                                <input type="radio" class="form-check-input" id="discountType3" value="DISCOUNT_FIXED"
+                                    formControlName="discountType" name="discountType">
                                 <label class="form-check-label" for="discountType3">Desconto fixo</label>
                             </div>
 
                             <div class="form-check form-check-inline mt-1">
-                                <input type="radio" class="form-check-input" id="discountType2"
-                                    value="FIXED_PRICE" formControlName="discountType" name="discountType">
+                                <input type="radio" class="form-check-input" id="discountType2" value="FIXED_PRICE"
+                                    formControlName="discountType" name="discountType">
                                 <label class="form-check-label" for="discountType2">Preço fixo</label>
                             </div>
 
@@ -43,8 +57,8 @@
                     <div class="col-7">
                         <div class="md-form md-outline" *ngIf="dF.discountType.value == 'DISCOUNT_FIXED'">
                             <input id="discountValue" formControlName="discountValue" currencyMask
-                                [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
-                                placeholder="1.000,00" type="text" class="form-control" mdbCharCounter mdbInput
+                                [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" placeholder="1.000,00"
+                                type="text" class="form-control" mdbCharCounter mdbInput
                                 [ngClass]="{ 'is-invalid': submitted && dF.discountValue.errors }" />
                             <div *ngIf="submitted && dF.discountValue.errors" class="invalid-feedback">
                                 <div *ngIf="dF.discountValue.errors.required">Valor é obrigatório</div>

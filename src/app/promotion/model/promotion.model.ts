@@ -20,6 +20,9 @@ export interface Ids {
 export class Promotion {
 
     campaign: string;
+    couponAmount: number;
+    couponCode: string;
+    cumulative: boolean;
     createdBy: string;
     createdDate: Date;
     description: string;
@@ -46,6 +49,9 @@ export class Promotion {
 
     constructor() {
         this.campaign = null;
+        this.couponAmount = 0;
+        this.couponCode = null;
+        this.cumulative = false;
         this.campaignChannel = null;
         this.createdBy = 'form@promotion'; // TODO: REMOVER
         this.createdDate = null;

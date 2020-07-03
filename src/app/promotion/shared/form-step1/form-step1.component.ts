@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Promotion } from 'src/app/promotion/model/promotion.model';
 import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
@@ -49,7 +49,7 @@ export class FormStep1Component implements OnInit {
     private priceService: PriceService,
     private userService: UserService
   ) {
-
+ 
   }
 
   ngOnInit() {
@@ -66,6 +66,14 @@ export class FormStep1Component implements OnInit {
           this.promotion = res.body;
           if (this.promotion) {
             this.isEditStep = true;
+
+            //Valida se o Cupom realmente é do tipo dele
+            if (this.promotion.promotionType !== this.typeOfPromo.toLocaleUpperCase()) {
+              this.toastrService.warning('Ação inválida');
+              this.router.navigate(['/promotion/']);
+              return;
+            }
+
           }
         },
         (err: any) => {
@@ -154,6 +162,7 @@ export class FormStep1Component implements OnInit {
     this.promotion.endAt = (!this.showPeriod || !this.showEndAt) ? null : moment(this.periodForm.get('endAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
     this.promotion.discountType = this.definitionForm.get('discountType').value;
     this.promotion.discountValue = this.definitionForm.get('discountValue').value;
+    this.promotion.couponCode = this.definitionForm.get('couponCode').value;
     this.promotion.updatedBy = this.user.sub;
     this.promotion.promotionType = (this.typeOfPromo === PromotionTypeEnum.Open)
       ? PromotionTypeEnum.Open.toLocaleUpperCase() : PromotionTypeEnum.Coupon.toLocaleUpperCase();
