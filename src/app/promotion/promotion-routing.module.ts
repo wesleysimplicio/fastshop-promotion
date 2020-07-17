@@ -1,29 +1,22 @@
 
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OpenComponent } from './components/open/open.component';
-import { CouponComponent } from './components/coupon/coupon.component';
-import { FormCouponComponent } from './components/coupon/form-coupon/form-coupon.component';
-import { FormOpenComponent } from './components/open/form-open/form-open.component';
-import { FormOpenProductsComponent } from './components/open/form-open-products/form-open-products.component';
-import { OpenProductsComponent } from './components/open/open-products/open-products.component';
-import { FormOpenRestrictionsComponent } from './components/open/form-open-restrictions/form-open-restrictions.component';
-import { FormOpenStocksComponent } from './components/open/form-open-stocks/form-open-stocks.component';
+import { FormProductsComponent } from './components/form-products/form-products.component';
+import { ProductsComponent } from './components/products/products.component';
+import { ListingComponent } from './components/listing/listing.component';
+import { FormStep1Component } from './components/form-step1/form-step1.component';
+import { FormStep2Component } from './components/form-step2/form-step2.component';
+import { FormStep3Component } from './components/form-step3/form-step3.component';
 
 const routes: Routes = [
-    { path: '', component: OpenComponent },
-    { path: 'promotion/coupon', component: CouponComponent },
-    { path: 'promotion/coupon/add', component: FormCouponComponent },
-    { path: 'promotion/coupon/edit/:id', component: FormCouponComponent },
-    { path: 'promotion/coupon/view/:id', component: FormCouponComponent },
-    { path: 'promotion/open/add', component: FormOpenComponent },
-    { path: 'promotion/open', component: OpenComponent },
-    { path: 'promotion/open/edit/:id', component: FormOpenComponent },
-    { path: 'promotion/open/form/restrictions/:id', component: FormOpenRestrictionsComponent },
-    { path: 'promotion/open/form/stocks/:id', component: FormOpenStocksComponent },
-    { path: 'promotion/open/form/products/:id', component: FormOpenProductsComponent },
-    { path: 'promotion/open/products/:id', component: OpenProductsComponent },
+    { path: '', component: ListingComponent },
+    { path: 'promotion/:typePromo', component: ListingComponent },
+    { path: 'promotion/:typePromo/add', component: FormStep1Component },
+    { path: 'promotion/:typePromo/step1/:id', component: FormStep1Component },
+    { path: 'promotion/:typePromo/step2/:id', component: FormStep2Component },
+    { path: 'promotion/:typePromo/step3/:id', component: FormStep3Component },
+    { path: 'promotion/:typePromo/form/products/:id', component: FormProductsComponent },
+    { path: 'promotion/:typePromo/products/:id', component: ProductsComponent },
 ];
 
 @NgModule({

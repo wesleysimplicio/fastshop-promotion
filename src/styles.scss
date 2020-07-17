@@ -36,3 +36,22 @@ app-headers {
         }
     }
 }
+
+app-load{
+    background: #00000054;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+}
+
+.isDesktop { display: block !important;}
+.isMobile { display: none !important;}
+
+@media only screen and (max-width: 992px){
+
+    .isDesktop { display: none !important;}
+    .isMobile { display: block !important;}
+    app-steps { display: none;}
+}

@@ -1,0 +1,193 @@
+<app-steps *ngIf="!showResponse" [routeId]="routeId" [infoStep]="true" [definitionStep]="true" [periodStep]="true"
+    [productsStep]="productForm.valid" [stockStep]="true" [paymentStep]="true"></app-steps>
+
+<!-- <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb> -->
+
+<!-- UPLOAD -->
+<div class="container animated fadeIn" *ngIf="!showResponse">
+    <form (ngSubmit)="onSubmit()" class="animated fadeIn" enctype="multipart/form-data">
+
+        <div class="row justify-content-md-center">
+            <div class="col-md-6">
+                <img src="assets/img/step3.png" alt="">
+            </div>
+        </div>
+
+        <!-- PRODUCT -->
+        <div class="row justify-content-md-center" [formGroup]="productForm">
+            <div class="col-md-6">
+                <!-- Material form contact -->
+                <mdb-card>
+                    <!--Card content-->
+                    <mdb-card-body class="px-md-5 pt-md-5">
+
+                        <div class="form-row">
+                            <div class="col-md-9">
+                                <h2>Catálogo de produtos</h2>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="md-form md-outline">
+                                    <input type="file" (change)="setFile($event)" formControlName="file"
+                                        [ngClass]="{ 'is-invalid': submitted && pF.file.errors }" class="form-control"
+                                        mdbInput />
+                                    <div *ngIf="submitted && pF.file.errors" class="invalid-feedback">
+                                        <div *ngIf="pF.file.errors.required">Arquivo é obrigatório</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+                            <h5>Modelos para download:</h5>
+                            <div class="col-md-12">
+                                <h6>
+                                    <a href="assets/templates/percentage.csv" target="_blank">
+                                        <i class="fas fa-file-excel" aria-hidden="true"></i> Porcentagem / Desconto Fixo
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="col-md-12" *ngIf="typePromo!='coupon'">
+                                <h6>
+                                    <a href="assets/templates/pricefixed_novo.csv" target="_blank">
+                                        <i class="fas fa-file-excel" aria-hidden="true"></i> Preço Fixo
+                                    </a>
+                                </h6>
+                            </div>
+                        </div>
+                    </mdb-card-body>
+
+                </mdb-card>
+                <!-- Material form contact -->
+            </div>
+        </div>
+        <!-- /PRODUCT -->
+
+        <div class="row">
+            <div class="col-md-5 offset-md-4 text-right">
+                <button type="button" outline="true" (click)="onCancel()" mdbBtn color="danger" mdbWavesEffect
+                    class="z-depth-0 my-4 waves-effect">Cancelar</button>
+                <button type="button" outline="true" (click)="onBack()" mdbBtn color="success" mdbWavesEffect
+                    class="z-depth-0 my-4 ml-3 waves-effect">Voltar</button>
+                <button type="submit" [disabled]="isDisabledSend" mdbBtn color="success" mdbWavesEffect
+                    class="z-depth-0 my-4 ml-3 waves-effect">Upload</button>
+            </div>
+        </div>
+    </form>
+    <!-- Form -->
+</div>
+<!-- UPLOAD -->
+
+<!-- Resultado -->
+<div *ngIf="showResponse" class="animated fadeIn">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Resultado do upload</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <mdb-card>
+                <mdb-card-body class="pt-md-12">
+                    <div class="row m-0">
+                        <div class="col-md-4 text-center">
+                            <h2>Total de produtos com sucesso: {{responseProducts.summary.totalProductsIncluded}} </h2>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h2>Total de linhas com sucesso: {{responseProducts.summary.totalLinesSuccess}} </h2>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h2>Total de linhas com erros: {{responseProducts.summary.totalLinesErrors}} </h2>
+                        </div>
+                    </div>
+                </mdb-card-body>
+            </mdb-card>
+        </div>
+    </div>
+
+    <accordion [isAnimated]="true" [closeOthers]="true">
+        <accordion-group heading="Produtos incluídos com sucesso">
+            <div class="col-md-12">
+                <ngx-datatable style="width: 100%" class="material" [rows]="responseProducts.products"
+                    [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="0" rowHeight="auto"
+                    [limit]="100">
+                    <ngx-datatable-column name="Sku" [width]="40"></ngx-datatable-column>
+                    <!-- <ngx-datatable-column name="Status" [width]="20">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <div *ngIf="row.status == 'ENABLE'" class="enableColor">
+                                <i class="fas fa-circle fa-xs mr-1"></i> Ativo
+                            </div>
+                            <div *ngIf="row.status != 'ENABLE'" class="disableColor">
+                                <i class="fas fa-circle fa-xs mr-1"></i> Inativo
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column> -->
+                    <ngx-datatable-column name="Produto" prop="prd"></ngx-datatable-column>
+                    <ngx-datatable-column *ngIf="showPrice" name="Promocional" prop="fixedPrice">
+                        <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row"
+                            ngx-datatable-cell-template>
+                            <div *ngIf="row.fixedPrice">
+                                <!-- <input name="product" disabled id="fixedPrice-{{rowIndex}}" type="number"
+                                    [value]="row.fixedPrice" class="form-control" mdbInput /> -->
+                                R$ {{row.fixedPrice | number:'.2-2' }}
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Criado" [width]="20" prop="createdDate">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.createdDate | date:'dd/MM/yyyy HH:mm'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </accordion-group>
+        <accordion-group heading="Linhas não incluídas">
+            <div class="col-md-12">
+                <ngx-datatable style="width: 100%; background: #ff000014!important;" class="material"
+                    [rows]="responseProducts.errorsDetails" [columnMode]="ColumnMode.force" [headerHeight]="50"
+                    [footerHeight]="0" rowHeight="auto" [limit]="10">
+                    <ngx-datatable-column name="Número da linha" prop="lineNumber" [width]="20"></ngx-datatable-column>
+                    <ngx-datatable-column name="Conteúdo da linha" prop="line"></ngx-datatable-column>
+                    <ngx-datatable-column name="Descrição" prop="messageResponse">
+                        <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row"
+                            ngx-datatable-cell-template>
+                            {{value.description}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </accordion-group>
+        <accordion-group heading="Linhas incluídas com sucesso">
+            <div class="col-md-12">
+                <ngx-datatable style="width: 100%; background: #00ff0014!important;" class="material"
+                    [rows]="responseProducts.successDetails" [columnMode]="ColumnMode.force" [headerHeight]="50"
+                    [footerHeight]="0" rowHeight="auto" [limit]="10">
+                    <ngx-datatable-column name="Número da linha" prop="lineNumber" [width]="20"></ngx-datatable-column>
+                    <ngx-datatable-column name="Conteúdo da linha" prop="line"></ngx-datatable-column>
+                    <ngx-datatable-column name="Descrição" prop="messageResponse">
+                        <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row"
+                            ngx-datatable-cell-template>
+                            {{value.description}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </accordion-group>
+    </accordion>
+
+    <div class="row  animated fadeIn">
+        <div class="col-md-6 offset-md-6 text-right">
+            <button type="button" outline="true" (click)="showResponse=false" mdbBtn color="danger" mdbWavesEffect
+                class="z-depth-0 my-4 waves-effect">Upload novamente</button>
+            <button type="button" (click)="onProducts()" mdbBtn color="success" mdbWavesEffect
+                class="z-depth-0 my-4 ml-3 waves-effect">Ir para produtos</button>
+        </div>
+    </div>
+
+</div>
+<!-- Resultado -->

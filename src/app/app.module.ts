@@ -45,7 +45,7 @@ export let CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     HomeComponent,
     LoginComponent,
     UnauthorizedUserComponent,
-    ShowAuthedDirective
+    ShowAuthedDirective,
   ],
   imports: [
     AppRoutingModule,

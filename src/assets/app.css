@@ -18252,7 +18252,7 @@ a.waves-light {
 
 .md-form {
     position: relative;
-    margin-top: 1.5rem;
+    /* margin-top: 1.5rem; */
     margin-bottom: 2rem
 }
 
@@ -28998,12 +28998,12 @@ mdb-progress-spinner[mode=indeterminate] svg {
 
 .navbar .dropdown.multi-level-dropdown .dropdown-menu .dropdown-item {
     width: 100%;
-    transition: .3s
+    transition: .2s
 }
 
 .navbar .dropdown.multi-level-dropdown .dropdown-menu .dropdown-item:hover {
     background-color: rgba(0, 0, 0, .2)!important;
-    transition: .3s;
+    transition: .2s;
     box-shadow: none;
     border-radius: 0
 }

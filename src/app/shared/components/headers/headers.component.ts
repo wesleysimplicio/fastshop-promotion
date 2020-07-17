@@ -1,7 +1,7 @@
 import { environment } from '../../../../environments/environment';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../../model/user/user.model';
 import { UserService } from '../../model/user/user.service';
 import { AccessLevel } from '../../enum/access-level.enum';

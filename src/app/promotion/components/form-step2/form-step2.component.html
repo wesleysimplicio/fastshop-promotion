@@ -1,0 +1,160 @@
+<app-steps [typePromo]="typePromo" [routeId]="routeId" [infoStep]="true" [definitionStep]="true" [periodStep]="true" [paymentStep]="true"
+    [stockStep]="true"></app-steps>
+
+<!-- <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb> -->
+
+<div class="container animated fadeIn">
+    <form class="animated fadeIn">
+
+        <div class="row justify-content-md-center">
+            <div class="col-md-6">
+                <img *ngIf="typePromo=='open'" src="assets/img/step2.png" alt="">
+                <img *ngIf="typePromo=='coupon'" src="assets/img/step2_coupon.png" alt="">
+            </div>
+        </div>
+
+        <!-- TIPO PAGAMENTOS -->
+        <div class="row justify-content-md-center">
+            <div class="col-md-6">
+                <mdb-card>
+                    <mdb-card-body class="px-md-5 pt-md-5">
+
+                        <div class="form-row">
+                            <div class="col-md-9">
+                                <h2>Limitar tipo de pagamento?</h2>
+                                <h5 class="font-weight-light">Selecione os tipos de pagamento permitidos.</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="switch">
+                                    <label>
+                                        <input type="checkbox" (click)="togglePayment()" [checked]="showPayment">
+                                        <span class="lever"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="showPayment" [ngClass]="(!showPayment)? '' :'animated fadeIn'">
+
+                            <!-- Tipo de pagamentos -->
+                            <div class="animated fadeIn">
+                                <div class="md-form col-12">
+                                    <div class="row">
+                                        Tipo de pagamentos
+                                        <a href="javascript:void(0)" (click)="showModalPayment=true"
+                                            class="font-12 select-link" mdbWavesEffect> Selecionar</a>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12 px-0">
+                                        <div *ngFor="let sel of selecteds; let i = index " class="chip">
+                                            {{sel.name}}
+                                            <mdb-icon fas icon="times" class="close" (click)="remove(i)"></mdb-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </mdb-card-body>
+                </mdb-card>
+            </div>
+        </div>
+        <!-- /TIPO PAGAMENTOS -->
+
+        <!-- Campanha -->
+        <div class="row justify-content-md-center" [formGroup]="campaignForm">
+            <div class="col-md-6">
+                <mdb-card>
+                    <mdb-card-body class="px-md-5 pt-md-5">
+
+                        <div class="form-row">
+                            <div class="col-md-10">
+                                <h2>A promoção é ativada através de uma campanha ou parceiro de mídia?</h2>
+                                <h5 class="font-weight-light">Adicione as regras para ativar a promoção através de uma campanha (banner, link, rede social, etc).</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="switch">
+                                    <label>
+                                        <input type="checkbox" (click)="toggleCampaign()" [checked]="showCampaign">
+                                        <span class="lever"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="showCampaign" [ngClass]="(!showCampaign)? '' :'animated fadeIn'">
+
+
+                            <div class="form-row mt-2">
+                                <div class="col-md-11">
+                                    <div class="md-form md-outline">
+                                        <input id="partner" type="text" formControlName="partner" maxlength="30"
+                                            placeholder="Ex: Google" class="form-control"
+                                            mdbCharCounter mdbInput
+                                            [ngClass]="{ 'is-invalid': submitted && cF.partner.errors }" />
+                                        <div *ngIf="submitted && cF.partner.errors" class="invalid-feedback">
+                                            <div *ngIf="cF.partner.errors.required">Parceiro é obrigatório</div>
+                                        </div>
+                                        <label for="partner">Parceiro</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-row">
+                                <div class="col-md-11">
+                                    <div class="md-form md-outline">
+                                        <input id="campaignChannel" type="text" formControlName="campaignChannel" maxlength="40"
+                                            placeholder="Ex: YouTube, Facebook" class="form-control"
+                                            mdbCharCounter mdbInput
+                                            [ngClass]="{ 'is-invalid': submitted && cF.campaignChannel.errors }" />
+                                        <div *ngIf="submitted && cF.campaignChannel.errors" class="invalid-feedback">
+                                            <div *ngIf="cF.campaignChannel.errors.required">Canal é obrigatório</div>
+                                        </div>
+                                        <label for="campaignChannel">Canal de campanha</label>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="form-row">
+                                <div class="col-md-11">
+                                    <div class="md-form md-outline">
+                                        <input id="campaign" type="text" formControlName="campaign" maxlength="30"
+                                            placeholder="Ex: Samsung Galaxy S10 + Galaxy Fit" class="form-control"
+                                            mdbCharCounter mdbInput
+                                            [ngClass]="{ 'is-invalid': submitted && cF.campaign.errors }" />
+                                        <div *ngIf="submitted && cF.campaign.errors" class="invalid-feedback">
+                                            <div *ngIf="cF.campaign.errors.required">Campanha é obrigatório</div>
+                                            <!-- <div *ngIf="cF.campaign.errors.min">O campo deve ter pelo menos '5' caracteres e no máximo '30' caracteres</div> -->
+                                        </div>
+                                        <label for="campaign">Campanha</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </mdb-card-body>
+                </mdb-card>
+                <!-- Material form contact -->
+            </div>
+        </div>
+        <!-- /Campanha -->
+
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-right">
+                <button type="button" (click)="onBack()" outline="true" mdbBtn color="success" mdbWavesEffect
+                    class="z-depth-0 my-4 waves-effect">Voltar</button>
+
+                <button *ngIf="isChanges()" (click)="onlySave=true;onSubmit();" type="button" mdbBtn color="success"
+                    mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Salvar</button>
+                <button type="button" (click)="onlySave=false;onSubmit();" mdbBtn color="success" mdbWavesEffect
+                    class="z-depth-0 my-4 ml-3 waves-effect">Ir para próximo passo</button>
+            </div>
+        </div>
+    </form>
+    <!-- Form -->
+</div>
+
+<app-modal-selection #appModal *ngIf="showModalPayment" [title]="title" [rows]="paymentTypes" [temp]="paymentTypes"
+    [selected]="selecteds" (getSelecteds)="selection($event)"></app-modal-selection>

@@ -20,7 +20,7 @@ export interface Ids {
 export class Promotion {
 
     campaign: string;
-    couponAmount: number;
+    couponAmount?: number;
     couponCode: string;
     cumulative: boolean;
     createdBy: string;
@@ -49,7 +49,7 @@ export class Promotion {
 
     constructor() {
         this.campaign = null;
-        this.couponAmount = 0;
+        this.couponAmount = null;
         this.couponCode = null;
         this.cumulative = false;
         this.campaignChannel = null;

@@ -1,13 +1,13 @@
 <app-headers></app-headers>
 
-<div class="loading" [hidden]="!load">
+<div class="loading" *ngIf="load">
     <div class="block">
         <app-load></app-load>
     </div>
 </div>
 
 <div class="row justify-content-md-center">
-    <div class="col-11">
+    <div class="col-md-11">
         <router-outlet></router-outlet>
     </div>
 </div>

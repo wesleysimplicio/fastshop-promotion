@@ -1,0 +1,74 @@
+<div class="row justify-content-md-center" [formGroup]="periodForm">
+    <div class="col-md-6">
+        <!-- Material form contact -->
+        <mdb-card>
+            <!--Card content-->
+            <mdb-card-body class="px-md-5 pt-md-5">
+                <!-- Form -->
+
+                <div class="form-row">
+                    <div class="col-md-10">
+                        <h2>Definir período {{strPromo}}?</h2>
+                        <h5>Defina uma data de início e término para {{strPromo}}.</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="switch">
+                            <label>
+                                <input type="checkbox" (click)="togglePeriod()" [checked]="showPeriod">
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+                <div *ngIf="showPeriod" [ngClass]="(!showPeriod)? '' :'animated fadeIn'  ">
+                    <div class="form-row mt-2">
+                        <div class="col-md-7">
+                            <div class="md-form md-outline">
+                                <input id="date_start" formControlName="startAt" mask="00/00/0000 00:00"
+                                    type="text" maxlength="16" placeholder="DD/MM/AAAA HH:MM"
+                                    class="form-control" mdbCharCounter mdbInput
+                                    [ngClass]="{ 'is-invalid': submitted && pF.startAt.errors }" />
+                                <div *ngIf="submitted && pF.startAt.errors" class="invalid-feedback">
+                                    <div *ngIf="pF.startAt.errors.required">Início é obrigatório</div>
+                                </div>
+                                <label for="date_start">Início</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row" *ngIf="showEndAt">
+                        <div class="col-md-7">
+                            <div class="md-form md-outline">
+                                <input id="date_end" formControlName="endAt" mask="00/00/0000 00:00" type="text"
+                                    maxlength="16" placeholder="DD/MM/AAAA HH:MM" class="form-control"
+                                    mdbCharCounter mdbInput
+                                    [ngClass]="{ 'is-invalid': submitted && pF.endAt.errors }" />
+                                <div *ngIf="submitted && pF.endAt.errors" class="invalid-feedback">
+                                    <div *ngIf="pF.endAt.errors.required">Término é obrigatório</div>
+                                </div>
+                                <label for="date_end">Término</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-7">
+                            <div class="md-form md-outline">
+                                <mdb-checkbox *ngIf="showEndAt" (click)="endAtNull()" [checked]="false">Sem
+                                    término</mdb-checkbox>
+                                <mdb-checkbox *ngIf="!showEndAt" (click)="endAtNull()" [checked]="true">Sem
+                                    término</mdb-checkbox>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Form -->
+
+            </mdb-card-body>
+
+        </mdb-card>
+        <!-- Material form contact -->
+    </div>
+</div>

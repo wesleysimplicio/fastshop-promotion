@@ -6,14 +6,18 @@ import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { HttpError } from '../../shared/interface/http-error';
 import { Product } from '../model/product.model';
-
+import { TokenService } from 'src/app/shared/services/token.service';
 
 @Injectable()
 export class PromotionService {
 
+    token: string;
     constructor(
-        private http: HttpClient
-    ) { }
+        private http: HttpClient,
+        private tokenService: TokenService
+    ) {
+        this.token = this.tokenService.getToken();
+    }
 
     updatePromotionPriceProduct(idPromotion, price, sku): Observable<any> {
         return this.http.patch(`${environment.apiUrl}v1/promotion/${idPromotion}/product/${sku}/fixed-price`,
@@ -110,18 +114,27 @@ export class PromotionService {
             ));
     }
 
-    addPromotionProduct(idPromotion, data): Observable<any> {
+    addPromotionProduct(idPromotion, data): Promise<Observable<any>> {
         const formData: FormData = new FormData();
         formData.append('file', data, 'arquivo.csv');
-        return this.http.post<Boolean>(`${environment.apiUrl}v1/promotion/${idPromotion}/products`, formData);
+        return this.http.post<Boolean>(`${environment.apiUrl}v1/promotion/${idPromotion}/products`, formData, { headers: this.getHttpOptionsOnlyToken() }).toPromise<any>();
     }
 
 
     private getHttpOptions() {
-
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             'checkout-api-version': 'v1',
+            'Authorization': `Bearer ${this.token}`
+        });
+
+        return headers;
+    }
+
+    private getHttpOptionsOnlyToken() {
+        const headers = new HttpHeaders({
+            'timeout': `${600000}`,
+            'Authorization': `Bearer ${this.token}`
         });
 
         return headers;
