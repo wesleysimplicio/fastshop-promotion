@@ -21,7 +21,8 @@
                                 [ngClass]="{ 'is-invalid': submitted && dF.couponCode.errors }" />
                             <div *ngIf="submitted && dF.couponCode.errors" class="invalid-feedback">
                                 <div *ngIf="dF.couponCode.errors.required">Cupom é obrigatório</div>
-                                <div *ngIf="dF.couponCode.value.length < 4">Mínimo de 4 caracteres</div>
+                                <div *ngIf="dF.couponCode.value && dF.couponCode.value.length < 4">Mínimo de 4
+                                    caracteres</div>
                             </div>
                             <label for="couponCode">Cupom de desconto</label>
                         </div>
@@ -100,11 +101,13 @@
                     <div class="form-row mt-1">
                         <div class="col-md-7">
                             <div class="md-form md-outline">
-                                <input id="couponAmount" formControlName="couponAmount" type="text" maxlength="10"
-                                    placeholder="1000" class="form-control" mdbCharCounter mdbInput
+                                <input id="couponAmount" formControlName="couponAmount" type="text" maxlength="6"
+                                    placeholder="Máximo 100.000" class="form-control" mdbCharCounter mdbInput
                                     [ngClass]="{ 'is-invalid': submitted && dF.couponAmount.errors }" />
                                 <div *ngIf="submitted && dF.couponAmount.errors" class="invalid-feedback">
                                     <div *ngIf="dF.couponAmount.errors.required">Quantidade é obrigatória</div>
+                                    <div *ngIf="dF.couponAmount.errors.max">Máximo permitido até 100.000</div>
+
                                 </div>
                                 <label for="couponAmount">Quantidade de cupons</label>
                             </div>

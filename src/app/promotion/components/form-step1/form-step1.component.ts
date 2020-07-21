@@ -191,14 +191,15 @@ export class FormStep1Component implements OnInit {
   }
 
   isChanges() {
-    // console.log('this.isChangeInfo', this.isChangeInfo);
-    // console.log('this.isChangeDefinition', this.isChangeDefinition);
-    // console.log('this.isChangePeriod', this.isChangePeriod);
+    console.log('this.isChangeInfo', this.isChangeInfo);
+    console.log('this.isChangeDefinition', this.isChangeDefinition);
+    console.log('this.isChangePeriod', this.isChangePeriod);
 
     return (this.isChangePeriod || this.isChangeDefinition || this.isChangeInfo) ? true : false;
   }
 
   onSubmit() {
+
     //Mexeu em nada, redireciona direto
     if (this.isEditStep && !this.isChanges()) {
       this.router.navigate(['/promotion/' + this.typePromo + '/step2/' + this.routeId]);
@@ -236,19 +237,31 @@ export class FormStep1Component implements OnInit {
     }
 
     //PERIOD
-    if (this.isChangePeriod) {
+    if (this.isChangePeriod && this.isEditStep) {
       this.promotion.startAt = (!this.showPeriod) ?
         moment().add(1, 'minutes').format("YYYY-MM-DDTHH:mm:ss").toString() :
         moment(this.periodForm.get('startAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
-      this.promotion.endAt = (!this.showPeriod || !this.showEndAt) ? null : moment(this.periodForm.get('endAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
+    } else {
+      this.promotion.startAt = (!this.showPeriod) ?
+        moment().add(1, 'minutes').format("YYYY-MM-DDTHH:mm:ss").toString() :
+        moment(this.periodForm.get('startAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
+    }
+
+    if (!this.showEndAt) {
+      this.promotion.endAt = null;
+    } else {
+      this.promotion.endAt = (this.periodForm.get('endAt').value !== null) ? moment(this.periodForm.get('endAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString() : null;
     }
 
     //DEFINITION
     if (this.isChangeDefinition) {
       this.promotion.discountType = this.definitionForm.get('discountType').value;
       this.promotion.discountValue = this.definitionForm.get('discountValue').value;
-      this.promotion.couponCode = this.definitionForm.get('couponCode').value.toLocaleUpperCase().replace(/\s/g, "");
+      if (this.definitionForm.get('couponCode').value) {
+        this.promotion.couponCode = this.definitionForm.get('couponCode').value.toLocaleUpperCase().replace(/\s/g, "");
+      }
       this.promotion.couponAmount = this.definitionForm.get('couponAmount').value;
+
       this.promotion.cumulative = this.showCumulative;
     }
 

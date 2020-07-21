@@ -54,7 +54,7 @@ export class PeriodComponent implements OnInit {
       this.periodForm.markAsDirty();
     }
     this.getForm.emit(this.periodForm);
-    this.periodForm.valueChanges.subscribe(
+    this.periodForm.statusChanges.subscribe(
       result => {
         this.getFormValid.emit(this.isFormsValid());
         this.getShowPeriod.emit(this.showPeriod);

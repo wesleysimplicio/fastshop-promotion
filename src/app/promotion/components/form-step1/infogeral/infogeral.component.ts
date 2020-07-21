@@ -33,7 +33,7 @@ export class InfogeralComponent implements OnInit {
       this.activeInfoGeral = (this.promotion.status === StatusEnum.Active) ? true : false;
     }
     this.getForm.emit(this.infoGeralForm);
-    this.infoGeralForm.valueChanges.subscribe(
+    this.infoGeralForm.statusChanges.subscribe(
       result => {
         this.getForm.emit(this.infoGeralForm);
         this.getFormValid.emit(this.isFormsValid());
@@ -48,17 +48,21 @@ export class InfogeralComponent implements OnInit {
     if (this.typePromo === PromotionTypeEnum.Coupon) {
       this.strNameOfPromo = 'Nome do cupom';
       this.strPromo = 'Cupom';
+      this.infoGeralForm.get('hierarchy').clearValidators();
     } else {
+      this.infoGeralForm.get('hierarchy').setValidators(Validators.required);
       this.strNameOfPromo = 'Nome da promoção';
       this.strPromo = 'Promoção';
     }
+    this.infoGeralForm.updateValueAndValidity();
+    this.infoGeralForm.markAsDirty();
   }
 
   buildForm() {
     this.infoGeralForm = this.formBuilder.group({
       id: [this.promotion.id],
       name: [this.promotion.name, Validators.required],
-      hierarchy: [this.promotion.hierarchy, Validators.required],
+      hierarchy: [this.promotion.hierarchy],
       status: [this.promotion.status],
       description: [this.promotion.description],
       tag: [this.promotion.tag]

@@ -59,7 +59,7 @@
                     </div>
                 </div>
 
-                <div class="form-row">
+                <div class="form-row" *ngIf="typePromo!='coupon'">
                     <div class="col-md-11">
                         <div class="md-form md-outline">
                             <input id="coupon" type="text" formControlName="tag" maxlength="40"

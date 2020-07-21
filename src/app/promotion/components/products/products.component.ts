@@ -8,6 +8,7 @@ import { Product } from '../../model/product.model';
 import { Promotion } from '../../model/promotion.model';
 import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
 import { UtilitiesService } from 'src/app/shared/services/utilities.service';
+import { PromotionTypeEnum } from '../../enum/promotion-type.enum';
 
 @Component({
   selector: 'app-products',
@@ -27,7 +28,9 @@ export class ProductsComponent implements OnInit {
   promotion: Promotion;
   breadcrumbs = new Array<IBreadcrumb>();
   showPrice = false;
-  
+  typePromo = '';
+  txtOfPromo = '';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -38,28 +41,13 @@ export class ProductsComponent implements OnInit {
 
   ) {
     this.routeId = this.route.snapshot.params.id;
+    this.typePromo = this.route.snapshot.params.typePromo;
+
     this.search = window.localStorage.getItem('PROMO_SEARCH'); 
-    this.breadcrumbs.push(
-      {
-        url: '/promotion',
-        label: 'Promoção'
-      },
-      {
-        url: '/promotion/open',
-        label: 'Vitrine'
-      },
-      {
-        url: '/promotion/open/step1/' + this.routeId,
-        label: 'Cadastro'
-      },
-      {
-        url: '',
-        label: 'Produtos'
-      },
-    );
   }
 
   ngOnInit() {
+    this.loadTypePromo();
     if (!this.routeId) {
       this.toastrService.warning('Ação inválida');
       this.router.navigate(['/promotion/open']);
@@ -68,6 +56,55 @@ export class ProductsComponent implements OnInit {
     this.getPromotion();
     this.getPromotionProducts();
     this.buildForm();
+  }
+
+  loadTypePromo(){
+    this.breadcrumbs = [];
+    this.breadcrumbs.push(
+      {
+        url: '/promotion',
+        label: 'Promoção'
+      },
+    );
+
+    switch (this.typePromo) {
+      case PromotionTypeEnum.Coupon:
+        this.breadcrumbs.push(
+          {
+            url: '/promotion/coupon',
+            label: 'Cupom'
+          },
+          {
+            url: '/promotion/coupon/step1/' + this.routeId,
+            label: 'Cadastro'
+          },
+          {
+            url: '',
+            label: 'Produtos'
+          },
+        );
+        this.txtOfPromo = 'do cupom';
+        break;
+
+      default:
+        this.typePromo = 'open';
+        this.txtOfPromo = 'da promoção';
+        this.breadcrumbs.push(
+          {
+            url: '/promotion/open',
+            label: 'Vitrine'
+          },
+          {
+            url: '/promotion/open/step1/' + this.routeId,
+            label: 'Cadastro'
+          },
+          {
+            url: '',
+            label: 'Produtos'
+          },
+        );
+        break;
+    }
   }
 
   getPromotion() {

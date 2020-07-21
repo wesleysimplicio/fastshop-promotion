@@ -44,12 +44,14 @@ export class DefinitionComponent implements OnInit { //OnChanges
       if (this.promotion.couponAmount) {
         this.showCouponAmount = true;
         this.definitionForm.get('couponAmount').setValue(this.promotion.couponAmount);
-        this.definitionForm.get('couponAmount').setValidators(Validators.required);
+        this.definitionForm.get('couponAmount').setValidators([Validators.required, Validators.max(100000)]);
+      }else{
+        this.definitionForm.get('couponAmount').setValue(null);
       }
     }
     this.promoType();
     this.getForm.emit(this.definitionForm);
-    this.definitionForm.valueChanges.subscribe(
+    this.definitionForm.statusChanges.subscribe(
       result => {
         this.getForm.emit(this.definitionForm);
         this.getFormValid.emit(this.isFormsValid());
@@ -63,7 +65,9 @@ export class DefinitionComponent implements OnInit { //OnChanges
 
   promoType() {
     if (this.typePromo === PromotionTypeEnum.Coupon) {
-      this.definitionForm.get('couponAmount').setValidators(Validators.required);
+      if (this.showCouponAmount) {
+        this.definitionForm.get('couponAmount').setValidators([Validators.required, Validators.max(100000)]);
+      }
       this.definitionForm.get('couponCode').setValidators(
         [Validators.required, Validators.minLength(4), Validators.maxLength(16)]);
       this.strOfPromo = 'do cupom';
@@ -79,7 +83,7 @@ export class DefinitionComponent implements OnInit { //OnChanges
   toggleCouponAmount() {
     if (!this.showCouponAmount) {
       this.showCouponAmount = true;
-      this.definitionForm.get('couponAmount').setValidators(Validators.required);
+      this.definitionForm.get('couponAmount').setValidators([Validators.required, Validators.max(100000)]);
     } else {
       this.showCouponAmount = false;
       this.definitionForm.get('couponAmount').clearValidators();

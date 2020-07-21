@@ -2,10 +2,10 @@
 
 <div class="row animated fadeIn mt-3">
     <div class="col-md-9" *ngIf="promotion">
-        <h1>Produtos da promoção - {{promotion.name}}</h1>
+        <h1>Produtos {{txtOfPromo}} - {{promotion.name}}</h1>
     </div>
     <div class="col-md-2 offset-md-1 text-right">
-        <a routerLink="/promotion/open" mdbBtn color="success" mdbWavesEffect
+        <a routerLink="/promotion/{{typePromo}}" mdbBtn color="success" mdbWavesEffect
             class="z-depth-0 waves-effect">Ir para painel</a>
     </div>
 </div>
@@ -59,7 +59,7 @@
 
 <div class="row animated fadeIn">
     <div class="col-md-5 offset-md-7 text-right">
-        <a routerLink="/promotion/open" mdbBtn color="success" mdbWavesEffect
+        <a routerLink="/promotion/{{typePromo}}" mdbBtn color="success" mdbWavesEffect
             class="z-depth-0 my-4 waves-effect">Ir para painel</a>
     </div>
 </div>
