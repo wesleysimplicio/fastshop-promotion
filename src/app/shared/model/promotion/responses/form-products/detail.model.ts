@@ -6,7 +6,7 @@ export class Detail {
     lineNumber: number;
     messageResponse: Message;
 
-    constructor(){
+  constructor(){
         this.line = '';
         this.lineNumber = null;
         this.messageResponse = null;

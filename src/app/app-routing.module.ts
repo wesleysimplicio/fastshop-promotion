@@ -9,7 +9,7 @@ import { UnauthorizedUserComponent } from './shared/components/unauthorized-user
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/promotion',
     pathMatch: 'full'
   },
   { path: 'login', component: LoginComponent },
@@ -22,6 +22,10 @@ const routes: Routes = [
     path: 'promotion',
     loadChildren: () => import('./promotion/promotion.module').then(m => m.PromotionModule),
     canActivate: [AuthGuardService]
+  },
+  {
+    path: 'report',
+    loadChildren: () => import('./report/report.module').then(r => r.ReportModule)
   },
   {
     path: 'usuario-nao-autorizado',

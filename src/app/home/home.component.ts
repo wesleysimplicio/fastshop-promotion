@@ -1,3 +1,4 @@
+import { User } from './../shared/model/user/user.model';
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../shared/services/auth.service';
@@ -11,23 +12,23 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
+  user = new User();
+
   constructor(
     private router: Router,
     public service: AuthService,
-    private loading: NgxSpinnerService,
-    private userService: UserService
+    private userService: UserService,
+
   ) { }
 
   ngOnInit() {
     this.service.completeAuthentication().then();
-    this.userService.notifyUserLoggedSubject();
-    this.userService.notifyAccessLevelSubject();
     this.hasUserLogged();
   }
 
   private hasUserLogged(): void {
-    const userLogged = this.userService.getUserLogged();
-    if (!userLogged) {
+    this.user = this.userService.getUserLogged();
+    if (!this.user) {
       this.router.navigate(['/login']);
     }
   }

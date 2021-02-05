@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { Passport } from '../shared/model/login/passport.model';
+
+import { User } from './../shared/model/user/user.model';
 import { PassportUserService } from '../shared/services/passport-user-service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { UserService } from '../shared/model/user/user.service';
 
 @Component({
   selector: 'app-login',
@@ -12,29 +13,20 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class LoginComponent implements OnInit {
 
+  user = new User();
+
   constructor(
     private passportUserService: PassportUserService,
     private router: Router,
-    private loading: NgxSpinnerService
+    private loading: NgxSpinnerService,
+    private userService: UserService,
   ) { }
 
-  ngOnInit() {
+ngOnInit() {
     this.loading.show();
-    this.getPassport();
   }
 
-  private getPassport() {
-    if (window.localStorage.getItem('PROMO_LOGOUT')) {
-      window.localStorage.removeItem('PROMO_LOGOUT');
-      window.location.href = environment.logout;
-    } else {
-      const passport = this.passportUserService.get();
-      passport ? this.login(passport) : window.location.href = environment.login;
-    }
+  logout(): void {
+    this.userService.removeCredentials();
   }
-
-  private login = (passport: Passport) => {
-    this.router.navigate(['/promotion']);
-  }
-
 }

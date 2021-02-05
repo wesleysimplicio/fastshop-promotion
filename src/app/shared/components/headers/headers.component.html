@@ -7,13 +7,14 @@
 
             <!-- Navbar brand -->
             <mdb-navbar-brand>
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="#" *ngIf="accessLevel">
                     <img src="assets/img/fastshop.png" height="40" alt="">
                 </a>
+                <img src="assets/img/fastshop.png" height="40" alt="" *ngIf="!accessLevel">
             </mdb-navbar-brand>
 
             <!-- Collapsible content -->
-            <links>
+            <links *ngIf="accessLevel">
 
                 <!-- Links -->
                 <ul class="navbar-nav mr-auto">
@@ -24,7 +25,7 @@
                         <a class="nav-link waves-light" mdbWavesEffect>Preço</a>
                     </li>
 
-                    <!-- Dropdown -->
+                    <!-- Dropdown
                     <li class="nav-item dropdown" dropdown>
                         <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light"
                             mdbWavesEffect>
@@ -34,9 +35,18 @@
                                 href="#">Vitrine</a>
                             <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/promotion/coupon"
                                 href="#">Cupom</a>
-                            <!--  <a class="dropdown-item waves-light" mdbWavesEffect href="#">Vale Presente</a> 
-                            <div class="divider dropdown-divider"></div>-->
+                            <a class="dropdown-item waves-light" mdbWavesEffect routerLink="/promotion/prime"
+                                href="#">Prime</a>
                         </div>
+                    </li> 
+                  -->
+
+                    <li class="nav-item">
+                        <a class="nav-link waves-light" mdbWavesEffect routerLink="/promotion">Promoção</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link waves-light" mdbWavesEffect routerLink="/report">Relatórios</a>
                     </li>
 
                 </ul>
@@ -45,12 +55,10 @@
                 <ul class="navbar-nav ml-auto nav-flex-icons">
                     <!-- *ngIf="(userLoggedSubject$ | async) as user; else logoutExit" -->
                     <li class="nav-item avatar dropdown" dropdown>
-                        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light"
-                            mdbWavesEffect>
+                        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
                             {{ user?.sub}}</a>
-                        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary"
-                            role="menu">
-                            <a class="dropdown-item waves-light" mdbWavesEffect href="#" (click)="logout()">Sair</a>
+                        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+                            <a class="dropdown-item waves-light" mdbWavesEffect (click)="logout()">Sair</a>
                         </div>
                     </li>
                     <!-- <ng-template #logoutExit>

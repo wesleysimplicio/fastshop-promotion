@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 
 import { BreadcrumbComponent } from './breadcrumb.component';
 
-xdescribe('BreadcrumbComponent', () => {
+describe('BreadcrumbComponent', () => {
   let component: BreadcrumbComponent;
   let fixture: ComponentFixture<BreadcrumbComponent>;
 

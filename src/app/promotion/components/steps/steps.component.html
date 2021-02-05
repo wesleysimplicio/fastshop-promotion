@@ -25,8 +25,8 @@
         </div>
     </div>
 
-    <h5 class="mt-5">Restrições {{strPromo}}</h5>
-    <div class="row" [ngClass]="(paymentStep)? 'active' : ''">
+    <h5 class="mt-5" *ngIf="typePromo === 'open'">Restrições {{strPromo}}</h5>
+    <div class="row" *ngIf="typePromo === 'open'" [ngClass]="(paymentStep)? 'active' : ''">
         <div class="col-md-10">
             <strong>Forma de pagamento</strong>
         </div>

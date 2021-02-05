@@ -1,5 +1,6 @@
+import { BreadcrumbModule } from './../shared/components/breadcrumb/breadcrumb.module';
 import { NgModule } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { PromotionRoutingModule } from './promotion-routing.module';
 import { ProductsComponent } from './components/products/products.component';
 import { PromotionService } from './services/promotion.service';
@@ -11,7 +12,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormProductsComponent } from './components/form-products/form-products.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { CurrencyMaskModule } from 'ngx-currency-mask';
-import { BreadcrumbComponent } from '../shared/components/breadcrumb/breadcrumb.component';
 import { PriceService } from '../shared/services/price.service';
 import { ModalSelectionComponent } from '../shared/components/modal/modal-selection/modal-selection.component';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -30,7 +30,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     StepsComponent,
     ProductsComponent,
     FormProductsComponent,
-    BreadcrumbComponent,
     ModalSelectionComponent,
     InfogeralComponent,
     DefinitionComponent,
@@ -61,11 +60,13 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
         totalMessage: 'total',
         selectedMessage: 'selecionado'
       }
-    })
+    }),
+    BreadcrumbModule
   ],
   providers: [
     PromotionService,
     PriceService,
+    DecimalPipe
   ]
 })
 export class PromotionModule { }

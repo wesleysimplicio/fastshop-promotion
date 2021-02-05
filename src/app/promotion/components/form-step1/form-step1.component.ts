@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Promotion } from 'src/app/promotion/model/promotion.model';
 import { IBreadcrumb } from 'src/app/shared/interface/breadcrumb';
@@ -6,10 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
-import { PriceService } from 'src/app/shared/services/price.service';
 import * as moment from 'moment';
 import { PromotionTypeEnum } from '../../enum/promotion-type.enum';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { User } from 'src/app/shared/model/user/user.model';
 import { UserService } from 'src/app/shared/model/user/user.service';
 import { UtilitiesService } from 'src/app/shared/services/utilities.service';
@@ -19,7 +18,7 @@ import { UtilitiesService } from 'src/app/shared/services/utilities.service';
   templateUrl: './form-step1.component.html',
   styleUrls: ['./form-step1.component.scss']
 })
-export class FormStep1Component implements OnInit {
+export class FormStep1Component implements OnInit, OnDestroy {
 
   infoGeralForm = new FormGroup({});
   periodForm = new FormGroup({});
@@ -44,6 +43,8 @@ export class FormStep1Component implements OnInit {
   isChangeInfo = false;
   isChangeDefinition = false;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -51,24 +52,30 @@ export class FormStep1Component implements OnInit {
     private toastrService: ToastrService,
     private utilValidation: UtilValidation,
     private promotionService: PromotionService,
-    private priceService: PriceService,
     private userService: UserService,
     private utilities: UtilitiesService
   ) {
     this.routeId = this.route.snapshot.params.id;
-    this.route.params.subscribe(params => {
+    let subscription = this.route.params.subscribe(params => {
       if (params['id'] !== this.routeId) {
         this.routeId = params['id'];
         window.location.reload();
       }
     });
+    this.subscriptions.push(subscription);
+
     this.breadcrumbs.push(
       {
         url: '/promotion',
         label: 'Promoção'
       }
     );
-    this.typePromo = this.route.snapshot.params.typePromo;
+    let promo: string = this.route.snapshot.params.typePromo;
+    this.typePromo = (promo !== undefined) ? promo.toLocaleLowerCase() : '';
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   ngOnInit() {
@@ -102,9 +109,7 @@ export class FormStep1Component implements OnInit {
       }
     );
 
-    this.userService.getUserLoggedSubject().subscribe(res => {
-      this.user = res;
-    });
+    this.user = this.userService.getUserLogged();
 
     this.search = window.localStorage.getItem('PROMO_SEARCH');
 
@@ -118,7 +123,7 @@ export class FormStep1Component implements OnInit {
   getPromotion() {
     this.utilities.showLoading(true);
 
-    this.promotionService.getPromotion(this.routeId).subscribe(
+    let subscription = this.promotionService.getPromotion(this.routeId).subscribe(
       (res) => {
         this.promotion = res.body;
         if (this.promotion) {
@@ -140,6 +145,8 @@ export class FormStep1Component implements OnInit {
         return;
       }
     );
+
+    this.subscriptions.push(subscription);
   }
 
   selection(data) {
@@ -191,16 +198,19 @@ export class FormStep1Component implements OnInit {
   }
 
   isChanges() {
-    console.log('this.isChangeInfo', this.isChangeInfo);
-    console.log('this.isChangeDefinition', this.isChangeDefinition);
-    console.log('this.isChangePeriod', this.isChangePeriod);
+    // console.log('this.isChangeInfo', this.isChangeInfo);
+    // console.log('this.isChangeDefinition', this.isChangeDefinition);
+    // console.log('this.isChangePeriod', this.isChangePeriod);
 
     return (this.isChangePeriod || this.isChangeDefinition || this.isChangeInfo) ? true : false;
   }
 
   onSubmit() {
+    if (this.isEditStep && !this.isChanges() && this.typePromo === PromotionTypeEnum.Prime) {
+      this.router.navigate(['/promotion/' + this.typePromo + '/step3/' + this.routeId]);
+      return;
+    }
 
-    //Mexeu em nada, redireciona direto
     if (this.isEditStep && !this.isChanges()) {
       this.router.navigate(['/promotion/' + this.typePromo + '/step2/' + this.routeId]);
       return;
@@ -221,7 +231,7 @@ export class FormStep1Component implements OnInit {
         this.showEndAt,
         this.isEditStep)
     ) {
-      return;
+      return false;
     }
     this.utilities.showLoading(true);
 
@@ -237,10 +247,12 @@ export class FormStep1Component implements OnInit {
     }
 
     //PERIOD
-    if (this.isChangePeriod && this.isEditStep) {
-      this.promotion.startAt = (!this.showPeriod) ?
-        moment().add(1, 'minutes').format("YYYY-MM-DDTHH:mm:ss").toString() :
-        moment(this.periodForm.get('startAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
+    if (this.isEditStep) {
+      if (this.isChangePeriod) {
+        this.promotion.startAt = (!this.showPeriod) ?
+          moment().add(1, 'minutes').format("YYYY-MM-DDTHH:mm:ss").toString() :
+          moment(this.periodForm.get('startAt').value, 'DDMMYYYYHHmm').format("YYYY-MM-DDTHH:mm:ss").toString();
+      }
     } else {
       this.promotion.startAt = (!this.showPeriod) ?
         moment().add(1, 'minutes').format("YYYY-MM-DDTHH:mm:ss").toString() :
@@ -256,18 +268,15 @@ export class FormStep1Component implements OnInit {
     //DEFINITION
     if (this.isChangeDefinition) {
       this.promotion.discountType = this.definitionForm.get('discountType').value;
-      this.promotion.discountValue = this.definitionForm.get('discountValue').value;
       if (this.definitionForm.get('couponCode').value) {
-        this.promotion.couponCode = this.definitionForm.get('couponCode').value.toLocaleUpperCase().replace(/\s/g, "");
+        this.promotion.couponCode = this.definitionForm.get('couponCode').value.toLocaleUpperCase(); //.replace(/\s/g, "");
       }
-      this.promotion.couponAmount = this.definitionForm.get('couponAmount').value;
-
+      this.promotion.couponAmount = (this.definitionForm.get('couponAmount').value) ? this.definitionForm.get('couponAmount').value : null;
       this.promotion.cumulative = this.showCumulative;
     }
 
     this.promotion.updatedBy = this.user.sub;
-    this.promotion.promotionType = (this.typePromo === PromotionTypeEnum.Open)
-      ? PromotionTypeEnum.Open.toLocaleUpperCase() : PromotionTypeEnum.Coupon.toLocaleUpperCase();
+    this.updatePromotionType();
 
     if (this.routeId) {
       this.promotion.id = this.routeId;
@@ -275,14 +284,16 @@ export class FormStep1Component implements OnInit {
       this.promotion.createdBy = this.user.sub;
     }
 
-    this.promotionService.addUpdatePromotion(this.promotion).subscribe(
+    let subscription = this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {
         if (this.onlySave) {
           this.router.navigate(['/promotion/' + this.typePromo]);
+        } else if (this.typePromo === PromotionTypeEnum.Prime) {// Nova condição para PRIME
+          this.configStepPrime(res.body);
         } else {
-          this.router.navigate(['/promotion/' + this.typePromo + '/step2/' + res.body.id]);
+          this.router.navigate(['/promotion/' + this.typePromo + '/step2/' + res.body.result[0].id]);
         }
-        this.toastrService.success('Salvo com sucesso');
+        this.verifyAuthoritiesMessage(res.body);
         this.utilities.showLoading(false);
       },
       (err: any) => {
@@ -293,6 +304,16 @@ export class FormStep1Component implements OnInit {
         });
       }
     );
+
+    this.subscriptions.push(subscription);
+  }
+
+  private configStepPrime(data: any): void {
+    if (data && data.result) {
+      this.router.navigate(['/promotion/' + this.typePromo + '/step3/' + data.result[0].id]);
+    } else {
+      this.router.navigate(['/promotion/' + this.typePromo + '/step3/' + this.routeId]);
+    }
   }
 
   updateFormValid(form, event) {
@@ -316,14 +337,14 @@ export class FormStep1Component implements OnInit {
   }
 
   isFormsValid() {
+    console.log('this.infoValid', this.infoValid);
+    console.log('this.definitionValid', this.definitionValid);
+    console.log('this.periodValid', this.periodValid);
     if (
       !this.infoValid ||
       !this.definitionValid ||
       !this.periodValid
     ) {
-      console.log('this.infoValid', this.infoValid);
-      console.log('this.definitionValid', this.definitionValid);
-      console.log('this.periodValid', this.periodValid);
       this.toastrService.warning('Formulário inválido');
       return false;
     }
@@ -333,8 +354,76 @@ export class FormStep1Component implements OnInit {
 
   onCancel() {
     this.submitted = false;
-    this.router.navigate(['/promotion/' + this.typePromo]);
+    this.router.navigate(['/promotion/']); // + this.typePromo]);
   }
+
+  private verifyAuthoritiesMessage(data): void {
+    if (data && data.messages && data.messages[0].businessCode < 0) {
+      this.toastrService.info(data.messages[0].description);
+      return;
+    }
+    this.toastrService.success(data.messages[0].description);
+  }
+
+  returnMock(): any {
+    return {
+      result: [
+        {
+          id: '5f578c3c1f7e7e3400c71414',
+          name: 'Teste Promo LP Nova 200',
+          description: 'LPNova200',
+          tag: 'LPN200',
+          hierarchy: 99,
+          status: 'DISABLE',
+          startAt: '2020-09-03T14:34:00',
+          discountType: 'PERCENTAGE',
+          promotionType: 'OPEN',
+          cumulative: false,
+          createdBy: 'tlidiojpn',
+          createdDate: '2020-09-08T10:50:52.303'
+        }
+      ],
+      messages: [
+        {
+          businessCode: -1,
+          description: 'Promoção criada com sucesso, porém sem permissão para atribuir status Ativa: ',
+          attribute: 'Teste Promo LP Nova 200'
+        }
+      ]
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+  /**
+  * @description
+  * Método criado para adicionar lógica nova do PRIME
+  */
+  updatePromotionType() {
+    if (this.typePromo === PromotionTypeEnum.Open) {
+      this.promotion.promotionType = PromotionTypeEnum.Open.toLocaleUpperCase();
+      return;
+    }
+
+    if (this.typePromo === PromotionTypeEnum.Coupon) {
+      this.promotion.promotionType = PromotionTypeEnum.Coupon.toLocaleUpperCase();
+      return;
+    }
+
+    if (this.typePromo === PromotionTypeEnum.Prime) {
+      this.promotion.promotionType = PromotionTypeEnum.Prime.toLocaleUpperCase();
+      return;
+    }
+  }
+
 
 
 }

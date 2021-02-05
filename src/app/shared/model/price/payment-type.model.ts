@@ -21,7 +21,7 @@ export class PaymentType {
     allowCombineSameType: boolean;
     deliveriesTypes: string[];
 
-    constructor() {
+  constructor() {
         this.id = '';
         this.name = '';
         this.description = '';

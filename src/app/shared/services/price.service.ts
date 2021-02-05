@@ -13,7 +13,7 @@ import { GroupSalesTable } from '../model/price/group-sales-table.model';
 @Injectable()
 export class PriceService {
 
-    constructor(
+  constructor(
         private http: HttpClient
     ) { }
 
@@ -100,8 +100,7 @@ export class PriceService {
     private getHttpOptions() {
 
         const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            'checkout-api-version': 'v1',
+            'Content-Type': 'application/json'
         });
 
         return headers;

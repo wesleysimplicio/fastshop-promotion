@@ -1,56 +1,40 @@
-<!-- <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb> -->
-
 <div class="row animated fadeIn mt-3">
-    <div class="col-md-9" *ngIf="promotion">
+    <div class="col-md-5" *ngIf="promotion">
         <h1>Produtos {{txtOfPromo}} - {{promotion.name}}</h1>
+        <h3>Tipo de promoção: {{ discountTypeText}}</h3>
     </div>
-    <div class="col-md-2 offset-md-1 text-right">
-        <a routerLink="/promotion/{{typePromo}}" mdbBtn color="success" mdbWavesEffect
-            class="z-depth-0 waves-effect">Ir para painel</a>
+
+    <div class="col-md-7 text-right">
+        <button type="button" mdbBtn class="z-depth-0 btn-outline-primary" (click)="activateAllProducts()" *ngIf="perfilGerencial">Ativar Todos</button>
+        <a routerLink="/promotion/{{typePromo}}" mdbBtn color="success" mdbWavesEffect class="z-depth-0 ml-3 waves-effect">Ir para painel</a>
     </div>
 </div>
 
 <div class="row animated fadeIn">
     <div class="col-md-12">
-        <!-- [selected]="selected"  [selectionType]="SelectionType.checkbox" -->
-        <ngx-datatable style="width: 100%" class="material" [rows]="rows" [columnMode]="ColumnMode.force"
-            [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="100"
-            [selectAllRowsOnPage]="false" [displayCheck]="displayCheck"
-            (activate)="onActivate($event)" (select)="onSelect($event)">
-            <!-- <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false"
-                [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
-            </ngx-datatable-column> -->
-            <ngx-datatable-column name="Sku" [width]="40"></ngx-datatable-column>
-            <!-- <ngx-datatable-column name="Status" [width]="20">
-                <ng-template let-row="row" ngx-datatable-cell-template>
-                    <div *ngIf="row.status == 'ENABLE'" class="enableColor">
-                        <i class="fas fa-circle fa-xs mr-1"></i> Ativo
-                    </div>
-                    <div *ngIf="row.status != 'ENABLE'" class="disableColor">
-                        <i class="fas fa-circle fa-xs mr-1"></i> Inativo
-                    </div>
-                </ng-template>
-            </ngx-datatable-column> -->
+        <ngx-datatable style="width: 100%" class="material" [rows]="rows" [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="100" [selectAllRowsOnPage]="false" [displayCheck]="displayCheck" (activate)="onActivate($event)"
+            (select)="onSelect($event)">
+            <ngx-datatable-column name="Sku" [width]="30"></ngx-datatable-column>
             <ngx-datatable-column name="Produto" prop="prd"></ngx-datatable-column>
-
-            <ngx-datatable-column *ngIf="showPrice" name="Promocional" prop="fixedPrice">
-                <!-- <div [formGroup]="productsForm">
-                    <div formArrayName="products"> 
-                        [formGroupName]="rowIndex"
-                    formControlName="product" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"-->
+            <ngx-datatable-column name="Promocional" prop="fixedPrice" [width]="15">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                    <div *ngIf="row.fixedPrice">
-                        <!-- <input name="product" (change)="updateValue(row.sku,$event.target.value)" id="fixedPrice-{{rowIndex}}" type="number" [value]="row.fixedPrice" class="form-control" mdbInput /> -->
-                        R$ {{row.fixedPrice | number:'.2-2' }}
-                    </div>
+                    <span *ngIf="!isPercentage">R$ </span> {{row.fixedPrice | number:'.2-2' }} {{row.discountValue | number:'.2-2' }}<span *ngIf="isPercentage"> %</span>
                 </ng-template>
-                <!-- </div>
-</div> -->
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Criado" [width]="20" prop="createdDate">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     {{row.createdDate | date:'dd/MM/yyyy HH:mm'}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Status" [width]="20">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <div *ngIf="row.status == 'ENABLE'" class="enableColor">
+                        <i class="fas fa-circle fa-xs mr-1"></i> Ativo
+                    </div>
+                    <div *ngIf="row.status != 'ENABLE'" class="disableColor">
+                        <i class="fas fa-circle fa-xs mr-1"></i> Pendente
+                    </div>
                 </ng-template>
             </ngx-datatable-column>
         </ngx-datatable>
@@ -59,7 +43,7 @@
 
 <div class="row animated fadeIn">
     <div class="col-md-5 offset-md-7 text-right">
-        <a routerLink="/promotion/{{typePromo}}" mdbBtn color="success" mdbWavesEffect
-            class="z-depth-0 my-4 waves-effect">Ir para painel</a>
+        <button type="button" mdbBtn color="primary" mdbWavesEffect (click)="downloadFiles()" class="z-depth-0 my-4 waves-effect">DOWNLOAD</button>
+        <a routerLink="/promotion/{{typePromo}}" mdbBtn color="success" mdbWavesEffect class="z-depth-0 my-4 ml-3 waves-effect">Ir para painel</a>
     </div>
 </div>

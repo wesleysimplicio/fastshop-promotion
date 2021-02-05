@@ -5,7 +5,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { CommonModule } from '@angular/common';
 
 import { LoadComponent } from './load.component';
-xdescribe('LoadComponent', () => {
+describe('LoadComponent', () => {
   let component: LoadComponent;
   let fixture: ComponentFixture<LoadComponent>;
 

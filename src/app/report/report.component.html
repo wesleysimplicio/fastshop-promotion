@@ -1,0 +1,77 @@
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+
+<div class="row animated fadeIn">
+    <div class="col-md-3"> 
+        <h1>Relatório</h1>
+    </div>
+</div>
+
+    <form [formGroup]="reportForm">
+        <div class="container-report">
+            <div class="form">
+                <h3>Cupons</h3>
+                <div class="inputs">
+                    <div class="md-form md-outline input-group">
+                        <input 
+                        onlyNumber 
+                        id="hierarchy" 
+                        formControlName="startAt" 
+                        type="text" 
+                        placeholder="DD/MM/AAAA"
+                        class="form-control" 
+                        mask="00/00/0000"
+                        mdbInput/>
+                        <div *ngIf="startDate" class="invalid-date">
+                            Data inválida
+                        </div>
+                        <div *ngIf="reportForm.get('startAt').invalid && submitted" class="invalid-date">
+                            Data obrigatória
+                        </div>
+                        <label for="hierarchy">Período de</label>
+                    </div>
+                    
+                    <div class="md-form md-outline input-group">
+                        <input 
+                        onlyNumber 
+                        id="hierarchy" 
+                        formControlName="endAt" 
+                        type="text" 
+                        placeholder="DD/MM/AAAA"
+                        class="form-control" 
+                        mask="00/00/0000"
+                        mdbInput/>
+                        <div *ngIf="endDate" class="invalid-date">
+                            Data inválida
+                        </div>
+                        <div *ngIf="reportForm.get('endAt').invalid && submitted" class="invalid-date">
+                            Data obrigatória
+                        </div>
+                        <label for="hierarchy">Até</label>
+                    </div>
+                </div>
+                
+                <div class="md-form md-outline">
+                    <input 
+                    id="couponCode" 
+                    formControlName="couponCode" 
+                    type="text" 
+                    class="form-control" 
+                    placeholder=""
+                    mdbInput/>
+                    <label for="couponCode">Código do cupom (Opcional)</label>
+                </div>
+                <div class="btn-download">
+                    <button type="button" mdbBtn color="primary" (click)="getReport()" mdbWavesEffect class="z-depth-0 waves-effect">DOWNLOAD</button>
+                </div>
+            </div>
+            
+            <div class="message" *ngIf="downloadError">
+                <div>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Nenhum pedido de cupom foi encontrado</p>
+                    <i class="fas fa-times" (click)="closeAlert()"></i>
+                </div>
+            </div>
+        </div>
+    </form>
+        

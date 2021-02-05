@@ -1,16 +1,19 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { AuthoritiesPromotion } from './../../../../shared/model/authorities/authorities-promotion.model';
+import { ComponentNotification } from './../../../../shared/component-notification/component-notification.service';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Promotion } from 'src/app/promotion/model/promotion.model';
 import { DiscountTypeEnum } from 'src/app/promotion/enum/discount-type.enum';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
 import { PromotionTypeEnum } from 'src/app/promotion/enum/promotion-type.enum';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-definition',
   templateUrl: './definition.component.html',
   styleUrls: ['./definition.component.scss']
 })
-export class DefinitionComponent implements OnInit { //OnChanges
+export class DefinitionComponent implements OnInit, OnDestroy {
 
   showCumulative = false;
   showCouponAmount = false;
@@ -22,17 +25,24 @@ export class DefinitionComponent implements OnInit { //OnChanges
   @Output() getForm = new EventEmitter();
   @Output() getFormValid = new EventEmitter();
   @Output() getShowCumulative = new EventEmitter();
+  authoritiesPromotion = new AuthoritiesPromotion();
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
-    private utilValidation: UtilValidation
+    private utilValidation: UtilValidation,
+    private activatePromotion: ComponentNotification
   ) { }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
 
   ngOnInit() {
     this.buildForm();
+    this.listeningDiscountValueChange();
     if (this.promotion) {
-      this.validDiscountType(this.promotion.discountType);
-      this.definitionForm.get('discountValue').setValue(this.promotion.discountValue);
+      this.initListeningDiscountType();
       if (this.promotion.couponCode) {
         this.definitionForm.get('couponCode').setValue(this.promotion.couponCode);
         this.definitionForm.get('couponCode').setValidators(
@@ -45,7 +55,7 @@ export class DefinitionComponent implements OnInit { //OnChanges
         this.showCouponAmount = true;
         this.definitionForm.get('couponAmount').setValue(this.promotion.couponAmount);
         this.definitionForm.get('couponAmount').setValidators([Validators.required, Validators.max(100000)]);
-      }else{
+      } else {
         this.definitionForm.get('couponAmount').setValue(null);
       }
     }
@@ -59,17 +69,17 @@ export class DefinitionComponent implements OnInit { //OnChanges
     );
   }
 
-  // ngOnChanges() {
-  //   this.getFormValid.emit(this.isFormsValid());
-  // }
 
   promoType() {
     if (this.typePromo === PromotionTypeEnum.Coupon) {
       if (this.showCouponAmount) {
         this.definitionForm.get('couponAmount').setValidators([Validators.required, Validators.max(100000)]);
       }
-      this.definitionForm.get('couponCode').setValidators(
-        [Validators.required, Validators.minLength(4), Validators.maxLength(16)]);
+      this.definitionForm.get('couponCode').setValidators([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(16)
+      ]);
       this.strOfPromo = 'do cupom';
     } else {
       this.definitionForm.get('couponAmount').clearValidators();
@@ -107,7 +117,7 @@ export class DefinitionComponent implements OnInit { //OnChanges
       !this.definitionForm.valid
     ) {
       this.utilValidation.validateAllFormFields(this.definitionForm);
-      console.log('return false definitionForm;');
+      // console.log('return false definitionForm;');
       return false;
     }
     return true;
@@ -120,27 +130,21 @@ export class DefinitionComponent implements OnInit { //OnChanges
       couponAmount: [this.promotion.couponAmount],
       couponCode: [this.promotion.couponCode],
       discountType: [this.promotion.discountType, Validators.required],
-      discountValue: [this.promotion.discountValue, [
-        Validators.required,
-        Validators.min(1),
-      ]],
     });
 
-    this.definitionForm.get('discountType').valueChanges.subscribe(e => {
-      this.validDiscountType(e);
+  }
+
+  listeningDiscountValueChange(): void {
+    this.definitionForm.get('discountType').valueChanges.subscribe(res => {
+      this.authoritiesPromotion.discountType = res;
+      this.activatePromotion.setActivatePromotion(this.authoritiesPromotion);
+      // console.log('TIPO DE DESCONTO', typeof res, res);
     });
   }
 
-  validDiscountType(e) {
-    if (e === DiscountTypeEnum.Fixed_Price) {
-      this.definitionForm.get('discountValue').clearValidators();
-    } else {
-      this.definitionForm.get('discountValue').setValidators([Validators.required, Validators.min(1)]);
-    }
-
-    this.definitionForm.get('discountValue').setValue(0);
-    this.definitionForm.updateValueAndValidity();
-    this.definitionForm.markAsDirty();
+  private initListeningDiscountType(): void {
+    this.authoritiesPromotion.discountType = this.definitionForm.get('discountType').value;
+    this.activatePromotion.setActivatePromotion(this.authoritiesPromotion);
   }
 
 }

@@ -6,7 +6,7 @@ export class VirtualStore {
     error: any;
     messageError: any;
 
-    constructor() {
+  constructor() {
         this.id = '';
         this.name = '';
         this.description = '';

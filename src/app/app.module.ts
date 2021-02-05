@@ -8,7 +8,6 @@ import { UtilitiesService } from './shared/services/utilities.service';
 import { ErrorComponent } from './shared/components/errors/error.component';
 import { HomeComponent } from './home/home.component';
 import { ToastrModule } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { IConfig } from 'ngx-mask';
 import { UtilValidation } from './shared/util/util.validation';
@@ -21,7 +20,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { UnauthorizedUserComponent } from './shared/components/unauthorized-user/unauthorized-user.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { ShowAuthedDirective } from './shared/directives/show-authed.directive';
-import { AuthGuardService } from './shared/services/auth-guard.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};

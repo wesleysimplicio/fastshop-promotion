@@ -4,40 +4,125 @@
     <div class="col-md-3">
         <h1>{{strTitlePromo}}</h1>
     </div>
-    <div class="col-md-4 mb-2">
-        <form (ngSubmit)="onSubmit()" class="animated fadeIn" enctype="multipart/form-data">
-            <div class="form-group" [formGroup]="searchForm">
-                <div class="input-group">
-                    <input formControlName="search" type="text" class="form-control"
-                        placeholder="Pesquise por {{strNameOfPromo}}" aria-label="Pesquise por nome, data, etc…"
-                        aria-describedby="button-addon2">
-                    <div class="input-group-append">
-                        <button mdbBtn color="primary" outline="true" size="md" class="m-0 px-3 py-2" type="submit"
-                            id="button-addon2" mdbWavesEffect>
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
+
+    <div class="col-md-3 offset-md-6 text-right">
+        <!-- <a href="#" routerLink="/promotion/{{typePromo}}/add" class="btn btn-success">{{strNewPromo}}</a> -->
+
+        <!-- <div class="dropdown" dropdown>
+            <button mdbDropdownToggle class="noButtonGrid btn btn-success" type="button" mdbWavesEffect> Cadastrar nova promoção
+          </button>
+            <div class="dropdown-menu register dropdown-primary fa-sm">
+                <a routerLink="/promotion/open/add" mdbWavesEffect class="dropdown-item waves-light" href="#">Vitrine</a>
+                <a routerLink="/promotion/coupon/add" mdbWavesEffect class="dropdown-item waves-light" href="#">Cupom</a>
+                <a routerLink="/promotion/prime/add" mdbWavesEffect class="dropdown-item waves-light" href="#">Prime</a>
             </div>
-        </form>
-    </div>
-    <div class="col-md-3 offset-md-2 text-right" *ngIf="typePromo">
-        <a href="#" routerLink="/promotion/{{typePromo}}/add" class="btn btn-success">{{strNewPromo}}</a>
+        </div> -->
+
+        <div class="btn-group" mdbDropdown>
+            <button mdbDropdownToggle type="button" mdbBtn color="primary" class="dropdown-toggle waves-light register btn-success" mdbWavesEffect>
+              Cadastrar nova promoção
+          </button>
+
+            <div class="dropdown-menu register dropdown-primary">
+                <a routerLink="/promotion/open/add" mdbWavesEffect class="dropdown-item waves-light" href="#">Vitrine</a>
+                <a routerLink="/promotion/coupon/add" mdbWavesEffect class="dropdown-item waves-light" href="#">Cupom</a>
+                <a routerLink="/promotion/prime/add" mdbWavesEffect class="dropdown-item waves-light" href="#">Prime</a>
+            </div>
+        </div>
+
     </div>
 </div>
 
-<div class="row animated fadeIn" *ngIf="typePromo">
+<div class="col-md-10 p-0 animated fadeIn">
+    <form (ngSubmit)="onSubmitFilter()" class="animated fadeIn col-12" enctype="multipart/form-data">
+        <div [formGroup]="searchForm">
+            <div class="row">
+                <div class="col-md-5 pl-0">
+                    <div class="form-group">
+                        <label>Pesquisar por</label>
+                        <div class="input-group-append">
+                            <div class="form-check form-check-inline mt-1">
+                                <input type="radio" (click)="toggleSearchBy('SKU')" class="form-check-input" id="searchBySku" value="SKU" formControlName="searchBy" name="searchBy" [checked]="searchFilter.searchBy=='SKU'">
+                                <label class="form-check-label" for="searchBySku">SKU</label>
+                            </div>
+                            <div class="form-check form-check-inline mt-1">
+                                <input type="radio" (click)="toggleSearchBy('NAME')" class="form-check-input" id="searchBy" value="NAME" formControlName="searchBy" name="searchBy" [checked]="searchFilter.searchBy=='NAME'">
+                                <label class="form-check-label" for="searchBy">Nome da promoção</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input formControlName="search" type="text" class="form-control" placeholder="Pesquise por {{strNameOfPromo}} ou SKU" aria-label="Pesquise por nome, data, etc…" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button mdbBtn color="primary" outline="true" size="md" class="m-0 px-3 py-2" type="submit" id="button-addon2" mdbWavesEffect>
+                                  <i class="fas fa-search"></i> 
+                                </button>
+                                <button mdbBtn color="danger" (click)="cleanData()" outline="true" size="md" class="m-0 px-3 py-2" type="button" id="button-addon2" mdbWavesEffect>
+                                  <i class="fas fa-times"></i> 
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 pl-0">
+                    <div class="form-group">
+                        <label>Tipo de Promoção</label>
+
+                        <div class="input-group-append">
+
+                            <button mdbBtn outline="true" size="md" class="btn font-btn" [ngClass]="(typePromo=='')? 'btn-success' : ''" (click)="typePromo=''"> <i class="fas fa-xs mr-1" [ngClass]="(typePromo=='')? 'fa-check' : ''"></i> TODOS  </button>
+
+                            <button mdbBtn outline="true" size="md" class="btn font-btn" [ngClass]="(typePromo=='open')? 'btn-success' : ''" (click)="typePromo='open'">  <i class="fas  fa-xs mr-1" [ngClass]="(typePromo=='open')? 'fa-check' : ''"></i> VITRINE </button>
+
+                            <button mdbBtn outline="true" size="md" class="btn font-btn" [ngClass]="(typePromo=='coupon')? 'btn-success' : ''" (click)="typePromo='coupon'"> <i class="fas  fa-xs mr-1" [ngClass]="(typePromo=='coupon')? 'fa-check' : ''"></i>  CUPOM </button>
+
+                            <button mdbBtn outline="true" size="md" class="btn font-btn" [ngClass]="(typePromo=='prime')? 'btn-success' : ''" (click)="typePromo='prime'">  <i class="fas  fa-xs mr-1" [ngClass]="(typePromo=='prime')? 'fa-check' : ''"></i>   PRIME  </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="input-group-append">
+                            <button mdbBtn outline="true" size="md" class="btn font-btn" [ngClass]="(searchFilter.active=='')? 'btn-success' : ''" (click)="searchFilter.active=''">  <i class="fas fa-xs mr-1" [ngClass]="(searchFilter.active=='')? 'fa-check' : ''"></i> Todos </button>
+
+                            <button mdbBtn outline="true" size="md" class="btn font-btn" [ngClass]="(searchFilter.active=='ENABLE')? 'btn-success' : ''" (click)="searchFilter.active='ENABLE'">  <i class="fas fa-xs mr-1" [ngClass]="(searchFilter.active=='ENABLE')? 'fa-check' : ''"></i> Ativo </button>
+
+                            <button mdbBtn outline="true" size="md" class="btn font-btn" [ngClass]="(searchFilter.active=='DISABLE')? 'btn-danger' : ''" (click)="searchFilter.active='DISABLE'"> <i class="fas  fa-xs mr-1" [ngClass]="(searchFilter.active=='DISABLE')? 'fa-check' : ''"></i>  Inativo </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Vigência</label>
+                        <div class="input-group-append">
+                            <button mdbBtn outline="true" size="md" class="btn font-btn" [ngClass]="(!searchFilter.vigency)? 'btn-success' : ''" (click)="updateVigency(false)">  <i class="fas fa-xs mr-1" [ngClass]="(!searchFilter.vigency)? 'fa-check' : ''"></i> Todos </button>
+
+                            <button mdbBtn outline="true" size="md" class="btn font-btn" [ngClass]="(searchFilter.vigency)? 'btn-success' : ''" (click)="updateVigency(true)"> <i class="fas  fa-xs mr-1" [ngClass]="(searchFilter.vigency)? 'fa-check' : ''"></i>  Vigente </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row animated fadeIn">
     <div class="col-md-12">
-        <ngx-datatable #table style="width: 100%; min-height: 280px;" class="material" [rows]="rows"
-            [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="100">
-            <ngx-datatable-column name="Hierarquia" prop="hierarchy" [width]="30">
+        <ngx-datatable #table style="width: 100%; min-height: 280px;" class="material striped" [rows]="rows" [columnMode]="ColumnMode.force" [headerHeight]="50" [reorderable]="true" [footerHeight]="50" rowHeight="auto" [scrollbarH]="(sizeWindow<992)? true : false"
+            [limit]="100">
+            <ngx-datatable-column *ngIf="typePromo!='coupon'" name="Hierarquia" prop="hierarchy" [width]="50">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     <div class="text-center">
                         {{row.hierarchy}}
                     </div>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Status" [width]="50">
+            <ngx-datatable-column name="Status" [width]="70">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     <div *ngIf="row.status == 'ENABLE'" class="enableColor">
                         <i class="fas fa-circle fa-xs mr-1"></i> Ativo
@@ -47,17 +132,26 @@
                     </div>
                 </ng-template>
             </ngx-datatable-column>
+            <!-- <ngx-datatable-column name="Tipo" prop="discountTypeTranslation" [width]="50"></ngx-datatable-column> -->
             <ngx-datatable-column [name]="strNameOfPromo" prop="name" [width]="250"></ngx-datatable-column>
-            <ngx-datatable-column name="Tag de carrinho" prop="tag"></ngx-datatable-column>
-            <ngx-datatable-column name="Início" prop="startAt">
+            <ngx-datatable-column name="Tag de carrinho" prop="tag" [width]="100"></ngx-datatable-column>
+            <ngx-datatable-column *ngIf="typePromo === 'open'" name="Tag de carrinho" prop="tag"></ngx-datatable-column>
+            <ngx-datatable-column name="Início" prop="startAt" [width]="110">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     {{row.startAt | date:'dd/MM/yyyy HH:mm'}}
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Término" prop="startAt">
+            <ngx-datatable-column name="Término" prop="endAt" [width]="110">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     <span *ngIf="row.endAt">{{row.endAt | date:'dd/MM/yyyy HH:mm'}}</span>
                     <span *ngIf="!row.endAt">Indeterminado</span>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Tipo de promoção" prop="promotionType" [width]="100">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span *ngIf="row.promotionType=='OPEN'">Vitrine</span>
+                    <span *ngIf="row.promotionType=='COUPON'">Cupom</span>
+                    <span *ngIf="row.promotionType=='PRIME'">Prime</span>
                 </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column name="Ações" [width]="60">
@@ -69,13 +163,10 @@
                         </button>
 
                         <div class="dropdown-menu dropdown-primary fa-sm">
-                            <a routerLink="/promotion/{{typePromo}}/step1/{{row.id}}" class="dropdown-item" href="#">Editar</a>
-                            <a routerLink="/promotion/{{typePromo}}/products/{{row.id}}" class="dropdown-item"
-                                href="#">Visualizar produtos</a>
-                            <a (click)="updateStatusPromotion(row.id,row.status)" class="dropdown-item disableColor"
-                                *ngIf="row.status == 'ENABLE'">Inativar</a>
-                            <a (click)="updateStatusPromotion(row.id,row.status)" class="dropdown-item enableColor"
-                                *ngIf="row.status != 'ENABLE'">Ativar</a>
+                            <a routerLink="/promotion/{{row.promotionType.toLowerCase()}}/step1/{{row.id}}" class="dropdown-item" href="#">Editar</a>
+                            <a routerLink="/promotion/{{row.promotionType.toLowerCase()}}/products/{{row.id}}" class="dropdown-item" href="#">Visualizar produtos</a>
+                            <a (click)="updateStatusPromotion(row.id,row.status)" class="dropdown-item disableColor" *ngIf="row.status == 'ENABLE'">Inativar</a>
+                            <a (click)="updateStatusPromotion(row.id,row.status)" class="dropdown-item enableColor" *ngIf="row.status != 'ENABLE'">Ativar</a>
                         </div>
                     </div>
                 </ng-template>

@@ -5,7 +5,7 @@ export class Street {
     error: any;
     messageError: any;
 
-    constructor() {
+  constructor() {
         this.id = '';
         this.street = '';
         this.description = '';

@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-md-4" *ngIf="typePromo=='open'">
+                    <div class="col-md-4" *ngIf="typePromo === 'open' || typePromo === 'prime'">
                         <div class="md-form md-outline">
                             <input onlyNumber id="hierarchy" formControlName="hierarchy" type="text" pattern="\d{1,99}"
                                 maxlength="2" placeholder="1-99" class="form-control" mdbInput
@@ -23,11 +23,18 @@
                             <label for="hierarchy">Hierarquia</label>
                         </div>
                     </div>
-                    <div class="pt-3"  [ngClass]="(typePromo == 'open')? 'col-md-7 text-right' : 'col-md-6  mb-2'" >
-                        <div class="switch">
+                    <div class="pt-3"  [ngClass]="(typePromo == 'open' || typePromo === 'prime')? 'col-md-7 text-right' : 'col-md-6  mb-2'" >
+                        <div class="switch"  *ngIf="showBtn">
                             <label>
                                 Ativar {{strPromo}}?
-                                <input type="checkbox" (click)="toggleInfoGeral()" [checked]="activeInfoGeral">
+                                <input type="checkbox" formControlName="activePromotion" (click)="toggleInfoGeral($event)" [checked]="activeInfoGeral">
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                        <div class="switch" *ngIf="!showBtn">
+                            <label>
+                                Ativar {{strPromo}}?
+                                <input type="checkbox" disabled="true">
                                 <span class="lever"></span>
                             </label>
                         </div>
@@ -59,7 +66,7 @@
                     </div>
                 </div>
 
-                <div class="form-row" *ngIf="typePromo!='coupon'">
+                <div class="form-row" *ngIf="typePromo === 'open'">
                     <div class="col-md-11">
                         <div class="md-form md-outline">
                             <input id="coupon" type="text" formControlName="tag" maxlength="40"

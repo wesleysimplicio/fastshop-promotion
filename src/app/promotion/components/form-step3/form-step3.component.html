@@ -1,5 +1,5 @@
-<app-steps [routeId]="routeId" [infoStep]="true" [definitionStep]="true" [periodStep]="true" [paymentStep]="true"
-    [stockStep]="true"></app-steps>
+<app-steps [typePromo]="typePromo" [routeId]="routeId" [infoStep]="true" [definitionStep]="true" [periodStep]="true"
+    [paymentStep]="true" [stockStep]="true"></app-steps>
 
 <!-- <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb> -->
 
@@ -7,7 +7,7 @@
 
     <div class="row justify-content-md-center">
         <div class="col-md-6">
-            <img src="assets/img/step3.png" alt="">
+            <img src="assets/img/step3.PNG" alt="">
         </div>
     </div>
 
@@ -132,5 +132,13 @@
     </div>
 </div>
 
-<app-modal-selection #appModal *ngIf="showModal" [title]="title" [rows]="rows" [temp]="rows" [option]="option"
-    [selected]="selecteds" (getSelecteds)="getSelecteds($event)" (getOption)="getOption($event)"></app-modal-selection>
+<app-modal-selection 
+    #appModal 
+    *ngIf="showModal" 
+    [title]="title" 
+    [rows]="rows" 
+    [temp]="rows" 
+    [option]="option"
+    [selected]="selecteds" 
+    (getSelecteds)="getSelecteds($event)" 
+    (getOption)="getOption($event)"></app-modal-selection>

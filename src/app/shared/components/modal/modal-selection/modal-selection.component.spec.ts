@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { ModalSelectionComponent } from './modal-selection.component';
+import { CommonModule } from '@angular/common';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 describe('ModalComponent', () => {
   let component: ModalSelectionComponent;
@@ -8,9 +11,14 @@ describe('ModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalSelectionComponent ]
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [ModalSelectionComponent],
+      imports: [
+        MDBBootstrapModule,
+        CommonModule,
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

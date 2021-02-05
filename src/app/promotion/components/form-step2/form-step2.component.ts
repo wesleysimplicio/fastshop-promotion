@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { AuthoritiesPromotion } from './../../../shared/model/authorities/authorities-promotion.model';
+import { ComponentNotification } from './../../../shared/component-notification/component-notification.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PaymentType } from 'src/app/shared/model/price/payment-type.model';
 import { Promotion } from '../../model/promotion.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -11,13 +13,15 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PromotionTypeEnum } from '../../enum/promotion-type.enum';
 import { UtilitiesService } from 'src/app/shared/services/utilities.service';
+import { first } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-form-step2',
   templateUrl: './form-step2.component.html',
   styleUrls: ['./form-step2.component.scss']
 })
-export class FormStep2Component implements OnInit {
+export class FormStep2Component implements OnInit, OnDestroy {
 
   breadcrumbs = [];
   routeId: any;
@@ -30,13 +34,15 @@ export class FormStep2Component implements OnInit {
   showModalPayment = false;
   selecteds = [];
   promotion: Promotion;
-  selectsLengthOri = 0;
   submitted = false;
   title = 'Tipos de pagamento';
   campaignForm: FormGroup;
   user = new User();
   typePromo: string;
   isChangeCampaign = false;
+  selectsLengthOriginString: string = '[]';
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private router: Router,
@@ -47,7 +53,8 @@ export class FormStep2Component implements OnInit {
     private utilValidation: UtilValidation,
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private activatePromotion: ComponentNotification
   ) {
     this.promotion = new Promotion();
     this.routeId = this.route.snapshot.params.id;
@@ -56,13 +63,16 @@ export class FormStep2Component implements OnInit {
       this.router.navigate(['/promotion/']);
       return;
     }
-    this.route.params.subscribe(params => {
+    let subscription = this.route.params.subscribe(params => {
       if (params['id'] !== this.routeId) {
         this.routeId = params['id'];
         window.location.reload();
       }
     });
-    this.typePromo = this.route.snapshot.params.typePromo;
+    this.subscriptions.push(subscription);
+
+    let promo: string = this.route.snapshot.params.typePromo;
+    this.typePromo = (promo !== undefined) ? promo.toLocaleLowerCase() : '';
 
     //Redireciona para proximo passo se for CUPOM //TODO: REMOVER DEPOIS
     if (this.typePromo === PromotionTypeEnum.Coupon) {
@@ -90,12 +100,15 @@ export class FormStep2Component implements OnInit {
     );
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
+
   ngOnInit() {
+    this.getAuthoritiesEmmiter();
     this.utilities.showLoading(true);
 
-    this.userService.getUserLoggedSubject().subscribe(res => {
-      this.user = res;
-    });
+    this.user = this.userService.getUserLogged();
 
     this.isEditStep = true;
     this.getPaymentTypePrice();
@@ -103,7 +116,7 @@ export class FormStep2Component implements OnInit {
     this.campaignForm.valueChanges.subscribe(e => {
       this.isChangeCampaign = true;
     });
-    this.promotionService.getPromotion(this.routeId).subscribe(
+    let subscription = this.promotionService.getPromotion(this.routeId).subscribe(
       (res) => {
         this.promotion = res.body;
         if (this.promotion.promotionType !== this.typePromo.toLocaleUpperCase()) {
@@ -115,7 +128,7 @@ export class FormStep2Component implements OnInit {
         if (this.promotion.paymentTypes && this.promotion.paymentTypes.length > 0) {
           this.showPayment = true;
           this.selecteds = this.promotion.paymentTypes;
-          this.selectsLengthOri = this.promotion.paymentTypes.length;
+          this.selectsLengthOriginString = JSON.stringify(this.promotion.paymentTypes);
         }
         if (this.promotion.campaign || this.promotion.partner) {
           this.showCampaign = true;
@@ -123,6 +136,8 @@ export class FormStep2Component implements OnInit {
         this.buildForm();
         this.utilities.showLoading(false);
       });
+    this.subscriptions.push(subscription);
+
   }
 
   get cF() { return this.campaignForm.controls; }
@@ -137,7 +152,7 @@ export class FormStep2Component implements OnInit {
   }
 
   getPaymentTypePrice() {
-    this.priceService.getPaymentType().subscribe(
+    let subscription = this.priceService.getPaymentType().subscribe(
       (res) => {
         this.paymentTypes = res.body;
         // GAMBIARRA PARA TIRAR CARTAO DE CREDITO //TODO: REMOVER
@@ -154,6 +169,8 @@ export class FormStep2Component implements OnInit {
         return;
       }
     );
+    this.subscriptions.push(subscription);
+
   }
 
   togglePayment() {
@@ -198,7 +215,11 @@ export class FormStep2Component implements OnInit {
 
 
   isChanges() {
-    return (this.isChangeCampaign || this.selectsLengthOri !== this.selecteds.length) ? true : false;
+    return this.isChangeCampaign || this.isChangeSelectes();
+  }
+
+  private isChangeSelectes(): boolean {
+    return this.selectsLengthOriginString !== JSON.stringify(this.selecteds);
   }
 
   onSubmit() {
@@ -235,14 +256,15 @@ export class FormStep2Component implements OnInit {
     this.promotion.id = this.routeId;
     this.promotion.updatedBy = this.user.sub;
 
-    this.promotionService.addUpdatePromotion(this.promotion).subscribe(
+    let subscription = this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {
         if (this.onlySave) {
           this.router.navigate(['/promotion/' + this.typePromo]);
         } else {
           this.router.navigate(['/promotion/' + this.typePromo + '/step3/' + this.routeId]);
         }
-        this.toastrService.success('Salvo com sucesso');
+        // this.toastrService.success('Salvo com sucesso');
+        this.verifyAuthoritiesMessage(res.body);
         this.utilities.showLoading(false);
       },
       (err: any) => {
@@ -253,6 +275,8 @@ export class FormStep2Component implements OnInit {
         });
       }
     );
+    this.subscriptions.push(subscription);
+
   }
 
   onCancel() {
@@ -271,6 +295,51 @@ export class FormStep2Component implements OnInit {
 
   remove(index) {
     this.selecteds.splice(index, 1);
+  }
+
+  private verifyAuthoritiesMessage(data): void {
+    if (data && data.messages && data.messages[0].businessCode < 0) {
+      this.toastrService.info(data.messages[0].description);
+      return;
+    }
+    this.toastrService.success(data.messages[0].description);
+  }
+
+  returnMock(): any {
+    return {
+      result: [
+        {
+          id: '5f578c3c1f7e7e3400c71414',
+          name: 'Teste Promo LP Nova 200',
+          description: 'LPNova200',
+          tag: 'LPN200',
+          hierarchy: 99,
+          status: 'DISABLE',
+          startAt: '2020-09-03T14:34:00',
+          discountType: 'PERCENTAGE',
+          promotionType: 'OPEN',
+          cumulative: false,
+          createdBy: 'tlidiojpn',
+          createdDate: '2020-09-08T10:50:52.303'
+        }
+      ],
+      messages: [
+        {
+          businessCode: -1,
+          description: 'Promoção criada com sucesso, porém sem permissão para atribuir status Ativa: ',
+          attribute: 'Teste Promo LP Nova 200'
+        }
+      ]
+    };
+
+  }
+
+  getAuthoritiesEmmiter(): void {
+    let subscription = this.activatePromotion.getActivatePromotion().pipe(first()).subscribe((res: AuthoritiesPromotion) => {
+      this.activatePromotion.setActivatePromotion(res);
+    });
+    this.subscriptions.push(subscription);
+
   }
 
 }

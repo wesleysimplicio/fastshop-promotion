@@ -27,7 +27,7 @@ export class Promotion {
     createdDate: Date;
     description: string;
     discountType: DiscountTypeEnum;
-    discountValue: number;
+    discountTypeTranslation: string;
     endAt: string;
     hierarchy: number;
     id: string;
@@ -47,7 +47,7 @@ export class Promotion {
     virtualStores: Array<VirtualStore>;
     paymentTypes: Array<PaymentType>;
 
-    constructor() {
+  constructor() {
         this.campaign = null;
         this.couponAmount = null;
         this.couponCode = null;
@@ -58,7 +58,6 @@ export class Promotion {
         this.description = null;
         this.hierarchy = null;
         this.discountType = DiscountTypeEnum.Percentage;
-        this.discountValue = 0;
         this.endAt = null;
         this.hierarchy = null;
         this.id = null;

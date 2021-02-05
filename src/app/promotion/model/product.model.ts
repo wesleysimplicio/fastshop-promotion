@@ -11,7 +11,7 @@ export class Product {
     updatedBy: Date;
     updatedDate: Date;
 
-    constructor() {
+  constructor() {
         this.prd = '';
         this.sku = '';
         this.status = StatusEnum.Active;
