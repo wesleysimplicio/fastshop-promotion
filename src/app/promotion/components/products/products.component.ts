@@ -1,6 +1,6 @@
 import { AuthoritiesService } from './../../../shared/authorities/authorities.service';
 import { DiscountTypeEnum } from './../../enum/discount-type.enum';
-import { Component, OnInit, LOCALE_ID, OnDestroy } from '@angular/core';
+import { Component, OnInit, LOCALE_ID } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PromotionService } from 'src/app/promotion/services/promotion.service';
@@ -20,7 +20,6 @@ import { CurrencyPipe } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import * as fileSaver from 'file-saver';
-import { Subscription } from 'rxjs';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -28,9 +27,9 @@ registerLocaleData(localePt, 'pt-BR');
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }]
+  providers: [{provide: LOCALE_ID, useValue: 'pt-BR'}]
 })
-export class ProductsComponent implements OnInit, OnDestroy {
+export class ProductsComponent implements OnInit {
 
   nameCoupon: string;
   routeId: any;
@@ -42,15 +41,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
   SelectionType = SelectionType;
   promotion: Promotion;
   breadcrumbs = new Array<IBreadcrumb>();
+  showPrice = false;
   typePromo = '';
   txtOfPromo = '';
   perfilGerencial = false;
   discountTypeText: string;
   authorities: Authorities;
   isPercentage = false;
-
-  private subscriptions: Subscription[] = [];
-
+  
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -61,14 +59,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private authoritiesService: AuthoritiesService
   ) {
     this.routeId = this.route.snapshot.params.id;
-    let promo: string = this.route.snapshot.params.typePromo;
-    this.typePromo = (promo !== undefined) ? promo.toLocaleLowerCase() : '';
+    this.typePromo = this.route.snapshot.params.typePromo;
 
-    this.search = window.localStorage.getItem('PROMO_SEARCH');
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.search = window.localStorage.getItem('PROMO_SEARCH'); 
   }
 
   ngOnInit() {
@@ -84,7 +77,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.buildForm();
   }
 
-  loadTypePromo() {
+  loadTypePromo(){
     this.breadcrumbs = [];
     this.breadcrumbs.push(
       {
@@ -112,23 +105,23 @@ export class ProductsComponent implements OnInit, OnDestroy {
         this.txtOfPromo = 'do cupom';
         break;
 
-      case PromotionTypeEnum.Prime:
-        this.breadcrumbs.push(
-          {
-            url: '/promotion/prime',
-            label: 'Prime'
-          },
-          {
-            url: '/promotion/coupon/step1/' + this.routeId,
-            label: 'Cadastro'
-          },
-          {
-            url: '',
-            label: 'Produtos'
-          },
-        );
-        this.txtOfPromo = 'do cupom';
-        break;
+        case PromotionTypeEnum.Prime:
+          this.breadcrumbs.push(
+            {
+              url: '/promotion/prime',
+              label: 'Prime'
+            },
+            {
+              url: '/promotion/coupon/step1/' + this.routeId,
+              label: 'Cadastro'
+            },
+            {
+              url: '',
+              label: 'Produtos'
+            },
+          );
+          this.txtOfPromo = 'do cupom';
+          break;
 
       default:
         this.typePromo = 'open';
@@ -152,34 +145,30 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   getPromotion() {
-    let subscription = this.promotionService.getPromotion(this.routeId)
-      .pipe(
-        tap(res => this.getDiscountType(res.body))
-      )
-      .subscribe(
-        (res) => {
-          this.promotion = res.body;
-        },
-        (err: any) => {
-          // err.error.messages.forEach(element => {
-          //   this.toastrService.error(element.description);
-          // });
-        }
-      );
-
-    this.subscriptions.push(subscription);
+    this.promotionService.getPromotion(this.routeId)
+    .pipe(
+      tap(res => this.getDiscountType(res.body))
+    )
+    .subscribe(
+      (res) => {
+        this.promotion = res.body;
+      },
+      (err: any) => {
+        // err.error.messages.forEach(element => {
+        //   this.toastrService.error(element.description);
+        // });
+      }
+    );
   }
 
   getPromotionProducts() {
     this.utilities.showLoading(true);
 
-    let subscription = this.promotionService.getPromotionProducts(this.routeId).subscribe(
+    this.promotionService.getPromotionProducts(this.routeId).subscribe(
       (res) => {
         res.body.forEach(element => {
-          if (element.fixedPrice) {
-            element.fixedPrice = element.fixedPrice.toFixed(2);
-          }
           if (element.discountValue) {
+            this.showPrice = true;
             element.discountValue = element.discountValue.toFixed(2);
           }
         });
@@ -194,12 +183,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
         });
       }
     );
-
-    this.subscriptions.push(subscription);
   }
 
   updateValue(sku, event) {
-    let subscription = this.promotionService.updatePromotionPriceProduct(this.routeId, event.replace('R$', ''), sku).subscribe(
+    this.promotionService.updatePromotionPriceProduct(this.routeId, event.replace('R$', ''), sku).subscribe(
       (res) => {
         this.toastrService.success('Preço alterado com sucesso');
         this.getPromotion();
@@ -210,8 +197,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
         });
       }
     );
-
-    this.subscriptions.push(subscription);
   }
 
   buildForm() {
@@ -252,19 +237,18 @@ export class ProductsComponent implements OnInit, OnDestroy {
   activateAllProducts(): void {
     const promotion = new Promotion();
     promotion.id = this.routeId;
-    let subscription = this.promotionService.activateAllProducts(promotion)
-      .subscribe((res: Promotion) => {
-        this.getPromotionProducts();
-      }, error => {
-        console.log(error);
-      });
-    this.subscriptions.push(subscription);
+    this.promotionService.activateAllProducts(promotion)
+    .subscribe((res: Promotion) => {
+      this.getPromotionProducts();
+    }, error => {
+      console.log(error);
+    });
   }
-
+  
   private validatePerfil(): void {
     const authorities = this.authoritiesService.getAuthorities();
     this.perfilGerencial = authorities.profileType === PerfilEnum.gerencial;
-    // console.log('PEGANDO AUTORIDADE ====>', authorities, this.perfilGerencial);
+    console.log('PEGANDO AUTORIDADE ====>', authorities, this.perfilGerencial); 
   }
 
   private getDiscountType(promotion: Promotion): void {
@@ -277,16 +261,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
       this.isPercentage = true;
     }
     if (promotion.discountType === DiscountTypeEnum.Fixed_Discount) {
+      const currencyPipe = new CurrencyPipe('pt-BR');
       this.discountTypeText = `Desconto Fixo`;
     }
   }
 
   downloadFiles() {
-    let subscription = this.promotionService.downloadFiles(this.routeId).subscribe(res => {
+    this.promotionService.downloadFiles(this.routeId).subscribe(res => {
       console.log(res);
       this.saveFile(res.body, 'Promocao_' + this.promotion.name);
     });
-    this.subscriptions.push(subscription);
   }
 
   saveFile(data: any, filename?: string) {

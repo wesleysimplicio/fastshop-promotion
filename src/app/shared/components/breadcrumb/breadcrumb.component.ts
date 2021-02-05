@@ -12,7 +12,7 @@ export class BreadcrumbComponent implements OnInit {
 
   @Input() breadcrumbs: IBreadcrumb[];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
   }

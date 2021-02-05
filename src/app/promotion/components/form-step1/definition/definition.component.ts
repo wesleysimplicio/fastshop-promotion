@@ -1,19 +1,18 @@
 import { AuthoritiesPromotion } from './../../../../shared/model/authorities/authorities-promotion.model';
 import { ComponentNotification } from './../../../../shared/component-notification/component-notification.service';
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Promotion } from 'src/app/promotion/model/promotion.model';
 import { DiscountTypeEnum } from 'src/app/promotion/enum/discount-type.enum';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
 import { PromotionTypeEnum } from 'src/app/promotion/enum/promotion-type.enum';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-definition',
   templateUrl: './definition.component.html',
   styleUrls: ['./definition.component.scss']
 })
-export class DefinitionComponent implements OnInit, OnDestroy {
+export class DefinitionComponent implements OnInit {
 
   showCumulative = false;
   showCouponAmount = false;
@@ -26,7 +25,6 @@ export class DefinitionComponent implements OnInit, OnDestroy {
   @Output() getFormValid = new EventEmitter();
   @Output() getShowCumulative = new EventEmitter();
   authoritiesPromotion = new AuthoritiesPromotion();
-  private subscriptions: Subscription[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,15 +32,11 @@ export class DefinitionComponent implements OnInit, OnDestroy {
     private activatePromotion: ComponentNotification
   ) { }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
   ngOnInit() {
     this.buildForm();
     this.listeningDiscountValueChange();
     if (this.promotion) {
-      this.initListeningDiscountType();
+      this.validDiscountType(this.promotion.discountType);
       if (this.promotion.couponCode) {
         this.definitionForm.get('couponCode').setValue(this.promotion.couponCode);
         this.definitionForm.get('couponCode').setValidators(
@@ -132,6 +126,13 @@ export class DefinitionComponent implements OnInit, OnDestroy {
       discountType: [this.promotion.discountType, Validators.required],
     });
 
+    this.definitionForm.get('discountType').valueChanges.subscribe(e => {
+      this.validDiscountType(e);
+    });
+  }
+
+  validDiscountType(e) {
+    this.initListeningDiscountType();
   }
 
   listeningDiscountValueChange(): void {

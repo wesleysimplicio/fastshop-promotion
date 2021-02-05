@@ -15,6 +15,7 @@ export class AuthService {
   private isAuthenticatedListener: Observable<any>;
   private restrictEmails = ['bianca@fastshop.com.br', 'renato@fastshop.com.br', 'alex@fastshop.com.br'];
 
+
   constructor() {
     this.isAuthenticatedSubject = new BehaviorSubject<boolean>(JSON.parse(sessionStorage.getItem('oidc.user:https://dev-auth.kaive.com.br/:portal-multiplecar')));
     this.isAuthenticatedListener = this.isAuthenticatedSubject.asObservable();

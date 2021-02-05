@@ -24,7 +24,7 @@ export class HeadersComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private router: Router,
     private accessLevelService: AccessLevelService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getUserLogged();
@@ -37,8 +37,8 @@ export class HeadersComponent implements OnInit, OnDestroy {
 
   private accessPromotion(): void {
     const prod = this.accessLevelService.hasAccessProd(this.user);
-    const qa = this.accessLevelService.hasAccessQA(this.user);
-    if (prod || qa) {
+    const qa   = this.accessLevelService.hasAccessQA(this.user);
+    if ( prod || qa ) {
       this.router.navigate(['/promotion']);
       this.accessLevel = true;
       return;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 
@@ -17,14 +17,14 @@ import { PromotionTypeEnum } from '../../enum/promotion-type.enum';
 import { UtilitiesService } from 'src/app/shared/services/utilities.service';
 import { AuthoritiesPromotion } from './../../../shared/model/authorities/authorities-promotion.model';
 import { ComponentNotification } from './../../../shared/component-notification/component-notification.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-form-step3',
   templateUrl: './form-step3.component.html',
   styleUrls: ['./form-step3.component.scss']
 })
-export class FormStep3Component implements OnInit, OnDestroy {
+export class FormStep3Component implements OnInit {
+
 
   breadcrumbs = [];
   routeId: any;
@@ -57,8 +57,6 @@ export class FormStep3Component implements OnInit, OnDestroy {
   selectsSTLengthOri = JSON.stringify([]);
 
 
-  private subscriptions: Subscription[] = [];
-
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -72,22 +70,19 @@ export class FormStep3Component implements OnInit, OnDestroy {
     private utilities: UtilitiesService,
     private activatePromotion: ComponentNotification
   ) {
-    let promo: string = this.route.snapshot.params.typePromo;
-    this.typePromo = (promo !== undefined) ? promo.toLocaleLowerCase() : '';
+    this.typePromo = this.route.snapshot.params.typePromo;
 
     this.getStreetPrice();
     this.getVirtualStorePrice();
     this.getBranchGroup();
     this.getGroupSalesTable();
     this.routeId = this.route.snapshot.params.id;
-    let subscription = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       if (params['id'] !== this.routeId) {
         this.routeId = params['id'];
         window.location.reload();
       }
     });
-    this.subscriptions.push(subscription);
-
     this.search = window.localStorage.getItem('PROMO_SEARCH');
 
     this.breadcrumbs.push(
@@ -110,10 +105,6 @@ export class FormStep3Component implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
   ngOnInit() {
     this.getAuthoritiesEmmiter();
     this.utilities.showLoading(true);
@@ -128,7 +119,7 @@ export class FormStep3Component implements OnInit, OnDestroy {
     } else {
       this.isEditStep = true;
 
-      let subscription = this.promotionService.getPromotion(this.routeId).subscribe(
+      this.promotionService.getPromotion(this.routeId).subscribe(
         (res) => {
           this.promotion = res.body;
           if (this.promotion.promotionType !== this.typePromo.toLocaleUpperCase()) {
@@ -155,8 +146,6 @@ export class FormStep3Component implements OnInit, OnDestroy {
 
           this.utilities.showLoading(false);
         });
-      this.subscriptions.push(subscription);
-
     }
   }
 
@@ -241,7 +230,7 @@ export class FormStep3Component implements OnInit, OnDestroy {
     this.promotion.updatedBy = this.user.sub;
     this.utilities.showLoading(true);
 
-    let subscription = this.promotionService.addUpdatePromotion(this.promotion).subscribe(
+    this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {
         if (this.onlySave) {
           this.router.navigate(['/promotion/' + + this.typePromo]);
@@ -263,7 +252,6 @@ export class FormStep3Component implements OnInit, OnDestroy {
       }
     );
 
-    this.subscriptions.push(subscription);
   }
 
   isChanges() {
@@ -289,7 +277,7 @@ export class FormStep3Component implements OnInit, OnDestroy {
   }
 
   getVirtualStorePrice() {
-    let subscription = this.priceService.getVirtualStore().subscribe(
+    this.priceService.getVirtualStore().subscribe(
       (res) => {
         // res.body.forEach(el => {
         //   this.virtualStores.push({ id: el.id, name: el.name });
@@ -303,12 +291,10 @@ export class FormStep3Component implements OnInit, OnDestroy {
         return;
       }
     );
-    this.subscriptions.push(subscription);
-
   }
 
   getStreetPrice() {
-    let subscription = this.priceService.getStreet().subscribe(
+    this.priceService.getStreet().subscribe(
       (res) => {
         this.streets = res.body;
       },
@@ -319,12 +305,10 @@ export class FormStep3Component implements OnInit, OnDestroy {
         return;
       }
     );
-    this.subscriptions.push(subscription);
-
   }
 
   getBranchGroup() {
-    let subscription = this.priceService.getBranchGroup().subscribe(
+    this.priceService.getBranchGroup().subscribe(
       (res) => {
         this.branchGroups = res.body;
       },
@@ -335,12 +319,10 @@ export class FormStep3Component implements OnInit, OnDestroy {
         return;
       }
     );
-    this.subscriptions.push(subscription);
-
   }
 
   getGroupSalesTable() {
-    let subscription = this.priceService.getGroupSalesTable().subscribe(
+    this.priceService.getGroupSalesTable().subscribe(
       (res) => {
         this.groupSalesTables = res.body;
       },
@@ -351,13 +333,11 @@ export class FormStep3Component implements OnInit, OnDestroy {
         return;
       }
     );
-    this.subscriptions.push(subscription);
-
   }
 
   onBack() {
     const condition = this.typePromo === PromotionTypeEnum.Coupon || this.typePromo === PromotionTypeEnum.Prime;
-    if (condition) {
+    if (condition ) {
       this.router.navigate(['/promotion/' + this.typePromo + '/step1/' + this.routeId]);
     } else {
       this.router.navigate(['/promotion/' + this.typePromo + '/step2/' + this.routeId]);
@@ -391,39 +371,37 @@ export class FormStep3Component implements OnInit, OnDestroy {
 
   returnMock(): any {
     return {
-      result: [
-        {
-          id: '5f578c3c1f7e7e3400c71414',
-          name: 'Teste Promo LP Nova 200',
-          description: 'LPNova200',
-          tag: 'LPN200',
-          hierarchy: 99,
-          status: 'DISABLE',
-          startAt: '2020-09-03T14:34:00',
-          discountType: 'PERCENTAGE',
-          promotionType: 'OPEN',
-          cumulative: false,
-          createdBy: 'tlidiojpn',
-          createdDate: '2020-09-08T10:50:52.303'
-        }
-      ],
-      messages: [
-        {
-          businessCode: -1,
-          description: 'Promoção criada com sucesso, porém sem permissão para atribuir status Ativa: ',
-          attribute: 'Teste Promo LP Nova 200'
-        }
-      ]
+        result: [
+            {
+              id: '5f578c3c1f7e7e3400c71414',
+              name: 'Teste Promo LP Nova 200',
+              description: 'LPNova200',
+              tag: 'LPN200',
+              hierarchy: 99,
+              status: 'DISABLE',
+              startAt: '2020-09-03T14:34:00',
+              discountType: 'PERCENTAGE',
+              promotionType: 'OPEN',
+              cumulative: false,
+              createdBy: 'tlidiojpn',
+              createdDate: '2020-09-08T10:50:52.303'
+            }
+        ],
+        messages: [
+            {
+                businessCode: -1,
+                description: 'Promoção criada com sucesso, porém sem permissão para atribuir status Ativa: ',
+                attribute: 'Teste Promo LP Nova 200'
+            }
+        ]
     };
 
   }
 
   getAuthoritiesEmmiter(): void {
-    let subscription = this.activatePromotion.getActivatePromotion().pipe(first()).subscribe((res: AuthoritiesPromotion) => {
+    this.activatePromotion.getActivatePromotion().pipe(first()).subscribe((res: AuthoritiesPromotion) => {
       this.activatePromotion.setActivatePromotion(res);
     });
-    this.subscriptions.push(subscription);
-
   }
 
 }

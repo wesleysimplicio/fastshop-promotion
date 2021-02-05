@@ -16,9 +16,9 @@
             (select)="onSelect($event)">
             <ngx-datatable-column name="Sku" [width]="30"></ngx-datatable-column>
             <ngx-datatable-column name="Produto" prop="prd"></ngx-datatable-column>
-            <ngx-datatable-column name="Promocional" prop="fixedPrice" [width]="15">
+            <ngx-datatable-column *ngIf="showPrice" name="Promocional" prop="discountValue" [width]="15">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                    <span *ngIf="!isPercentage">R$ </span> {{row.fixedPrice | number:'.2-2' }} {{row.discountValue | number:'.2-2' }}<span *ngIf="isPercentage"> %</span>
+                    <span *ngIf="!isPercentage">R$ </span> {{row.discountValue | number:'.2-2' }}<span *ngIf="isPercentage"> %</span>
                 </ng-template>
             </ngx-datatable-column>
 

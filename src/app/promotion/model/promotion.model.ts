@@ -47,7 +47,7 @@ export class Promotion {
     virtualStores: Array<VirtualStore>;
     paymentTypes: Array<PaymentType>;
 
-  constructor() {
+    constructor() {
         this.campaign = null;
         this.couponAmount = null;
         this.couponCode = null;

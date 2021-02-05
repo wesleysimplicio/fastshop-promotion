@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
   ) { }
 
-ngOnInit() {
+  ngOnInit() {
     this.loading.show();
   }
 

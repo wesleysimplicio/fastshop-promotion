@@ -4,7 +4,7 @@ import { Authorities } from './../../../../shared/model/authorities/authorities.
 import { DiscountTypeEnum } from './../../../enum/discount-type.enum';
 import { AuthoritiesPromotion } from './../../../../shared/model/authorities/authorities-promotion.model';
 import { ComponentNotification } from './../../../../shared/component-notification/component-notification.service';
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { StatusEnum } from 'src/app/promotion/enum/status.enum';
 import { Promotion } from 'src/app/promotion/model/promotion.model';
@@ -12,14 +12,13 @@ import { UtilValidation } from 'src/app/shared/util/util.validation';
 import { PromotionTypeEnum } from 'src/app/promotion/enum/promotion-type.enum';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-infogeral',
   templateUrl: './infogeral.component.html',
   styleUrls: ['./infogeral.component.scss']
 })
-export class InfogeralComponent implements OnInit, OnDestroy {
+export class InfogeralComponent implements OnInit {
 
   activeInfoGeral: boolean;
   strNameOfPromo = '';
@@ -36,8 +35,6 @@ export class InfogeralComponent implements OnInit, OnDestroy {
   showBtn = true;
   activePromotionAction = false;
 
-  private subscriptions: Subscription[] = [];
-
   constructor(
     private formBuilder: FormBuilder,
     private utilValidation: UtilValidation,
@@ -47,26 +44,22 @@ export class InfogeralComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) { }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
   ngOnInit() {
     this.getAuthorities();
     this.buildForm();
+    this.listeningDiscountValuePromotion();
 
     if (this.promotion) {
       this.activeInfoGeral = (this.promotion.status === StatusEnum.Active) ? true : false;
     }
     this.strChanges();
     this.getForm.emit(this.infoGeralForm);
-    let subscription = this.infoGeralForm.statusChanges.subscribe(
+    this.infoGeralForm.statusChanges.subscribe(
       result => {
         this.getForm.emit(this.infoGeralForm);
         this.getFormValid.emit(this.isFormsValid());
       }
     );
-    this.subscriptions.push(subscription);
   }
 
   get igF() { return this.infoGeralForm.controls; }
@@ -111,6 +104,22 @@ export class InfogeralComponent implements OnInit, OnDestroy {
 
   private getAuthorities(): void {
     this.authorities = this.authoritiesService.getAuthorities();
+  }
+  
+  private getRoles(discount: string): string {
+    switch (discount) {
+      case DiscountTypeEnum.Percentage:
+        return this.authorities.roles.fixedPercentMaximum;
+      case DiscountTypeEnum.Fixed_Discount:
+        return this.authorities.roles.fixedDiscountMaximum;
+    }
+  }
+
+  private listeningDiscountValuePromotion(): void {
+    this.activatePromotion.getActivatePromotion()
+    .subscribe((res: AuthoritiesPromotion) => {
+      this.authoritiesEmmiter = res;
+    });
   }
 
   toggleInfoGeral(event) {

@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 @Injectable()
 export class UtilValidation {
 
-  constructor(
+    constructor(
         private toastrService: ToastrService,
     ) { }
 

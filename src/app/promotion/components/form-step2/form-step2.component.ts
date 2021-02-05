@@ -1,6 +1,6 @@
 import { AuthoritiesPromotion } from './../../../shared/model/authorities/authorities-promotion.model';
 import { ComponentNotification } from './../../../shared/component-notification/component-notification.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PaymentType } from 'src/app/shared/model/price/payment-type.model';
 import { Promotion } from '../../model/promotion.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -14,14 +14,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PromotionTypeEnum } from '../../enum/promotion-type.enum';
 import { UtilitiesService } from 'src/app/shared/services/utilities.service';
 import { first } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-form-step2',
   templateUrl: './form-step2.component.html',
   styleUrls: ['./form-step2.component.scss']
 })
-export class FormStep2Component implements OnInit, OnDestroy {
+export class FormStep2Component implements OnInit {
 
   breadcrumbs = [];
   routeId: any;
@@ -42,8 +41,6 @@ export class FormStep2Component implements OnInit, OnDestroy {
   isChangeCampaign = false;
   selectsLengthOriginString: string = '[]';
 
-  private subscriptions: Subscription[] = [];
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -63,16 +60,13 @@ export class FormStep2Component implements OnInit, OnDestroy {
       this.router.navigate(['/promotion/']);
       return;
     }
-    let subscription = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       if (params['id'] !== this.routeId) {
         this.routeId = params['id'];
         window.location.reload();
       }
     });
-    this.subscriptions.push(subscription);
-
-    let promo: string = this.route.snapshot.params.typePromo;
-    this.typePromo = (promo !== undefined) ? promo.toLocaleLowerCase() : '';
+    this.typePromo = this.route.snapshot.params.typePromo;
 
     //Redireciona para proximo passo se for CUPOM //TODO: REMOVER DEPOIS
     if (this.typePromo === PromotionTypeEnum.Coupon) {
@@ -100,10 +94,6 @@ export class FormStep2Component implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
   ngOnInit() {
     this.getAuthoritiesEmmiter();
     this.utilities.showLoading(true);
@@ -116,7 +106,7 @@ export class FormStep2Component implements OnInit, OnDestroy {
     this.campaignForm.valueChanges.subscribe(e => {
       this.isChangeCampaign = true;
     });
-    let subscription = this.promotionService.getPromotion(this.routeId).subscribe(
+    this.promotionService.getPromotion(this.routeId).subscribe(
       (res) => {
         this.promotion = res.body;
         if (this.promotion.promotionType !== this.typePromo.toLocaleUpperCase()) {
@@ -136,8 +126,6 @@ export class FormStep2Component implements OnInit, OnDestroy {
         this.buildForm();
         this.utilities.showLoading(false);
       });
-    this.subscriptions.push(subscription);
-
   }
 
   get cF() { return this.campaignForm.controls; }
@@ -152,7 +140,7 @@ export class FormStep2Component implements OnInit, OnDestroy {
   }
 
   getPaymentTypePrice() {
-    let subscription = this.priceService.getPaymentType().subscribe(
+    this.priceService.getPaymentType().subscribe(
       (res) => {
         this.paymentTypes = res.body;
         // GAMBIARRA PARA TIRAR CARTAO DE CREDITO //TODO: REMOVER
@@ -169,8 +157,6 @@ export class FormStep2Component implements OnInit, OnDestroy {
         return;
       }
     );
-    this.subscriptions.push(subscription);
-
   }
 
   togglePayment() {
@@ -256,7 +242,7 @@ export class FormStep2Component implements OnInit, OnDestroy {
     this.promotion.id = this.routeId;
     this.promotion.updatedBy = this.user.sub;
 
-    let subscription = this.promotionService.addUpdatePromotion(this.promotion).subscribe(
+    this.promotionService.addUpdatePromotion(this.promotion).subscribe(
       (res) => {
         if (this.onlySave) {
           this.router.navigate(['/promotion/' + this.typePromo]);
@@ -275,8 +261,6 @@ export class FormStep2Component implements OnInit, OnDestroy {
         });
       }
     );
-    this.subscriptions.push(subscription);
-
   }
 
   onCancel() {
@@ -307,39 +291,37 @@ export class FormStep2Component implements OnInit, OnDestroy {
 
   returnMock(): any {
     return {
-      result: [
-        {
-          id: '5f578c3c1f7e7e3400c71414',
-          name: 'Teste Promo LP Nova 200',
-          description: 'LPNova200',
-          tag: 'LPN200',
-          hierarchy: 99,
-          status: 'DISABLE',
-          startAt: '2020-09-03T14:34:00',
-          discountType: 'PERCENTAGE',
-          promotionType: 'OPEN',
-          cumulative: false,
-          createdBy: 'tlidiojpn',
-          createdDate: '2020-09-08T10:50:52.303'
-        }
-      ],
-      messages: [
-        {
-          businessCode: -1,
-          description: 'Promoção criada com sucesso, porém sem permissão para atribuir status Ativa: ',
-          attribute: 'Teste Promo LP Nova 200'
-        }
-      ]
+        result: [
+            {
+              id: '5f578c3c1f7e7e3400c71414',
+              name: 'Teste Promo LP Nova 200',
+              description: 'LPNova200',
+              tag: 'LPN200',
+              hierarchy: 99,
+              status: 'DISABLE',
+              startAt: '2020-09-03T14:34:00',
+              discountType: 'PERCENTAGE',
+              promotionType: 'OPEN',
+              cumulative: false,
+              createdBy: 'tlidiojpn',
+              createdDate: '2020-09-08T10:50:52.303'
+            }
+        ],
+        messages: [
+            {
+                businessCode: -1,
+                description: 'Promoção criada com sucesso, porém sem permissão para atribuir status Ativa: ',
+                attribute: 'Teste Promo LP Nova 200'
+            }
+        ]
     };
 
   }
 
   getAuthoritiesEmmiter(): void {
-    let subscription = this.activatePromotion.getActivatePromotion().pipe(first()).subscribe((res: AuthoritiesPromotion) => {
+    this.activatePromotion.getActivatePromotion().pipe(first()).subscribe((res: AuthoritiesPromotion) => {
       this.activatePromotion.setActivatePromotion(res);
     });
-    this.subscriptions.push(subscription);
-
   }
 
 }

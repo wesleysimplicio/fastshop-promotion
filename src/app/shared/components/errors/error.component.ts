@@ -18,7 +18,6 @@ export class ErrorComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute) { }
 
-
   ngOnInit() {
     this.activatedRoute.params.subscribe(
       (param: any) => {

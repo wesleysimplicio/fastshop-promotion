@@ -13,7 +13,7 @@ import { GroupSalesTable } from '../model/price/group-sales-table.model';
 @Injectable()
 export class PriceService {
 
-  constructor(
+    constructor(
         private http: HttpClient
     ) { }
 

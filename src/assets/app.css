@@ -12,6 +12,7 @@ h1 {
     font-weight: bold;
 }
 
+
 h2 {
     font-size: 20px !important;
 }
@@ -38,14 +39,14 @@ h6,
     font-size: 12px !important;
 }
 
-.modal-header .close {
+.modal-header .close{
     color: #4285f4!important;
     margin: -1.7rem -1rem -1rem auto !important;
     font-weight: lighter;
     font-size: 45px;
 }
 
-.noButtonGrid {
+.noButtonGrid{
     border: 0px!important;
     box-shadow: none!important;
     background: none!important;
@@ -104,24 +105,6 @@ nav ul li a {
     min-width: 5rem!important;
     left: -70px!important;
     margin: -0.52rem 0 0 !important;
-}
-
-.btn.register {
-    padding: 0.84rem 1.14rem !important;
-}
-
-.dropdown-menu.register {
-    width: 8rem!important;
-    left: auto !important;
-    text-align: right !important;
-    right: 0px !important;
-    min-width: 4rem!important;
-    margin: .125rem 0 0 !important;
-}
-
-.dropdown-menu.register>.dropdown-item {
-    font-size: 14px;
-    height: 32px;
 }
 
 .datatable-header-cell-wrapper .datatable-header-cell-label {

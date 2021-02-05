@@ -9,7 +9,7 @@ export class ResponseProducts {
     successDetails: Array<Detail>;
     summary: Summary;
 
-  constructor() {
+    constructor() {
         this.errorsDetails = new Array<Detail>();
         this.products = new Array<Product>();
         this.successDetails = new Array<Detail>();

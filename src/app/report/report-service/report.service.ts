@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 @Injectable({providedIn: 'root'})
 export class ReportService {
 
-  constructor(
+    constructor(
        private http: HttpClient
     ) {}
 

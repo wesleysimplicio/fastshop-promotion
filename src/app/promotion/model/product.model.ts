@@ -5,17 +5,17 @@ export class Product {
     prd: string;
     sku: string;
     status: StatusEnum;
-    fixedPrice: number;
+    discountValue: number;
     createdBy: Date;
     createdDate: Date;
     updatedBy: Date;
     updatedDate: Date;
 
-  constructor() {
+    constructor() {
         this.prd = '';
         this.sku = '';
         this.status = StatusEnum.Active;
-        this.fixedPrice = null;
+        this.discountValue = null;
         this.createdBy = null;
         this.createdDate = null;
         this.updatedBy = null;

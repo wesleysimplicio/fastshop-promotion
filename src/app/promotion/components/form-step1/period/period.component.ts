@@ -1,17 +1,16 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Promotion } from 'src/app/promotion/model/promotion.model';
 import { UtilValidation } from 'src/app/shared/util/util.validation';
 import * as moment from 'moment';
 import { PromotionTypeEnum } from 'src/app/promotion/enum/promotion-type.enum';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-period',
   templateUrl: './period.component.html',
   styleUrls: ['./period.component.scss']
 })
-export class PeriodComponent implements OnInit, OnDestroy {
+export class PeriodComponent implements OnInit {
 
   showPeriod = false;
   showEndAt = true;
@@ -25,16 +24,10 @@ export class PeriodComponent implements OnInit, OnDestroy {
   @Output() getShowPeriod = new EventEmitter();
   @Output() getShowEndAt = new EventEmitter();
 
-  private subscriptions: Subscription[] = [];
-
   constructor(
     private formBuilder: FormBuilder,
     private utilValidation: UtilValidation
   ) { }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
-  }
 
   ngOnInit() {
     this.buildForm();
@@ -61,7 +54,7 @@ export class PeriodComponent implements OnInit, OnDestroy {
       this.periodForm.markAsDirty();
     }
     this.getForm.emit(this.periodForm);
-    let subscription = this.periodForm.statusChanges.subscribe(
+    this.periodForm.statusChanges.subscribe(
       result => {
         this.getFormValid.emit(this.isFormsValid());
         this.getShowPeriod.emit(this.showPeriod);
@@ -69,8 +62,6 @@ export class PeriodComponent implements OnInit, OnDestroy {
         this.getForm.emit(this.periodForm);
       }
     );
-    this.subscriptions.push(subscription);
-
     this.strChanges();
   }
 
@@ -78,12 +69,12 @@ export class PeriodComponent implements OnInit, OnDestroy {
 
   strChanges() {
     if (this.typePromo === PromotionTypeEnum.Coupon) {
-      this.strPromo = 'cupom';
+      this.strPromo='cupom';
     } else {
-      this.strPromo = 'promoção';
+      this.strPromo='promoção';
     }
   }
-
+  
   buildForm() {
     this.periodForm = this.formBuilder.group({
       startAt: [this.promotion.startAt],

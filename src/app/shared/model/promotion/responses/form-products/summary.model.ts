@@ -4,7 +4,7 @@ export class Summary {
     totalLinesSuccess: number;
     totalProductsIncluded: number;
 
-  constructor(){
+    constructor(){
         this.totalLinesErrors = null;
         this.totalLinesSuccess = null;
         this.totalProductsIncluded =  null;
