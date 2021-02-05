@@ -257,7 +257,7 @@ export class ProductsComponent implements OnInit {
       return;
     }
     if (promotion.discountType === DiscountTypeEnum.Percentage) {
-      this.discountTypeText = `Porcentagem Fixa`;
+      this.discountTypeText = `Porcentagem`;
       this.isPercentage = true;
     }
     if (promotion.discountType === DiscountTypeEnum.Fixed_Discount) {

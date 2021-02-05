@@ -18,7 +18,11 @@
             <ngx-datatable-column name="Produto" prop="prd"></ngx-datatable-column>
             <ngx-datatable-column *ngIf="showPrice" name="Promocional" prop="discountValue" [width]="15">
                 <ng-template let-rowIndex="rowIndex" let-value="value" let-row="row" ngx-datatable-cell-template>
-                    <span *ngIf="!isPercentage">R$ </span> {{row.discountValue | number:'.2-2' }}<span *ngIf="isPercentage"> %</span>
+                    <span *ngIf="!isPercentage">R$ </span>
+                    <span *ngIf="!isPercentage">{{row.discountValue | number:'.2-2' }}</span>
+
+                    <span *ngIf="isPercentage">{{row.discountValue | number:'.1-1' }}</span>
+                    <span *ngIf="isPercentage"> %</span>
                 </ng-template>
             </ngx-datatable-column>
 
